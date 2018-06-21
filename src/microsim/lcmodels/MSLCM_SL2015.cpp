@@ -91,7 +91,7 @@
 //#define DEBUG_SURROUNDING
 //#define DEBUG_MANEUVER
 //#define DEBUG_PATCHSPEED
-//#define DEBUG_INFORM
+#define DEBUG_INFORM
 //#define DEBUG_ROUNDABOUTS
 //#define DEBUG_WANTSCHANGE
 //#define DEBUG_COOPERATE
@@ -104,11 +104,12 @@
 //#define DEBUG_EXPECTED_SLSPEED
 //#define DEBUG_COND (myVehicle.getID() == "moped.18" || myVehicle.getID() == "moped.16")
 //#define DEBUG_COND (myVehicle.getID() == "Togliatti_71_0")
-#define DEBUG_COND (myVehicle.isSelected())
+//#define DEBUG_COND (myVehicle.isSelected())
 //#define DEBUG_COND (myVehicle.getID() == "pkw150478" || myVehicle.getID() == "pkw150494" || myVehicle.getID() == "pkw150289")
 //#define DEBUG_COND (myVehicle.getID() == "A" || myVehicle.getID() == "B") // fail change to left
 //#define DEBUG_COND (myVehicle.getID() == "disabled") // test stops_overtaking
 //#define DEBUG_COND false
+#define DEBUG_COND (myVehicle.getID() != "")
 
 
 // ===========================================================================

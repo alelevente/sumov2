@@ -39,6 +39,7 @@
 #include "MSDevice_ToC.h"
 #include "MSDevice_Bluelight.h"
 #include "MSDevice_FCD.h"
+#include "MSDevice_SAL.h"
 
 
 // ===========================================================================
@@ -65,6 +66,7 @@ MSDevice::insertOptions(OptionsCont& oc) {
     MSDevice_ToC::insertOptions(oc);
     MSDevice_Bluelight::insertOptions(oc);
     MSDevice_FCD::insertOptions(oc);
+    MSDevice_SAL::insertOptions(oc);
 }
 
 
@@ -90,6 +92,7 @@ MSDevice::buildVehicleDevices(SUMOVehicle& v, std::vector<MSDevice*>& into) {
     MSDevice_ToC::buildVehicleDevices(v, into);
     MSDevice_Bluelight::buildVehicleDevices(v, into);
     MSDevice_FCD::buildVehicleDevices(v, into);
+    MSDevice_SAL::buildVehicleDevices(v, into);
 }
 
 void
