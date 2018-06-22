@@ -6,11 +6,16 @@
 #include "EntryMarker.h"
 #include "ExitMarker.h"
 #include <microsim/MSEdgeControl.h>
+#include <string>
 
 
 
 inline bool MarkerSystem::isMarkerID(const std::string& ID){
     return ID.compare(0,6,"marker") == 0;
+}
+
+inline bool MarkerSystem::isEntryMarker(const std::string& ID) {
+    return ID.compare(6,5,"Entry") == 0;
 }
 
 MarkerSystem::MarkerSystem(){
@@ -60,7 +65,7 @@ MarkerSystem& MarkerSystem::getInstance() {
     return ms;
 }
 
-inline std::string getJunctionName(const std::string& ID){
+inline std::string MarkerSystem::getJunctionName(const std::string& ID){
     std::string name;
     int i = 0;
     while (ID[i]!='_') ++i;

@@ -4,13 +4,15 @@
 
 #include "MessengerSystem.h"
 
+MessengerSystem::MessengerSystem(){}
+
 MessengerSystem& MessengerSystem::getInstance() {
     static MessengerSystem ms;
     return ms;
 }
 
-void MessengerSystem::addNewMessengerAgent(const std::string &id) {
-    Messenger* newMessenger = new Messenger();
+void MessengerSystem::addNewMessengerAgent(const std::string &id, SUMOVehicle *myVeh, MSDevice_SAL *mySAL) {
+    Messenger* newMessenger = new Messenger(myVeh, mySAL);
     messengerMap.insert(std::make_pair(id, newMessenger));
 }
 

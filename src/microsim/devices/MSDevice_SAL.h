@@ -12,6 +12,7 @@
 
 #include "MSDevice.h"
 #include <utils/common/SUMOTime.h>
+#include <libsumo/TraCIDefs.h>
 
 
 // ===========================================================================
@@ -118,6 +119,14 @@ public:
      */
     void generateOutput() const;
 
+/***********************************NON-SUMO originated functions********************************/
+public:
+    void setVehicleColor (const libsumo::TraCIColor& color);
+    void resetVehicleColor();
+    void setVehicleSpeed (double speed);
+    void informBecomeLeader();
+    void informBecomeMember();
+    void informNoLongerLeader();
 
 
 private:
@@ -143,7 +152,7 @@ private:
     /// @brief a value which is initialised based on a vType parameter
     double myCustomValue3;
 
-
+    libsumo::TraCIColor originalColor;
 
 private:
     /// @brief Invalidated copy constructor.

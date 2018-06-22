@@ -18,6 +18,7 @@ class MessagingProxy {
 public:
     static MessagingProxy& getInstance();
     void informEnterEntryMarker(const std::string& messengerID, EntryMarker* entryMarker);
+    void informEnterExitMarker(const std::string& messengerID, ExitMarker* exitMarker);
 };
 
 

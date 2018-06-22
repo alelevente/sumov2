@@ -15,6 +15,10 @@
 #include <microsim/MSLane.h>
 #include <microsim/MSEdge.h>
 #include <microsim/MSVehicle.h>
+#include <microsim/devices/MessagingSystem/MessengerSystem.h>
+#include <microsim/devices/MessagingSystem/MessagingProxy.h>
+#include <libsumo/VehicleType.h>
+#include <libsumo/Vehicle.h>
 #include "MSDevice_Tripinfo.h"
 #include "MSDevice_SAL.h"
 
@@ -83,6 +87,7 @@ MSDevice_SAL::MSDevice_SAL(SUMOVehicle& holder, const std::string& id,
         myCustomValue2(customValue2),
         myCustomValue3(customValue3) {
     std::cout << "initialized device '" << id << "' with myCustomValue1=" << myCustomValue1 << ", myCustomValue2=" << myCustomValue2 << ", myCustomValue3=" << myCustomValue3 << "\n";
+    MessengerSystem::getInstance().addNewMessengerAgent(holder.getID(), &myHolder, this);
 }
 
 
@@ -104,8 +109,17 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
 
 
 bool
-MSDevice_SAL::notifyEnter(SUMOVehicle& veh, MSMoveReminder::Notification reason, const MSLane* /* enteredLane */) {
+MSDevice_SAL::notifyEnter(SUMOVehicle& veh, MSMoveReminder::Notification reason, const MSLane* enteredLane) {
     std::cout << "device '" << getID() << "' notifyEnter: reason=" << reason << " currentEdge=" << veh.getEdge()->getID() << "\n";
+
+    //is it a marker?
+    if(MarkerSystem::isMarkerID(veh.getEdge()->getID())) {
+        if ((veh.getEdge()->getID()).compare(6,5,"Entry")==0)
+            MessagingProxy::getInstance().informEnterEntryMarker(veh.getID(),
+                                                                 (EntryMarker*)(MarkerSystem::getInstance().findMarkerByID(veh.getEdge()->getID())));
+        else MessagingProxy::getInstance().informEnterExitMarker(veh.getID(),
+                                                                  (ExitMarker*)(MarkerSystem::getInstance().findMarkerByID(veh.getEdge()->getID())));
+    }
     return true; // keep the device
 }
 
@@ -155,3 +169,16 @@ MSDevice_SAL::setParameter(const std::string& key, const std::string& value) {
         throw InvalidArgument("Setting parameter '" + key + "' is not supported for device of type '" + deviceName() + "'");
     }
 }
+
+void MSDevice_SAL::setVehicleColor(const libsumo::TraCIColor &color) {
+    originalColor = libsumo::VehicleType::getColor(myHolder.getVehicleType().getID());
+    libsumo::Vehicle::setColor(myHolder.getID(), color);
+}
+
+void MSDevice_SAL::resetVehicleColor() {
+    libsumo::Vehicle::setColor(myHolder.getID(), originalColor);
+}
+
+void MSDevice_SAL::informBecomeLeader() {}
+void MSDevice_SAL::informNoLongerLeader() {}
+void MSDevice_SAL::informBecomeMember() {}

@@ -10,6 +10,8 @@
 #include "Messenger.h"
 
 class MessengerSystem {
+    friend class MessagingProxy;
+    friend class Messenger;
     MessengerSystem();
     ~MessengerSystem();
     MessengerSystem(MessengerSystem const&);
@@ -18,7 +20,7 @@ class MessengerSystem {
 
 public:
     static MessengerSystem& getInstance();
-    void addNewMessengerAgent(const std::string &id);
+    void addNewMessengerAgent(const std::string &id, SUMOVehicle *myVeh, MSDevice_SAL *mySAL);
     void removeMessengerAgent(const std::string &id);
 };
 
