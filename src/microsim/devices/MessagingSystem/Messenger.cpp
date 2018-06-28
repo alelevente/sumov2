@@ -20,30 +20,31 @@ void Messenger::joinAGroup(EntryMarker &entryMarker) {
     std::pair< const MSVehicle *const, double > vech = myVech->getLeader(MAX_DISTANCE);
     MSVehicle* other = const_cast<MSVehicle*>(vech.first);
 
+    //find exit-marker:
+    std::vector<ExitMarker *> *exitMarkers = static_cast< std::vector<ExitMarker *> *>(((EntryMarkerAnswer *) entryMarker.onEnter(
+            myVehicle))->exitMarkers);
+    ExitMarker *exitMarker = NULL;
+    //actualJudge = ((EntryMarkerAnswer*)result)->judge;
+    for (auto i = exitMarkers->begin(); i != exitMarkers->end(); ++i) {
+        if (myVehicle->getRoute().contains((*i)->getPosition())) {
+            myExitMarker = *i;
+        }
+    }
+
+    //we can join:
     if (other != nullptr) {
         Messenger *otherAgent = MessengerSystem::getInstance().messengerMap[other->getID()];
         if (otherAgent != nullptr) {
-            std::vector<ExitMarker *> *exitMarkers = static_cast< std::vector<ExitMarker *> *>(((EntryMarkerAnswer *) entryMarker.onEnter(
-                    myVehicle))->exitMarkers);
-            ExitMarker *exitMarker = NULL;
-            //actualJudge = ((EntryMarkerAnswer*)result)->judge;
-            for (auto i = exitMarkers->begin(); i != exitMarkers->end(); ++i) {
-                if (myVehicle->getRoute().contains((*i)->getPosition())) {
-                    exitMarker = (*i);
-                    if (otherAgent->myGroup->canJoin) {
-                        otherAgent->myGroup->addNewMember(this);
-                        myGroup = otherAgent->myGroup;
-                    } else break;
-                }
+            if (otherAgent->myGroup->canJoin && otherAgent->myExitMarker == myExitMarker) {
+                otherAgent->myGroup->addNewMember(this);
+                myGroup = otherAgent->myGroup;
+                return;
             }
-
-            myExitMarker = exitMarker;
-            if (exitMarker == otherAgent->myExitMarker);
         }
     }
-    if (myGroup == nullptr) {
-        myGroup = new Group(this);
-    }
+
+    //we cannot join:
+    myGroup = new Group(this);
 }
 
 void Messenger::leaveGroup() {

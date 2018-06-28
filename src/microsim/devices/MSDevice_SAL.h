@@ -153,6 +153,7 @@ private:
     double myCustomValue3;
 
     libsumo::TraCIColor originalColor;
+    int entryMarkerFlag = -1;
 
 private:
     /// @brief Invalidated copy constructor.

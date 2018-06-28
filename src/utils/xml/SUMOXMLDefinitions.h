@@ -1118,6 +1118,7 @@ enum LaneChangeAction {
 enum LaneChangeModel {
     LCM_DK2008,
     LCM_LC2013,
+    LCM_SmartSL2015,
     LCM_SL2015,
     LCM_DEFAULT
 };

@@ -98,25 +98,31 @@ MSDevice_SAL::~MSDevice_SAL() {
 bool
 MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
                              double /* newPos */, double newSpeed) {
-    std::cout << "device '" << getID() << "' notifyMove: newSpeed=" << newSpeed << "\n";
+    //std::cout << "device '" << getID() << "' notifyMove: newSpeed=" << newSpeed << "\n";
     // check whether another device is present on the vehicle:
     MSDevice_Tripinfo* otherDevice = static_cast<MSDevice_Tripinfo*>(veh.getDevice(typeid(MSDevice_Tripinfo)));
     if (otherDevice != 0) {
         std::cout << "  veh '" << veh.getID() << " has device '" << otherDevice->getID() << "'\n";
     }
+
+    if (entryMarkerFlag == 0 && (veh.getEdge()->getID()).compare(6,5,"Entry")==0) {
+        MessagingProxy::getInstance().informEnterEntryMarker(veh.getID(),
+                                                             (EntryMarker*)(MarkerSystem::getInstance().findMarkerByID(veh.getEdge()->getID())));
+    }
+    if (entryMarkerFlag>=0) --entryMarkerFlag;
+
     return true; // keep the device
 }
 
 
 bool
 MSDevice_SAL::notifyEnter(SUMOVehicle& veh, MSMoveReminder::Notification reason, const MSLane* enteredLane) {
-    std::cout << "device '" << getID() << "' notifyEnter: reason=" << reason << " currentEdge=" << veh.getEdge()->getID() << "\n";
+    //std::cout << "device '" << getID() << "' notifyEnter: reason=" << reason << " currentEdge=" << veh.getEdge()->getID() << "\n";
 
     //is it a marker?
     if(MarkerSystem::isMarkerID(veh.getEdge()->getID())) {
         if ((veh.getEdge()->getID()).compare(6,5,"Entry")==0)
-            MessagingProxy::getInstance().informEnterEntryMarker(veh.getID(),
-                                                                 (EntryMarker*)(MarkerSystem::getInstance().findMarkerByID(veh.getEdge()->getID())));
+            entryMarkerFlag = 2;
         else MessagingProxy::getInstance().informEnterExitMarker(veh.getID(),
                                                                   (ExitMarker*)(MarkerSystem::getInstance().findMarkerByID(veh.getEdge()->getID())));
     }
@@ -126,7 +132,7 @@ MSDevice_SAL::notifyEnter(SUMOVehicle& veh, MSMoveReminder::Notification reason,
 
 bool
 MSDevice_SAL::notifyLeave(SUMOVehicle& veh, double /*lastPos*/, MSMoveReminder::Notification reason, const MSLane* /* enteredLane */) {
-    std::cout << "device '" << getID() << "' notifyLeave: reason=" << reason << " currentEdge=" << veh.getEdge()->getID() << "\n";
+    //std::cout << "device '" << getID() << "' notifyLeave: reason=" << reason << " currentEdge=" << veh.getEdge()->getID() << "\n";
     return true; // keep the device
 }
 

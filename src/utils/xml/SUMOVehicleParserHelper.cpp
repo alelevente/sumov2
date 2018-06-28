@@ -685,6 +685,9 @@ SUMOVehicleParserHelper::parseLCParams(SUMOVTypeParameter& into, LaneChangeModel
         sl2015Params.insert(SUMO_ATTR_LCA_TURN_ALIGNMENT_DISTANCE);
         allowedLCModelAttrs[LCM_SL2015] = sl2015Params;
 
+        std::set<SumoXMLAttr> smartsl2015params = sl2015Params;
+        allowedLCModelAttrs[LCM_SmartSL2015] = smartsl2015params;
+
         std::set<SumoXMLAttr> noParams;
         allowedLCModelAttrs[LCM_DK2008] = noParams;
 

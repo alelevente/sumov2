@@ -687,6 +687,7 @@ StringBijection<LaneChangeModel>::Entry SUMOXMLDefinitions::laneChangeModelValue
     { "DK2008",     LCM_DK2008 },
     { "LC2013",     LCM_LC2013 },
     { "SL2015",     LCM_SL2015 },
+    { "SmartSL2015", LCM_SmartSL2015 },
     { "default",    LCM_DEFAULT } //< must be the last one
 };
 

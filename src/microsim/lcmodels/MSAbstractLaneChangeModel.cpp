@@ -42,6 +42,7 @@
 #include "MSLCM_DK2008.h"
 #include "MSLCM_LC2013.h"
 #include "MSLCM_SL2015.h"
+#include "MSLCM_SmartSL2015.h"
 
 /* -------------------------------------------------------------------------
  * static members
@@ -67,7 +68,7 @@ MSAbstractLaneChangeModel::initGlobalOptions(const OptionsCont& oc) {
 
 MSAbstractLaneChangeModel*
 MSAbstractLaneChangeModel::build(LaneChangeModel lcm, MSVehicle& v) {
-    if (MSGlobals::gLateralResolution > 0 && lcm != LCM_SL2015 && lcm != LCM_DEFAULT) {
+    if (MSGlobals::gLateralResolution > 0 && (lcm != LCM_SL2015 && lcm != LCM_SmartSL2015) && lcm != LCM_DEFAULT) {
         throw ProcessError("Lane change model '" + toString(lcm) + "' is not compatible with sublane simulation");
     }
     switch (lcm) {
@@ -77,6 +78,8 @@ MSAbstractLaneChangeModel::build(LaneChangeModel lcm, MSVehicle& v) {
             return new MSLCM_LC2013(v);
         case LCM_SL2015:
             return new MSLCM_SL2015(v);
+        case LCM_SmartSL2015:
+            return new MSLCM_SmartSL2015(v);
         case LCM_DEFAULT:
             if (MSGlobals::gLateralResolution <= 0) {
                 return new MSLCM_LC2013(v);
