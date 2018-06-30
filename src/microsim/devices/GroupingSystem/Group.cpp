@@ -17,6 +17,7 @@ Group::Group(Messenger *leader)
     myColor.b = rand() % 256;
     members[0]->mySAL->setVehicleColor(myColor);
     members[0]->mySAL->informBecomeLeader();
+    for (int i=1; i<15; ++i) members[i] = nullptr;
 }
 
 Group::~Group() {}
@@ -34,13 +35,22 @@ void Group::removeFirstCar() {
     for (int i=1; i<nMembers; ++i){
         members[i-1] = members[i];
     }
+    members[nMembers-1] = nullptr;
     --nMembers;
+    
     first->mySAL->informNoLongerLeader();
     first->mySAL->resetVehicleColor();
-    members[0]->mySAL->informBecomeLeader();
+
     if (nMembers == 0) finishGroup();
+    else members[0]->mySAL->informBecomeLeader();
 }
 
 void Group::finishGroup() {
     delete this;
+}
+
+Messenger* Group::getFollowerOf(Messenger *who) {
+    int i=0;
+    for (i=0; members[i]!=who && i<nMembers; ++i);
+    return members[i+1];
 }

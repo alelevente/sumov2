@@ -24,8 +24,11 @@ class Messenger {
 public:
     MSDevice_SAL *mySAL;
     Messenger(SUMOVehicle *myVech, MSDevice_SAL *mySAL);
+    ~Messenger();
     void joinAGroup(EntryMarker &entryMarker);
     void leaveGroup();
+    void needToChangeLane(int result, int offset);
+    Group* getGroup();
 };
 
 

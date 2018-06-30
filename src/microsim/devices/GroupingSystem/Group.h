@@ -26,6 +26,7 @@ public:
     bool canJoin;
     void addNewMember(Messenger* member);
     void removeFirstCar();
+    Messenger* getFollowerOf(Messenger* who);
     int maxMembers = 15;
 };
 

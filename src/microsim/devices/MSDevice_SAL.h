@@ -127,6 +127,8 @@ public:
     void informBecomeLeader();
     void informBecomeMember();
     void informNoLongerLeader();
+    void laneChanged(int result, int offset);
+    void laneChangeNeeded(int result, int offset);
 
 
 private:

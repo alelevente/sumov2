@@ -19,6 +19,7 @@ public:
     static MessagingProxy& getInstance();
     void informEnterEntryMarker(const std::string& messengerID, EntryMarker* entryMarker);
     void informEnterExitMarker(const std::string& messengerID, ExitMarker* exitMarker);
+    void informLaneChange(const std::string &messengerID, int result, int offset);
 };
 
 

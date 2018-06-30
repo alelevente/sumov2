@@ -9,7 +9,9 @@
 
 #include "MSAbstractLaneChangeModel.h"
 #include <vector>
+#include <microsim/devices/MSDevice_SAL.h>
 
+enum GroupState{OUT, MEMBER, LEADER};
 
 class MSLCM_SmartSL2015: public MSAbstractLaneChangeModel {
 
@@ -22,7 +24,16 @@ class MSLCM_SmartSL2015: public MSAbstractLaneChangeModel {
  * @class MSLCM_SL2015
  * @brief A lane change model developed by J. Erdmann
  */
+
+    GroupState groupState = OUT;
+    MSDevice_SAL* mySAL = nullptr;
+    int receivedResult = 0, receivedOffset;
+
 public:
+    void becomeMember(MSDevice_SAL* mySAL);
+    void becomeLeader(MSDevice_SAL* mySAL);
+    void leftGroup();
+    void hasToChange(int result, int offset);
 
     MSLCM_SmartSL2015(MSVehicle& v);
 

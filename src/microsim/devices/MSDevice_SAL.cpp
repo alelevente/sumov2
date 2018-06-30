@@ -19,6 +19,7 @@
 #include <microsim/devices/MessagingSystem/MessagingProxy.h>
 #include <libsumo/VehicleType.h>
 #include <libsumo/Vehicle.h>
+#include <microsim/lcmodels/MSLCM_SmartSL2015.h>
 #include "MSDevice_Tripinfo.h"
 #include "MSDevice_SAL.h"
 
@@ -92,6 +93,7 @@ MSDevice_SAL::MSDevice_SAL(SUMOVehicle& holder, const std::string& id,
 
 
 MSDevice_SAL::~MSDevice_SAL() {
+    MessengerSystem::getInstance().removeMessengerAgent(myHolder.getID());
 }
 
 
@@ -185,6 +187,26 @@ void MSDevice_SAL::resetVehicleColor() {
     libsumo::Vehicle::setColor(myHolder.getID(), originalColor);
 }
 
-void MSDevice_SAL::informBecomeLeader() {}
-void MSDevice_SAL::informNoLongerLeader() {}
-void MSDevice_SAL::informBecomeMember() {}
+void MSDevice_SAL::informBecomeLeader() {
+    MSLCM_SmartSL2015 &lcm = (MSLCM_SmartSL2015&)((MSVehicle*)(&myHolder))->getLaneChangeModel();
+    lcm.becomeLeader(this);
+}
+
+void MSDevice_SAL::informNoLongerLeader() {
+    MSLCM_SmartSL2015 &lcm = (MSLCM_SmartSL2015&)((MSVehicle*)(&myHolder))->getLaneChangeModel();
+    lcm.leftGroup();
+}
+
+void MSDevice_SAL::informBecomeMember() {
+    MSLCM_SmartSL2015 &lcm = (MSLCM_SmartSL2015&)((MSVehicle*)(&myHolder))->getLaneChangeModel();
+    lcm.becomeMember(this);
+}
+
+void MSDevice_SAL::laneChanged(int result, int offset) {
+    MessagingProxy::getInstance().informLaneChange(myHolder.getID(), result, offset);
+}
+
+void MSDevice_SAL::laneChangeNeeded(int result, int offset) {
+    MSLCM_SmartSL2015 *lcm = &(MSLCM_SmartSL2015&)((MSVehicle*)(&myHolder))->getLaneChangeModel();
+    if (lcm!= nullptr) lcm->hasToChange(result, offset);
+}

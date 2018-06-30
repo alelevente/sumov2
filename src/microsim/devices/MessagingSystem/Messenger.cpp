@@ -13,6 +13,8 @@ Messenger::Messenger(SUMOVehicle *myVech, MSDevice_SAL *mySAL) :
 {
 }
 
+Messenger::~Messenger() {}
+
 void Messenger::joinAGroup(EntryMarker &entryMarker) {
     if (myGroup != nullptr)
         return;
@@ -51,4 +53,11 @@ void Messenger::leaveGroup() {
     if (myGroup == nullptr) return;
     myGroup->removeFirstCar();
     myGroup = nullptr;
+}
+
+Group* Messenger::getGroup() { return myGroup; }
+
+void Messenger::needToChangeLane(int result, int offset) {
+    if (mySAL == nullptr) return;
+    mySAL->laneChangeNeeded(result, offset);
 }
