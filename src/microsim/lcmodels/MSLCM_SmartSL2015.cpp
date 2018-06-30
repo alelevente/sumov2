@@ -169,6 +169,10 @@ MSLCM_SmartSL2015::wantsChangeSublane(
         MSVehicle** firstBlocked,
         double& latDist, double& maneuverDist, int& blocked) {
 
+    if (groupState == MEMBER) {
+        return (laneOffset==receivedOffset)?receivedResult|LCA_URGENT:0;
+    }
+
     gDebugFlag2 = DEBUG_COND;
     const std::string changeType = laneOffset == -1 ? "right" : (laneOffset == 1 ? "left" : "current");
 
@@ -229,6 +233,12 @@ MSLCM_SmartSL2015::wantsChangeSublane(
     }
 #endif
     gDebugFlag2 = false;
+
+    if (groupState != OUT && receivedResult == 0){
+        receivedResult = result;
+        receivedOffset = laneOffset;
+    }
+
     return result;
 }
 
@@ -959,7 +969,7 @@ MSLCM_SmartSL2015::changed() {
     }
 #endif
 
-    mySAL->laneChanged(receivedResult, receivedOffset);
+    if (mySAL!= nullptr) mySAL->laneChanged(receivedResult, receivedOffset);
     receivedOffset = 0;
     receivedResult = 0;
 }
@@ -3279,11 +3289,6 @@ MSLCM_SmartSL2015::wantsChange(
         MSVehicle** lastBlocked,
         MSVehicle** firstBlocked) {
 
-    if (groupState == MEMBER) {
-        return (laneOffset==receivedOffset)?receivedResult|LCA_URGENT:0;
-    }
-
-
     const LaneChangeAction alternatives = LCA_NONE; // @todo pas this data
 
 #ifdef DEBUG_WANTSCHANGE
@@ -3343,10 +3348,6 @@ MSLCM_SmartSL2015::wantsChange(
     }
 #endif
 
-    if (groupState != OUT && receivedResult == 0){
-        receivedResult = result;
-        receivedOffset = laneOffset;
-    }
     return result;
 }
 

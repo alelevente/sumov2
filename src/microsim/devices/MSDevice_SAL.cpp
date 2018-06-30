@@ -107,7 +107,7 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
         std::cout << "  veh '" << veh.getID() << " has device '" << otherDevice->getID() << "'\n";
     }
 
-    if (entryMarkerFlag == 0 && (veh.getEdge()->getID()).compare(6,5,"Entry")==0) {
+    if (entryMarkerFlag == 0 && veh.getEdge()->getID().length()>11 && (veh.getEdge()->getID()).compare(6,5,"Entry")==0) {
         MessagingProxy::getInstance().informEnterEntryMarker(veh.getID(),
                                                              (EntryMarker*)(MarkerSystem::getInstance().findMarkerByID(veh.getEdge()->getID())));
     }

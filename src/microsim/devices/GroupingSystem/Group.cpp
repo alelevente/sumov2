@@ -23,7 +23,10 @@ Group::Group(Messenger *leader)
 Group::~Group() {}
 
 void Group::addNewMember(Messenger *member) {
-    if (!canJoin) throw OutOfBoundsException();
+    if (!canJoin) {
+        std::cerr << "addNewMember function: out of bounds exception." << std::endl;
+        throw OutOfBoundsException();
+    }
     members[nMembers++] = member;
     if (nMembers > maxMembers) canJoin = false;
     member->mySAL->setVehicleColor(myColor);
@@ -37,7 +40,7 @@ void Group::removeFirstCar() {
     }
     members[nMembers-1] = nullptr;
     --nMembers;
-    
+
     first->mySAL->informNoLongerLeader();
     first->mySAL->resetVehicleColor();
 
