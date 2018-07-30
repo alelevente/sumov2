@@ -9,15 +9,20 @@
 #include <microsim/devices/MessagingSystem/Messenger.h>
 #include <string>
 #include <libsumo/TraCIDefs.h>
+#include <microsim/lcmodels/MSLCM_SmartSL2015.h>
 
 class Messenger;
 
 class Group {
-    int nMembers;
+    int nMembers, totalMembers = 0;
     Messenger* members[15];
     libsumo::TraCIColor myColor;
     void finishGroup();
-
+    bool laneChangeInAction = false;
+   // MSLCM_SmartSL2015* followerLeader = nullptr;
+public:
+    //MSLCM_SmartSL2015 *getFollowerLeader() const;
+    std::vector<MSLCM_SmartSL2015*> LCFifo;
 public:
     Group(Messenger* leader);
     ~Group();
@@ -27,7 +32,16 @@ public:
     void addNewMember(Messenger* member);
     void removeFirstCar();
     Messenger* getFollowerOf(Messenger* who);
-    int maxMembers = 15;
+    Messenger* getLeaderOf(Messenger* who);
+    double getGroupLength();
+    int maxMembers = 8;
+    //void laneChange(MSLCM_SmartSL2015* followerLeader);
+    void endLaneChange();
+    bool isChanging();
+
+    int getNMembers() const;
+
+    void laneChange(MSLCM_SmartSL2015* follower);
 };
 
 

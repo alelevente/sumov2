@@ -11,12 +11,16 @@
 #include <utils/vehicle/SUMOVehicle.h>
 #include <microsim/devices/MarkerSystem/EntryMarker.h>
 #include <microsim/devices/MSDevice_SAL.h>
+#include <microsim/lcmodels/MSLCM_SmartSL2015.h>
 
 #define MAX_DISTANCE 50
 
 class Group;
+class MSDevice_SAL;
+class MSLCM_SmartSL2015;
 
 class Messenger {
+    friend class Group;
     Group* myGroup = nullptr;
     SUMOVehicle* myVehicle;
     ExitMarker* myExitMarker;
@@ -27,7 +31,7 @@ public:
     ~Messenger();
     void joinAGroup(EntryMarker &entryMarker);
     void leaveGroup();
-    void needToChangeLane(int result, int offset);
+    void needToChangeLane(MSLCM_SmartSL2015 *follower, int offset);
     Group* getGroup();
 };
 

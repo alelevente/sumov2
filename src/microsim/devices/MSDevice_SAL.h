@@ -13,12 +13,21 @@
 #include "MSDevice.h"
 #include <utils/common/SUMOTime.h>
 #include <libsumo/TraCIDefs.h>
+#include <microsim/devices/Others/LCManager.h>
+#include "GroupingSystem/Group.h"
+#include "Others/LCManager.h"
+
+
+#define GROUP_GAP_DESIRED 10
+#define GROUP_GAP_LIMIT 8
 
 
 // ===========================================================================
 // class declarations
 // ===========================================================================
 class SUMOVehicle;
+class MSLCM_SmartSL2015;
+class LCManager;
 
 
 // ===========================================================================
@@ -125,11 +134,25 @@ public:
     void resetVehicleColor();
     void setVehicleSpeed (double speed);
     void informBecomeLeader();
-    void informBecomeMember();
+    void informBecomeMember(Group* group);
     void informNoLongerLeader();
-    void laneChanged(int result, int offset);
-    void laneChangeNeeded(int result, int offset);
+    bool laneChanged(MSLCM_SmartSL2015 *follower, int offset);
+    void laneChangeNeeded(MSLCM_SmartSL2015 *follower, int offset);
+    void groupChanging(MSLCM_SmartSL2015 *follower);
+    void groupChangeFinished();
+    bool isGroupChanging();
+    MSLCM_SmartSL2015* getGroupFollowerLC();
+    SUMOVehicle* getMyGroupLeader();
+    double getGroupLength();
+    int getMemberCount();
+    void informStoppedToContinue(MSLCM_SmartSL2015* stopped);
+    void addFollower(MSLCM_SmartSL2015* follower);
+    void amBlocker(MSLCM_SmartSL2015* blocker, MSLCM_SmartSL2015* leader);
 
+private:
+    bool isMember = false;
+    LCManager* myLCm = nullptr;
+    std::vector<MSLCM_SmartSL2015*> followerFIFO;
 
 private:
     /** @brief Constructor

@@ -37,6 +37,7 @@
  */
 class MSLCM_SL2015 : public MSAbstractLaneChangeModel {
 public:
+    friend class MSLCM_SmartSL2015;
 
     MSLCM_SL2015(MSVehicle& v);
 

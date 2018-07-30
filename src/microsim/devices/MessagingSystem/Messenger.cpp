@@ -53,11 +53,12 @@ void Messenger::leaveGroup() {
     if (myGroup == nullptr) return;
     myGroup->removeFirstCar();
     myGroup = nullptr;
+    mySAL->resetVehicleColor();
 }
 
 Group* Messenger::getGroup() { return myGroup; }
 
-void Messenger::needToChangeLane(int result, int offset) {
+void Messenger::needToChangeLane(MSLCM_SmartSL2015 *follower, int offset) {
     if (mySAL == nullptr) return;
-    mySAL->laneChangeNeeded(result, offset);
+    mySAL->laneChangeNeeded(follower, offset);
 }

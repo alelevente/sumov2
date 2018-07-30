@@ -1,20 +1,32 @@
-//
-// Created by levente on 2018.06.28..
-//
+/****************************************************************************/
+// Eclipse SUMO, Simulation of Urban MObility; see https://eclipse.org/sumo
+// Copyright (C) 2013-2018 German Aerospace Center (DLR) and others.
+// This program and the accompanying materials
+// are made available under the terms of the Eclipse Public License v2.0
+// which accompanies this distribution, and is available at
+// http://www.eclipse.org/legal/epl-v20.html
+// SPDX-License-Identifier: EPL-2.0
+/****************************************************************************/
+/// @file    MSLCM_SL2015.h
+/// @author  Jakob Erdmann
+/// @author  Leonhard Luecken
+/// @date    Tue, 06.10.2015
+/// @version $Id$
+///
+// A lane change model for heterogeneous traffic (based on sub-lanes)
+/****************************************************************************/
+#ifndef MSLCM_SMARTSL2015_h
+#define MSLCM_SMARTSL2015_h
 
-#ifndef SUMO_MSLCM_SMARTSL2015_H
-#define SUMO_MSLCM_SMARTSL2015_H
 
+// ===========================================================================
+// included modules
+// ===========================================================================
 #include <config.h>
 
 #include "MSAbstractLaneChangeModel.h"
 #include <vector>
 #include <microsim/devices/MSDevice_SAL.h>
-
-enum GroupState{OUT, MEMBER, LEADER};
-
-class MSLCM_SmartSL2015: public MSAbstractLaneChangeModel {
-
 
 
 // ===========================================================================
@@ -25,16 +37,26 @@ class MSLCM_SmartSL2015: public MSAbstractLaneChangeModel {
  * @brief A lane change model developed by J. Erdmann
  */
 
-    GroupState groupState = OUT;
+class MSDevice_SAL;
+typedef enum {OUT, MEMBER, LEADER} GroupState;
+
+class MSLCM_SmartSL2015 : public MSAbstractLaneChangeModel {
+private:
+    void smartFollowerDistance(MSLeaderDistanceInfo &followerDistanceInfo);
+    void smartLeaderDistance(MSLeaderDistanceInfo &leaderDistanceInfo);
     MSDevice_SAL* mySAL = nullptr;
-    int receivedResult = 0, receivedOffset;
+    GroupState myGroupState;
+    int myOffset;
+    MSVehicle* myFollower = nullptr;
+    void lineUpForCenterOfLane();
+    int blockerFlag = 0;
 
 public:
-    void becomeMember(MSDevice_SAL* mySAL);
-    void becomeLeader(MSDevice_SAL* mySAL);
-    void leftGroup();
-    void hasToChange(int result, int offset);
+    void setMyGroupState(GroupState myGroupState);
+    SUMOVehicle* getMyVehicle();
+    void setOffset(int offset);
 
+public:
     MSLCM_SmartSL2015(MSVehicle& v);
 
     virtual ~MSLCM_SmartSL2015();
@@ -77,15 +99,15 @@ public:
      * TODO: better documentation. Refs #2
      * */
     int wantsChange(
-        int laneOffset,
-        MSAbstractLaneChangeModel::MSLCMessager& msgPass, int blocked,
-        const std::pair<MSVehicle*, double>& leader,
-        const std::pair<MSVehicle*, double>& neighLead,
-        const std::pair<MSVehicle*, double>& neighFollow,
-        const MSLane& neighLane,
-        const std::vector<MSVehicle::LaneQ>& preb,
-        MSVehicle** lastBlocked,
-        MSVehicle** firstBlocked);
+            int laneOffset,
+            MSAbstractLaneChangeModel::MSLCMessager& msgPass, int blocked,
+            const std::pair<MSVehicle*, double>& leader,
+            const std::pair<MSVehicle*, double>& neighLead,
+            const std::pair<MSVehicle*, double>& neighFollow,
+            const MSLane& neighLane,
+            const std::vector<MSVehicle::LaneQ>& preb,
+            MSVehicle** lastBlocked,
+            MSVehicle** firstBlocked);
 
     void* inform(void* info, MSVehicle* sender);
 
@@ -134,19 +156,19 @@ protected:
 
     /// @brief helper function for doing the actual work
     int _wantsChangeSublane(
-        int laneOffset,
-        LaneChangeAction alternatives,
-        const MSLeaderDistanceInfo& leaders,
-        const MSLeaderDistanceInfo& followers,
-        const MSLeaderDistanceInfo& blockers,
-        const MSLeaderDistanceInfo& neighLeaders,
-        const MSLeaderDistanceInfo& neighFollowers,
-        const MSLeaderDistanceInfo& neighBlockers,
-        const MSLane& neighLane,
-        const std::vector<MSVehicle::LaneQ>& preb,
-        MSVehicle** lastBlocked,
-        MSVehicle** firstBlocked,
-        double& latDist, double& maneuverDist, int& blocked);
+            int laneOffset,
+            LaneChangeAction alternatives,
+            const MSLeaderDistanceInfo& leaders,
+            const MSLeaderDistanceInfo& followers,
+            const MSLeaderDistanceInfo& blockers,
+            const MSLeaderDistanceInfo& neighLeaders,
+            const MSLeaderDistanceInfo& neighFollowers,
+            const MSLeaderDistanceInfo& neighBlockers,
+            const MSLane& neighLane,
+            const std::vector<MSVehicle::LaneQ>& preb,
+            MSVehicle** lastBlocked,
+            MSVehicle** firstBlocked,
+            double& latDist, double& maneuverDist, int& blocked);
 
 
     /* @brief decide whether we will overtake or follow blocking leaders
@@ -283,7 +305,7 @@ protected:
                              int roundaboutEdgesAhead,
                              double latLaneDist,
                              double& latDist
-                            );
+    );
 
 
     /// @brief check whether lateral gap requirements are met override the current maneuver if necessary
@@ -415,4 +437,7 @@ protected:
 };
 
 
-#endif //SUMO_MSLCM_SMARTSL2015_H
+#endif
+
+/****************************************************************************/
+

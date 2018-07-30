@@ -1,9 +1,24 @@
-//
-// Created by levente on 2018.06.28..
-//
+/****************************************************************************/
+// Eclipse SUMO, Simulation of Urban MObility; see https://eclipse.org/sumo
+// Copyright (C) 2013-2018 German Aerospace Center (DLR) and others.
+// This program and the accompanying materials
+// are made available under the terms of the Eclipse Public License v2.0
+// which accompanies this distribution, and is available at
+// http://www.eclipse.org/legal/epl-v20.html
+// SPDX-License-Identifier: EPL-2.0
+/****************************************************************************/
+/// @file    MSLCM_SmartSL2015.cpp
+/// @author  Jakob Erdmann
+/// @date    Tue, 06.10.2015
+/// @version $Id$
+///
+// A lane change model for heterogeneous traffic (based on sub-lanes)
+/****************************************************************************/
 
-#include "MSLCM_SmartSL2015.h"
 
+// ===========================================================================
+// included modules
+// ===========================================================================
 #include <config.h>
 
 #include <iostream>
@@ -14,7 +29,8 @@
 #include <microsim/MSNet.h>
 #include <microsim/MSGlobals.h>
 #include <microsim/pedestrians/MSPModel.h>
-#include "MSLCM_SmartSL2015.h"
+#include <microsim/lcmodels/MSLCM_SmartSL2015.h>
+#include <libsumo/Vehicle.h>
 
 // ===========================================================================
 // variable definitions
@@ -76,24 +92,24 @@
 //#define DEBUG_SURROUNDING
 //#define DEBUG_MANEUVER
 //#define DEBUG_PATCHSPEED
-//#define DEBUG_INFORM
+#define DEBUG_INFORM
 //#define DEBUG_ROUNDABOUTS
 //#define DEBUG_WANTSCHANGE
 //#define DEBUG_COOPERATE
 //#define DEBUG_SLOWDOWN
 //#define DEBUG_SAVE_BLOCKER_LENGTH
 //#define DEBUG_BLOCKING
-//#define DEBUG_TRACI
+#define DEBUG_TRACI
 //#define DEBUG_STRATEGIC_CHANGE
 //#define DEBUG_KEEP_LATGAP
 //#define DEBUG_EXPECTED_SLSPEED
 //#define DEBUG_COND (myVehicle.getID() == "moped.18" || myVehicle.getID() == "moped.16")
 //#define DEBUG_COND (myVehicle.getID() == "Togliatti_71_0")
-//#define DEBUG_COND (myVehicle.isSelected())
+#define DEBUG_COND (myVehicle.isSelected())
 //#define DEBUG_COND (myVehicle.getID() == "pkw150478" || myVehicle.getID() == "pkw150494" || myVehicle.getID() == "pkw150289")
 //#define DEBUG_COND (myVehicle.getID() == "A" || myVehicle.getID() == "B") // fail change to left
 //#define DEBUG_COND (myVehicle.getID() == "disabled") // test stops_overtaking
-#define DEBUG_COND false
+//#define DEBUG_COND false
 //#define DEBUG_COND (myVehicle.getID() != "")
 
 
@@ -101,7 +117,7 @@
 // member method definitions
 // ===========================================================================
 MSLCM_SmartSL2015::MSLCM_SmartSL2015(MSVehicle& v) :
-        MSAbstractLaneChangeModel(v, LCM_SL2015),
+        MSAbstractLaneChangeModel(v, LCM_SmartSL2015),
         mySpeedGainProbabilityRight(0),
         mySpeedGainProbabilityLeft(0),
         myKeepRightProbability(0),
@@ -169,8 +185,13 @@ MSLCM_SmartSL2015::wantsChangeSublane(
         MSVehicle** firstBlocked,
         double& latDist, double& maneuverDist, int& blocked) {
 
-    if (groupState == MEMBER) {
-        return (laneOffset==receivedOffset)?receivedResult|LCA_URGENT:0;
+    if (laneOffset == 0) myFollower = const_cast<MSVehicle*>(followers[1].first);
+
+    if (myGroupState == LEADER) {
+        smartLeaderDistance(const_cast<MSLeaderDistanceInfo&>(leaders));
+        smartFollowerDistance(const_cast<MSLeaderDistanceInfo&>(followers));
+        smartLeaderDistance(const_cast<MSLeaderDistanceInfo&>(neighLeaders));
+        smartFollowerDistance(const_cast<MSLeaderDistanceInfo&>(neighFollowers));
     }
 
     gDebugFlag2 = DEBUG_COND;
@@ -233,12 +254,10 @@ MSLCM_SmartSL2015::wantsChangeSublane(
     }
 #endif
     gDebugFlag2 = false;
-
-    if (groupState != OUT && receivedResult == 0){
-        receivedResult = result;
-        receivedOffset = laneOffset;
+    if (!(result & LCA_STAY) && myGroupState == LEADER) {
+        //if (result & LCA_LEFT) myOffset = -1; else myOffset = 1;
+        myOffset = laneOffset;
     }
-
     return result;
 }
 
@@ -475,6 +494,16 @@ MSLCM_SmartSL2015::_patchSpeed(const double min, const double wanted, const doub
 void*
 MSLCM_SmartSL2015::inform(void* info, MSVehicle* sender) {
     Info* pinfo = (Info*) info;
+    if (pinfo->second & LCA_AMBLOCKINGFOLLOWER && mySAL != nullptr && myGroupState == LEADER) {
+        GroupState othersState = ((MSLCM_SmartSL2015*)&sender->getLaneChangeModel())->myGroupState;
+        if (othersState==LEADER || othersState ==MEMBER) {
+            ++blockerFlag;
+            if (blockerFlag == 3) {
+                mySAL->amBlocker(this, (MSLCM_SmartSL2015 *) &(sender->getLaneChangeModel()));
+            }
+            return (void*) true;
+        }
+    }
     if (pinfo->first >= 0) {
         addLCSpeedAdvice(pinfo->first);
     }
@@ -939,6 +968,11 @@ MSLCM_SmartSL2015::computeSublaneShift(const MSEdge* prevEdge, const MSEdge* cur
 
 void
 MSLCM_SmartSL2015::changed() {
+    if (mySAL != nullptr) {
+        mySAL->laneChanged(nullptr, myOffset);
+       // lineUpForCenterOfLane();
+
+    }
     if (!myCanChangeFully) {
         // do not reset state yet
 #ifdef DEBUG_STATE
@@ -968,10 +1002,6 @@ MSLCM_SmartSL2015::changed() {
         std::cout << SIMTIME << " veh=" << myVehicle.getID() << " changed()\n";
     }
 #endif
-
-    if (mySAL!= nullptr) mySAL->laneChanged(receivedResult, receivedOffset);
-    receivedOffset = 0;
-    receivedResult = 0;
 }
 
 
@@ -3314,6 +3344,13 @@ MSLCM_SmartSL2015::wantsChange(
     MSLeaderDistanceInfo neighFollowers(neighFollow, dummy);
     MSLeaderDistanceInfo neighBlockers(std::make_pair((MSVehicle*)0, -1), dummy);
 
+    if (myGroupState == LEADER) {
+        smartLeaderDistance(leaders);
+        smartFollowerDistance(followers);
+        smartLeaderDistance(neighLeaders);
+        smartFollowerDistance(neighFollowers);
+    }
+
     double maneuverDist;
     int result = _wantsChangeSublane(laneOffset,
                                      alternatives,
@@ -3327,6 +3364,9 @@ MSLCM_SmartSL2015::wantsChange(
     // ignore sublane motivation
     result &= ~LCA_SUBLANE;
     result |= getLCA(result, latDist);
+    if (!(result & LCA_STAY) && myGroupState == LEADER) {
+        if (result & LCA_LEFT) myOffset = -1; else myOffset = 1;
+    }
 
 #if defined(DEBUG_WANTSCHANGE) || defined(DEBUG_STATE)
     if (DEBUG_COND) {
@@ -3351,21 +3391,121 @@ MSLCM_SmartSL2015::wantsChange(
     return result;
 }
 
-void MSLCM_SmartSL2015::becomeLeader(MSDevice_SAL *mySAL) {
-    groupState = LEADER;
-    this->mySAL = mySAL;
+/****************************************************************************/
+
+
+
+void MSLCM_SmartSL2015::smartLeaderDistance(MSLeaderDistanceInfo &leaderDistanceInfo) {
+    if (DEBUG_COND)  std::cout << myVehicle.getID() << " changes leader " << leaderDistanceInfo.toString() << " into:" << std::endl;
+    MSLeaderDistanceInfo* copy = new MSLeaderDistanceInfo(leaderDistanceInfo);
+    leaderDistanceInfo.clear();
+
+    if (leaderDistanceInfo.hasVehicles()) {
+        for (int i = 0; i < copy->numSublanes(); ++i) {
+            if (copy->operator[](i).first != nullptr &&
+                copy->operator[](i).first->getVehicleType().getLaneChangeModel() == LCM_SmartSL2015) {
+                SUMOVehicle *inFront = (SUMOVehicle *) (const_cast<MSVehicle *>(copy->operator[](i).first));
+
+                MSDevice_SAL *inFrontSAL = static_cast<MSDevice_SAL *>(inFront->getDevice(typeid(MSDevice_SAL)));
+                if (inFrontSAL != 0) {
+                    SUMOVehicle *groupLeader = inFrontSAL->getMyGroupLeader();
+                    if (groupLeader == nullptr) leaderDistanceInfo.addLeader(copy->operator[](i).first, copy->operator[](i).second, 0, i);
+                    else {
+                        libsumo::TraCIPosition inFrontPos = libsumo::Vehicle::getPosition(
+                                inFrontSAL->getMyGroupLeader()->getID());
+                      /*  std::cout << "groupLength: " << inFrontSAL->getGroupLength() << " leaderDistance: " <<
+                                  libsumo::Vehicle::getDrivingDistance2D(myVehicle.getID(), inFrontPos.x, inFrontPos.y)
+                                  << std::endl;*/
+                        leaderDistanceInfo.addLeader((MSVehicle *) groupLeader,
+                                                     libsumo::Vehicle::getDrivingDistance2D(myVehicle.getID(),
+                                                                                            inFrontPos.x,
+                                                                                            inFrontPos.y) -
+                                                     inFrontSAL->getGroupLength() - 6.65, 0, i);
+                    }
+                }
+                /*inFront->getPositionOnLane() - inFrontSAL->getGroupLength() -
+                myVehicle.getPositionOnLane()*/
+            } else leaderDistanceInfo.addLeader(copy->operator[](i).first, copy->operator[](i).second, 0, i);
+        }
+    }
+    if (DEBUG_COND)  std::cout << leaderDistanceInfo.toString() << std::endl << std::endl;
+    delete copy;
 }
 
-void MSLCM_SmartSL2015::becomeMember(MSDevice_SAL *mySAL) {
-    groupState = MEMBER;
-    this->mySAL = mySAL;
+void MSLCM_SmartSL2015::smartFollowerDistance(MSLeaderDistanceInfo &followerDistanceInfo) {
+    if (DEBUG_COND) std::cout << myVehicle.getID() << " changes followers " << followerDistanceInfo.toString() << " into:" << std::endl;
+    MSLeaderDistanceInfo* copy = new MSLeaderDistanceInfo(followerDistanceInfo);
+    followerDistanceInfo.clear();
+
+    for (int i=0; i<copy->numSublanes(); ++i){
+        if (copy->operator[](i).first != nullptr) {
+            if (copy->operator[](i).second < 0) {
+                SUMOVehicle *behind = (SUMOVehicle *) (const_cast<MSVehicle *>(copy->operator[](i).first));
+
+                MSDevice_SAL *behindSAL = static_cast<MSDevice_SAL *>(behind->getDevice(typeid(MSDevice_SAL)));
+                if (behindSAL != 0) {
+                    SUMOVehicle *groupLeader = behindSAL->getMyGroupLeader();
+                    if (groupLeader == copy->operator[](i).first) {
+                        followerDistanceInfo.addLeader(copy->operator[](i).first, copy->operator[](i).second, 0, i);
+                        continue;
+                    }
+                } else; //jelzés kellene
+            } else {
+                MSLCM_SmartSL2015* follower = (MSLCM_SmartSL2015*) &const_cast<MSAbstractLaneChangeModel&>((copy->operator[](i).first)->getLaneChangeModel());
+                bool ok = follower != nullptr;
+
+                while (ok && follower != nullptr) {
+                    //std::cout << (*j)->getID() << " " << std::endl;
+                    if (follower->myVehicle.getPositionOnLane() < myVehicle.getPositionOnLane() || myVehicle.getLane() != (follower->myVehicle).getLane()) {
+                        //SUMOVehicle *behind = (SUMOVehicle *) (const_cast<MSVehicle *>(follower));
+
+                        //MSDevice_SAL *behindSAL = static_cast<MSDevice_SAL *>(behind->getDevice(typeid(MSDevice_SAL)));
+                        MSDevice_SAL *behindSAL = follower->mySAL;
+                        if (behindSAL != 0) {
+                            SUMOVehicle *groupLeader = behindSAL->getMyGroupLeader();
+                            // if (groupLeader!= nullptr) std::cout << "GroupLeader: " << groupLeader->getID() << std::endl;
+                            // else std::cout << "Group leader: null" << std::endl;
+                            if (groupLeader == (SUMOVehicle*)&follower->myVehicle) {
+                                libsumo::TraCIPosition position = libsumo::Vehicle::getPosition(myVehicle.getID());
+                                followerDistanceInfo.addLeader((MSVehicle*)const_cast<SUMOVehicle*>(groupLeader),//&const_cast<MSVehicle&>(follower->myVehicle),
+                                                               libsumo::Vehicle::getDrivingDistance2D(groupLeader->getID(),
+                                                                                                      position.x,
+                                                                                                      position.y)-6.65, 0,
+                                                               i);
+                                break;
+                            }
+                        } else
+                            followerDistanceInfo.addLeader(copy->operator[](i).first, copy->operator[](i).second, 0,
+                                                           i); // todo: itt lesz majd a felismerő
+                    }
+                    if (follower->myFollower!=nullptr) follower = (MSLCM_SmartSL2015*) &const_cast<MSAbstractLaneChangeModel&>((follower)->myFollower->getLaneChangeModel());
+                    else follower = nullptr;
+                }
+               // copy->operator[](i).first->getLane()->releaseVehicles();
+                //jó lesz vajon így?
+                if (!ok) followerDistanceInfo.addLeader(copy->operator[](i).first, copy->operator[](i).second, 0,
+                                                        i);
+            }
+        } else followerDistanceInfo.addLeader(copy->operator[](i).first, copy->operator[](i).second, 0, i);
+            // std::cout << std::endl;
+    }
+    if (DEBUG_COND) std::cout << followerDistanceInfo.toString() << std::endl << std::endl;
 }
 
-void MSLCM_SmartSL2015::leftGroup() {
-    groupState = OUT;
+void MSLCM_SmartSL2015::setMyGroupState(GroupState myGroupState) {
+    this->myGroupState = myGroupState;
+    if (mySAL == nullptr) mySAL = static_cast<MSDevice_SAL*>(myVehicle.getDevice(typeid(MSDevice_SAL)));
+    blockerFlag = 0;
 }
 
-void MSLCM_SmartSL2015::hasToChange(int result, int offset) {
-    receivedResult = result;
-    receivedOffset = offset;
+SUMOVehicle* MSLCM_SmartSL2015::getMyVehicle() {
+    return (SUMOVehicle*)&myVehicle;
+}
+
+void MSLCM_SmartSL2015::setOffset(int offset) {
+    myOffset = offset;
+}
+
+void MSLCM_SmartSL2015::lineUpForCenterOfLane() {
+    libsumo::Vehicle::changeSublane(myVehicle.getID(), -myVehicle.getLateralPositionOnLane());
 }

@@ -27,7 +27,7 @@ set(microsim_devices_STAT_SRCS
    MSDevice_Bluelight.h
    MSDevice_FCD.cpp
    MSDevice_FCD.h
-        MSDevice_SAL.h MSDevice_SAL.cpp MarkerSystem/MarkerSystem.cpp MarkerSystem/MarkerSystem.h MarkerSystem/BaseMarker.cpp MarkerSystem/BaseMarker.h MarkerSystem/EntryMarker.cpp MarkerSystem/EntryMarker.h MarkerSystem/ExitMarker.cpp MarkerSystem/ExitMarker.h MessagingSystem/MessagingProxy.cpp MessagingSystem/MessagingProxy.h MessagingSystem/MessengerSystem.cpp MessagingSystem/MessengerSystem.h MessagingSystem/Messenger.cpp MessagingSystem/Messenger.h GroupingSystem/Group.cpp GroupingSystem/Group.h Others/Helper.cpp Others/Helper.h)
+        MSDevice_SAL.h MSDevice_SAL.cpp MarkerSystem/MarkerSystem.cpp MarkerSystem/MarkerSystem.h MarkerSystem/BaseMarker.cpp MarkerSystem/BaseMarker.h MarkerSystem/EntryMarker.cpp MarkerSystem/EntryMarker.h MarkerSystem/ExitMarker.cpp MarkerSystem/ExitMarker.h MessagingSystem/MessagingProxy.cpp MessagingSystem/MessagingProxy.h MessagingSystem/MessengerSystem.cpp MessagingSystem/MessengerSystem.h MessagingSystem/Messenger.cpp MessagingSystem/Messenger.h GroupingSystem/Group.cpp GroupingSystem/Group.h Others/Helper.cpp Others/Helper.h Others/LCManager.cpp Others/LCManager.h)
 
 add_library(microsim_devices STATIC ${microsim_devices_STAT_SRCS} MSDevice_SAL.h MSDevice_SAL.cpp MarkerSystem/MarkerSystem.cpp MarkerSystem/MarkerSystem.h MarkerSystem/BaseMarker.cpp MarkerSystem/BaseMarker.h MarkerSystem/EntryMarker.cpp MarkerSystem/EntryMarker.h MessagingSystem/MessagingProxy.cpp MessagingSystem/MessagingProxy.h)
 set_property(TARGET microsim_devices PROPERTY PROJECT_LABEL "z_microsim_devices")

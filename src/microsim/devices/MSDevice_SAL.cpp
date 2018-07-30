@@ -19,7 +19,6 @@
 #include <microsim/devices/MessagingSystem/MessagingProxy.h>
 #include <libsumo/VehicleType.h>
 #include <libsumo/Vehicle.h>
-#include <microsim/lcmodels/MSLCM_SmartSL2015.h>
 #include "MSDevice_Tripinfo.h"
 #include "MSDevice_SAL.h"
 
@@ -55,7 +54,7 @@ MSDevice_SAL::buildVehicleDevices(SUMOVehicle& v, std::vector<MSDevice*>& into) 
             }
 
         } else {
-            std::cout << "vehicle '" << v.getID() << "' does not supply vehicle parameter 'SAL'. Using default of " << customParameter2 << "\n";
+          //  std::cout << "vehicle '" << v.getID() << "' does not supply vehicle parameter 'SAL'. Using default of " << customParameter2 << "\n";
         }
         // get custom vType parameter
         double customParameter3 = -1;
@@ -67,7 +66,7 @@ MSDevice_SAL::buildVehicleDevices(SUMOVehicle& v, std::vector<MSDevice*>& into) 
             }
 
         } else {
-            std::cout << "vehicle '" << v.getID() << "' does not supply vType parameter 'SAL'. Using default of " << customParameter3 << "\n";
+           // std::cout << "vehicle '" << v.getID() << "' does not supply vType parameter 'SAL'. Using default of " << customParameter3 << "\n";
         }
         MSDevice_SAL* device = new MSDevice_SAL(v, "SAL_" + v.getID(),
                                                         oc.getFloat("device.SAL.parameter"),
@@ -87,19 +86,24 @@ MSDevice_SAL::MSDevice_SAL(SUMOVehicle& holder, const std::string& id,
         myCustomValue1(customValue1),
         myCustomValue2(customValue2),
         myCustomValue3(customValue3) {
-    std::cout << "initialized device '" << id << "' with myCustomValue1=" << myCustomValue1 << ", myCustomValue2=" << myCustomValue2 << ", myCustomValue3=" << myCustomValue3 << "\n";
+    //std::cout << "initialized device '" << id << "' with myCustomValue1=" << myCustomValue1 << ", myCustomValue2=" << myCustomValue2 << ", myCustomValue3=" << myCustomValue3 << "\n";
     MessengerSystem::getInstance().addNewMessengerAgent(holder.getID(), &myHolder, this);
 }
 
 
 MSDevice_SAL::~MSDevice_SAL() {
     MessengerSystem::getInstance().removeMessengerAgent(myHolder.getID());
+    delete myLCm;
 }
 
 
 bool
 MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
                              double /* newPos */, double newSpeed) {
+    if (myLCm == nullptr) {
+        myLCm = new LCManager((MSLCM_SmartSL2015*) &((MSVehicle *) (&myHolder))->getLaneChangeModel());
+    }
+    myLCm->synch();
     //std::cout << "device '" << getID() << "' notifyMove: newSpeed=" << newSpeed << "\n";
     // check whether another device is present on the vehicle:
     MSDevice_Tripinfo* otherDevice = static_cast<MSDevice_Tripinfo*>(veh.getDevice(typeid(MSDevice_Tripinfo)));
@@ -113,6 +117,23 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
     }
     if (entryMarkerFlag>=0) --entryMarkerFlag;
 
+    Group* myGroup = MessagingProxy::getInstance().getGroupOf(myHolder.getID());
+    if (myGroup != nullptr) {
+        if (myGroup->groupLeader->mySAL != this) {
+            Messenger* myLeaderMessenger = myGroup->getLeaderOf(MessagingProxy::getInstance().getMessenger(myHolder.getID()));
+            if (myLeaderMessenger == nullptr) return true;
+            SUMOVehicle* myLeader = &myLeaderMessenger->mySAL->myHolder;
+            libsumo::TraCIPosition position = libsumo::Vehicle::getPosition(myLeader->getID());
+            double deltaS = libsumo::Vehicle::getDrivingDistance2D(myHolder.getID(), position.x, position.y);
+            double desiredSpeed = myLeader->getSpeed()/(GROUP_GAP_DESIRED-GROUP_GAP_LIMIT)*(deltaS-GROUP_GAP_LIMIT);
+            if (myHolder.isSelected()) std::cout << myHolder.getID() << "has following distance of: " << deltaS << std::endl
+                        << " desired speed: " << desiredSpeed << std::endl <<
+                        " lateral position: " << myHolder.getLateralPositionOnLane() << std::endl;
+            if (desiredSpeed < myHolder.getLane()->getSpeedLimit()) setVehicleSpeed(desiredSpeed);
+            if (desiredSpeed <= 0) setVehicleSpeed(0);
+        }
+    }
+
     return true; // keep the device
 }
 
@@ -123,10 +144,15 @@ MSDevice_SAL::notifyEnter(SUMOVehicle& veh, MSMoveReminder::Notification reason,
 
     //is it a marker?
     if(MarkerSystem::isMarkerID(veh.getEdge()->getID())) {
-        if ((veh.getEdge()->getID()).compare(6,5,"Entry")==0)
+        if ((veh.getEdge()->getID()).compare(6,5,"Entry")==0) {
             entryMarkerFlag = 2;
-        else MessagingProxy::getInstance().informEnterExitMarker(veh.getID(),
-                                                                  (ExitMarker*)(MarkerSystem::getInstance().findMarkerByID(veh.getEdge()->getID())));
+           // libsumo::Vehicle::setLaneChangeMode(myHolder.getID(), 0);
+        }
+        else {
+            MessagingProxy::getInstance().informEnterExitMarker(veh.getID(),
+                                                                (ExitMarker*)(MarkerSystem::getInstance().findMarkerByID(veh.getEdge()->getID())));
+          //  libsumo::Vehicle::setLaneChangeMode(myHolder.getID(), 1621);
+        }
     }
     return true; // keep the device
 }
@@ -135,6 +161,13 @@ MSDevice_SAL::notifyEnter(SUMOVehicle& veh, MSMoveReminder::Notification reason,
 bool
 MSDevice_SAL::notifyLeave(SUMOVehicle& veh, double /*lastPos*/, MSMoveReminder::Notification reason, const MSLane* /* enteredLane */) {
     //std::cout << "device '" << getID() << "' notifyLeave: reason=" << reason << " currentEdge=" << veh.getEdge()->getID() << "\n";
+    if(MarkerSystem::isMarkerID(veh.getEdge()->getID())) {
+        if ((veh.getEdge()->getID()).compare(6, 5, "Entry") == 0) {
+            //libsumo::Vehicle::changeLaneRelative(myHolder.getID(), -1, 15000);
+            MSLCM_SmartSL2015 &lcm = (MSLCM_SmartSL2015 &) ((MSVehicle *) (&myHolder))->getLaneChangeModel();
+            //lcm.setLeftEntry(true);
+        }
+    }
     return true; // keep the device
 }
 
@@ -189,24 +222,103 @@ void MSDevice_SAL::resetVehicleColor() {
 
 void MSDevice_SAL::informBecomeLeader() {
     MSLCM_SmartSL2015 &lcm = (MSLCM_SmartSL2015&)((MSVehicle*)(&myHolder))->getLaneChangeModel();
-    lcm.becomeLeader(this);
+    //lcm.becomeLeader(this);
+    myLCm->setIsLeader();
+    isMember = false;
 }
 
 void MSDevice_SAL::informNoLongerLeader() {
     MSLCM_SmartSL2015 &lcm = (MSLCM_SmartSL2015&)((MSVehicle*)(&myHolder))->getLaneChangeModel();
-    lcm.leftGroup();
+    //lcm.leftGroup();
+    myLCm->leaveGroup();
+    followerFIFO.clear();
+    isMember = false;
 }
 
-void MSDevice_SAL::informBecomeMember() {
+void MSDevice_SAL::informBecomeMember(Group* group) {
     MSLCM_SmartSL2015 &lcm = (MSLCM_SmartSL2015&)((MSVehicle*)(&myHolder))->getLaneChangeModel();
-    lcm.becomeMember(this);
+    //lcm.becomeMember(this);
+    myLCm->setIsMember(group);
+    followerFIFO.clear();
+    isMember = true;
 }
 
-void MSDevice_SAL::laneChanged(int result, int offset) {
-    MessagingProxy::getInstance().informLaneChange(myHolder.getID(), result, offset);
+bool MSDevice_SAL::laneChanged(MSLCM_SmartSL2015 *follower, int offset) {
+    //std::cout << myHolder.getID() << "'s lc-follower: " << follower << std::endl;
+    bool isLast = MessagingProxy::getInstance().informLaneChange(myHolder.getID(), follower, offset);
+    if (isLast) myLCm -> groupChanged();
+    myLCm->changed();
+    return isLast;
 }
 
-void MSDevice_SAL::laneChangeNeeded(int result, int offset) {
-    MSLCM_SmartSL2015 *lcm = &(MSLCM_SmartSL2015&)((MSVehicle*)(&myHolder))->getLaneChangeModel();
-    if (lcm!= nullptr) lcm->hasToChange(result, offset);
+void MSDevice_SAL::laneChangeNeeded(MSLCM_SmartSL2015 *follower, int offset) {
+    //MSLCM_SmartSL2015 *lcm = &(MSLCM_SmartSL2015&)((MSVehicle*)(&myHolder))->getLaneChangeModel();
+    //if (lcm!= nullptr) lcm->hasToChange(follower, offset);
+    myLCm -> hasToChange(offset);
+    //followerFIFO.insert(followerFIFO.end(), follower);
+}
+
+SUMOVehicle* MSDevice_SAL::getMyGroupLeader() {
+    Group* group = MessagingProxy::getInstance().getGroupOf(myHolder.getID());
+    return group != nullptr? &(group->groupLeader->mySAL->myHolder): nullptr;
+}
+
+double MSDevice_SAL::getGroupLength() {
+    Group* group = MessagingProxy::getInstance().getGroupOf(myHolder.getID());
+    return group != nullptr? group->getGroupLength() : libsumo::Vehicle::getLength(myHolder.getID());
+}
+
+int MSDevice_SAL::getMemberCount() {
+    Group* group = MessagingProxy::getInstance().getGroupOf(myHolder.getID());
+    return group->getNMembers();
+}
+
+void MSDevice_SAL::setVehicleSpeed(double speed) {
+    libsumo::Vehicle::setSpeed(myHolder.getID(), speed);
+}
+
+void MSDevice_SAL::groupChanging(MSLCM_SmartSL2015 *follower) {
+    //Group* group = MessagingProxy::getInstance().getGroupOf(myHolder.getID());
+    //if (group!= nullptr) group->laneChange(follower);
+    myLCm->groupChanging(follower);
+}
+
+void MSDevice_SAL::groupChangeFinished() {
+    Group* group = MessagingProxy::getInstance().getGroupOf(myHolder.getID());
+    if (group!= nullptr) group->endLaneChange();
+}
+
+bool MSDevice_SAL::isGroupChanging() {
+    Group* group = MessagingProxy::getInstance().getGroupOf(myHolder.getID());
+    return group == nullptr? false: group->isChanging();
+}
+
+MSLCM_SmartSL2015* MSDevice_SAL::getGroupFollowerLC() {
+    Group* group = MessagingProxy::getInstance().getGroupOf(myHolder.getID());
+   // return group->getFollowerLeader();
+}
+
+void MSDevice_SAL::informStoppedToContinue(MSLCM_SmartSL2015 *stopped) {
+    //stopped->informContinue();
+    std::cout << myHolder.getID() << "'s followerFifo is: ";
+    if (followerFIFO.size() != 0) {
+        std::cout << followerFIFO[0] << std::endl;
+        //followerFIFO[0]->informContinue();
+        followerFIFO.erase(followerFIFO.begin());
+    }
+}
+
+void MSDevice_SAL::addFollower(MSLCM_SmartSL2015 *follower) {
+    std::cout << myHolder.getID() << " follower added: " << follower << std::endl;
+    followerFIFO.insert(followerFIFO.end(), follower);
+}
+
+void MSDevice_SAL::amBlocker(MSLCM_SmartSL2015 *blocker, MSLCM_SmartSL2015 *leader) {
+    Group* group = MessagingProxy::getInstance().getGroupOf(leader->getMyVehicle()->getID());
+    if (group != nullptr) group->laneChange(blocker);
+    else {
+        MSDevice_SAL* otherDevice = static_cast<MSDevice_SAL*>(leader->getMyVehicle()->getDevice(typeid(MSDevice_SAL)));
+        otherDevice->myLCm->groupChanging(blocker);
+    }
+    myLCm->blocker(blocker);
 }

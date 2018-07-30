@@ -22,11 +22,20 @@ void MessagingProxy::informEnterExitMarker(const std::string &messengerID, ExitM
     MessengerSystem::getInstance().messengerMap[messengerID]->leaveGroup();
 }
 
-void MessagingProxy::informLaneChange(const std::string &messengerID, int result, int offset) {
+bool MessagingProxy::informLaneChange(const std::string &messengerID, MSLCM_SmartSL2015 *followerLCM, int offset) {
     Group* destGroup = MessengerSystem::getInstance().messengerMap[messengerID]->
             getGroup();
     if (destGroup == nullptr)
-        return;
+        return false;
     Messenger* follower = destGroup->getFollowerOf(MessengerSystem::getInstance().messengerMap[messengerID]);
-    if (follower!= nullptr) follower->needToChangeLane(result, offset);
+    if (follower!= nullptr) follower->needToChangeLane(followerLCM, offset);
+    return follower == nullptr;
+}
+
+Group* MessagingProxy::getGroupOf(const std::string &messengerID) {
+    return MessengerSystem::getInstance().messengerMap[messengerID]->getGroup();
+}
+
+Messenger* MessagingProxy::getMessenger(const std::string &messengerID) {
+    return MessengerSystem::getInstance().messengerMap[messengerID];
 }
