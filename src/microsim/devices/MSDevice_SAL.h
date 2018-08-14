@@ -14,8 +14,9 @@
 #include <utils/common/SUMOTime.h>
 #include <libsumo/TraCIDefs.h>
 #include <microsim/devices/Others/LCManager.h>
+#include <microsim/devices/Judge/AbstractJudge.h>
 #include "GroupingSystem/Group.h"
-#include "Others/LCManager.h"
+
 
 
 #define GROUP_GAP_DESIRED 10
@@ -28,6 +29,7 @@
 class SUMOVehicle;
 class MSLCM_SmartSL2015;
 class LCManager;
+class AbstractJudge;
 
 
 // ===========================================================================
@@ -148,10 +150,13 @@ public:
     void informStoppedToContinue(MSLCM_SmartSL2015* stopped);
     void addFollower(MSLCM_SmartSL2015* follower);
     void amBlocker(MSLCM_SmartSL2015* blocker, MSLCM_SmartSL2015* leader);
+    std::string myDirection;
 
 private:
-    bool isMember = false;
+    bool isMember = false, passPermitted = false,
+         reported = false, inJunction = false;
     LCManager* myLCm = nullptr;
+    AbstractJudge* myJudge = nullptr;
     std::vector<MSLCM_SmartSL2015*> followerFIFO;
 
 private:

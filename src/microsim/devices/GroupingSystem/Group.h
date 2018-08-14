@@ -12,6 +12,7 @@
 #include <microsim/lcmodels/MSLCM_SmartSL2015.h>
 
 class Messenger;
+class MSLCM_SmartSL2015;
 
 class Group {
     int nMembers, totalMembers = 0;
@@ -42,6 +43,8 @@ public:
     int getNMembers() const;
 
     void laneChange(MSLCM_SmartSL2015* follower);
+
+    Messenger** getMembers();
 };
 
 

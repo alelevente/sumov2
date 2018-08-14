@@ -32,6 +32,8 @@ void Messenger::joinAGroup(EntryMarker &entryMarker) {
             myExitMarker = *i;
         }
     }
+    mySAL->myDirection = mySAL->myDirection + "-"+myExitMarker->getMarkerID();
+    std::cout << mySAL->myDirection << std::endl;
 
     //we can join:
     if (other != nullptr) {

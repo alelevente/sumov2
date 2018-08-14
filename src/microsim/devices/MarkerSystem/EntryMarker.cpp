@@ -55,6 +55,10 @@ EntryMarker::EntryMarker(std::string markerID, MSEdge *position, const std::map<
     delete myJudge;
 }*/
 
-/*Judge* EntryMarker::getJudge(){
+AbstractJudge* EntryMarker::getJudge(){
     return myJudge;
-}*/
+}
+
+void EntryMarker::setJudge(AbstractJudge *judge) {
+    myJudge = judge;
+}

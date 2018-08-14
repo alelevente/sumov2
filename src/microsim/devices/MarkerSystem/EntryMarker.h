@@ -5,10 +5,13 @@
 #ifndef SUMO_ENTRYMARKER_H
 #define SUMO_ENTRYMARKER_H
 
+#include <microsim/devices/Judge/AbstractJudge.h>
 #include "BaseMarker.h"
 #include "ExitMarker.h"
-//#include "microsim/devices/Judge/Judge.h"
+#include "microsim/devices/Judge/AbstractJudge.h"
 #include "MarkerSystem.h"
+
+class AbstractJudge;
 
 struct EntryMarkerAnswer{
 //    Judge* judge;
@@ -23,10 +26,11 @@ public:
     void* onEnter(SUMOVehicle* who);
     void* onExit(SUMOVehicle* who);
     std::vector<ExitMarker*> exitMarkers;
-//    Judge* getJudge();
+    AbstractJudge* getJudge();
+    void setJudge(AbstractJudge* judge);
 
 private:
-//    Judge *myJudge;
+    AbstractJudge *myJudge;
 };
 
 #endif //SUMO_ENTRYMARKER_H

@@ -122,3 +122,7 @@ void Group::laneChange(MSLCM_SmartSL2015 *follower) {
         members[i]->mySAL->groupChanging(follower);
     }
 }
+
+Messenger** Group::getMembers() {
+    return members;
+}

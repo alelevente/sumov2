@@ -114,11 +114,15 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
     if (entryMarkerFlag == 0 && veh.getEdge()->getID().length()>11 && (veh.getEdge()->getID()).compare(6,5,"Entry")==0) {
         MessagingProxy::getInstance().informEnterEntryMarker(veh.getID(),
                                                              (EntryMarker*)(MarkerSystem::getInstance().findMarkerByID(veh.getEdge()->getID())));
+        myJudge = ((EntryMarker*)(MarkerSystem::getInstance().findMarkerByID(veh.getEdge()->getID())))->getJudge();
+        myJudge->reportComing(MessagingProxy::getInstance().getGroupOf(myHolder.getID()), myDirection);
+        reported = true;
     }
     if (entryMarkerFlag>=0) --entryMarkerFlag;
 
     Group* myGroup = MessagingProxy::getInstance().getGroupOf(myHolder.getID());
     if (myGroup != nullptr) {
+        double deltaX = libsumo::Vehicle::getDrivingDistance2D(myHolder.getID(), myJudge->posX, myJudge->posY);
         if (myGroup->groupLeader->mySAL != this) {
             Messenger* myLeaderMessenger = myGroup->getLeaderOf(MessagingProxy::getInstance().getMessenger(myHolder.getID()));
             if (myLeaderMessenger == nullptr) return true;
@@ -131,6 +135,19 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
                         " lateral position: " << myHolder.getLateralPositionOnLane() << std::endl;
             if (desiredSpeed < myHolder.getLane()->getSpeedLimit()) setVehicleSpeed(desiredSpeed);
             if (desiredSpeed <= 0) setVehicleSpeed(0);
+        } else {
+            if (!passPermitted) {
+                double desiredSpeed = myHolder.getLane()->getSpeedLimit() / (REPORT_DISTANCE - STOP_DISTANCE) * deltaX;
+                if (desiredSpeed < myHolder.getLane()->getSpeedLimit()) setVehicleSpeed(desiredSpeed);
+                if (desiredSpeed <= 0) setVehicleSpeed(0);
+                if (reported) passPermitted = myJudge->canPass(this);
+            } else {
+                setVehicleSpeed(-1);
+            }
+        }
+        if (!inJunction && deltaX < REPORT_DISTANCE) {
+            myJudge->carPassedPONR(this);
+            inJunction = true;
         }
     }
 
@@ -151,6 +168,8 @@ MSDevice_SAL::notifyEnter(SUMOVehicle& veh, MSMoveReminder::Notification reason,
         else {
             MessagingProxy::getInstance().informEnterExitMarker(veh.getID(),
                                                                 (ExitMarker*)(MarkerSystem::getInstance().findMarkerByID(veh.getEdge()->getID())));
+            myJudge->carLeftJunction(this);
+            inJunction=false;
           //  libsumo::Vehicle::setLaneChangeMode(myHolder.getID(), 1621);
         }
     }
@@ -224,6 +243,7 @@ void MSDevice_SAL::informBecomeLeader() {
     MSLCM_SmartSL2015 &lcm = (MSLCM_SmartSL2015&)((MSVehicle*)(&myHolder))->getLaneChangeModel();
     //lcm.becomeLeader(this);
     myLCm->setIsLeader();
+    passPermitted = false;
     isMember = false;
 }
 

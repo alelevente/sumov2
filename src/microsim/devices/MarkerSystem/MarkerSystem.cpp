@@ -7,6 +7,7 @@
 #include "ExitMarker.h"
 #include <microsim/MSEdgeControl.h>
 #include <string>
+#include "microsim/devices/Judge/JudgeSystem.h"
 
 
 
@@ -31,7 +32,9 @@ MarkerSystem::MarkerSystem(){
             edge = *i;
             if (str.compare(6, 5, "Entry") == 0) {
                 newMarker = new EntryMarker(str, edge, markerMap);
-
+                std::string jName = getJunctionName(str);
+                EntryMarker* myMarker = (EntryMarker*) newMarker;
+                myMarker->setJudge(JudgeSystem::getInstance().getJudgeByName(jName));
             } else if (str.compare(6,4,"Exit") == 0) {
                 newMarker = new ExitMarker(str, edge);
             }
