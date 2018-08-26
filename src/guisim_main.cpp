@@ -46,6 +46,11 @@
 #include <utils/gui/settings/GUICompleteSchemeStorage.h>
 #include <traci-server/TraCIServer.h>
 
+#ifdef XERCES_CPP_NAMESPACE
+#undef XERCES_CPP_NAMESPACE
+#endif
+#define XERCES_CPP_NAMESPACE xercesc_3_2
+
 
 // ===========================================================================
 // main function

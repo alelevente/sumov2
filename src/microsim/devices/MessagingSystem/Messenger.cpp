@@ -26,14 +26,21 @@ void Messenger::joinAGroup(EntryMarker &entryMarker) {
     std::vector<ExitMarker *> *exitMarkers = static_cast< std::vector<ExitMarker *> *>(((EntryMarkerAnswer *) entryMarker.onEnter(
             myVehicle))->exitMarkers);
     ExitMarker *exitMarker = NULL;
+    myExitMarker = nullptr;
     //actualJudge = ((EntryMarkerAnswer*)result)->judge;
     for (auto i = exitMarkers->begin(); i != exitMarkers->end(); ++i) {
         if (myVehicle->getRoute().contains((*i)->getPosition())) {
             myExitMarker = *i;
         }
     }
-    mySAL->myDirection = mySAL->myDirection + "-"+myExitMarker->getMarkerID();
-    std::cout << mySAL->myDirection << std::endl;
+    if (myExitMarker == nullptr) {
+        std::cout << "have not find at: " << entryMarker.getMarkerID() << std::endl;
+        for (auto i = myVehicle->getRoute().begin(); i != myVehicle->getRoute().end(); ++i) {
+            std::cout << "\t" << (*i)->getID() << std::endl;
+        }
+    }
+    mySAL->myDirection = entryMarker.getMarkerID()+ "-"+myExitMarker->getMarkerID();
+    //std::cout << mySAL->myDirection << std::endl;
 
     //we can join:
     if (other != nullptr) {

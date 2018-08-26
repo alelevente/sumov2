@@ -9,7 +9,7 @@
 #include <vector>
 
 #define REPORT_DISTANCE 40
-#define STOP_DISTANCE 5
+#define STOP_DISTANCE 20
 
 class MSDevice_SAL;
 class Group;

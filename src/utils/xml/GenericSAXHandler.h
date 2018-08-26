@@ -36,6 +36,11 @@
 #include <utils/common/StringBijection.h>
 #include "SUMOSAXAttributes.h"
 
+#ifdef XERCES_CPP_NAMESPACE
+#undef XERCES_CPP_NAMESPACE
+#endif
+#define XERCES_CPP_NAMESPACE xercesc_3_2
+
 
 // ===========================================================================
 // class definitions

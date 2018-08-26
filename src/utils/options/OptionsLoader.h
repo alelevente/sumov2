@@ -31,6 +31,11 @@
 #include <string>
 
 
+#ifdef XERCES_CPP_NAMESPACE
+#undef XERCES_CPP_NAMESPACE
+#endif
+#define XERCES_CPP_NAMESPACE xercesc_3_2
+
 // ===========================================================================
 // class declarations
 // ===========================================================================

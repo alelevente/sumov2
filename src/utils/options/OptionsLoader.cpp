@@ -39,6 +39,10 @@
 #include <utils/common/MsgHandler.h>
 #include <utils/common/ToString.h>
 
+#ifdef XERCES_CPP_NAMESPACE
+#undef XERCES_CPP_NAMESPACE
+#endif
+#define XERCES_CPP_NAMESPACE xercesc_3_2
 
 // ===========================================================================
 // method definitions

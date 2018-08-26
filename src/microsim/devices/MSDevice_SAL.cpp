@@ -115,14 +115,16 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
         MessagingProxy::getInstance().informEnterEntryMarker(veh.getID(),
                                                              (EntryMarker*)(MarkerSystem::getInstance().findMarkerByID(veh.getEdge()->getID())));
         myJudge = ((EntryMarker*)(MarkerSystem::getInstance().findMarkerByID(veh.getEdge()->getID())))->getJudge();
-        myJudge->reportComing(MessagingProxy::getInstance().getGroupOf(myHolder.getID()), myDirection);
+        if (!reported) myJudge->reportComing(MessagingProxy::getInstance().getGroupOf(myHolder.getID()), myDirection);
         reported = true;
     }
     if (entryMarkerFlag>=0) --entryMarkerFlag;
 
     Group* myGroup = MessagingProxy::getInstance().getGroupOf(myHolder.getID());
     if (myGroup != nullptr) {
-        double deltaX = libsumo::Vehicle::getDrivingDistance2D(myHolder.getID(), myJudge->posX, myJudge->posY);
+        double x = libsumo::Vehicle::getPosition(myHolder.getID()).x,
+            y = libsumo::Vehicle::getPosition(myHolder.getID()).y;
+        double deltaX = sqrt( pow((myJudge->posX - x),2) + pow((myJudge->posY-y),2) );
         if (myGroup->groupLeader->mySAL != this) {
             Messenger* myLeaderMessenger = myGroup->getLeaderOf(MessagingProxy::getInstance().getMessenger(myHolder.getID()));
             if (myLeaderMessenger == nullptr) return true;
@@ -136,16 +138,21 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
             if (desiredSpeed < myHolder.getLane()->getSpeedLimit()) setVehicleSpeed(desiredSpeed);
             if (desiredSpeed <= 0) setVehicleSpeed(0);
         } else {
-            if (!passPermitted) {
-                double desiredSpeed = myHolder.getLane()->getSpeedLimit() / (REPORT_DISTANCE - STOP_DISTANCE) * deltaX;
+            if (!passPermitted && !inJunction) {
+                //double desiredSpeed = myHolder.getLane()->getSpeedLimit() / (REPORT_DISTANCE - STOP_DISTANCE) * deltaX;
+                double desiredSpeed = myHolder.getLane()->getSpeedLimit() * ((deltaX - STOP_DISTANCE) / REPORT_DISTANCE);
                 if (desiredSpeed < myHolder.getLane()->getSpeedLimit()) setVehicleSpeed(desiredSpeed);
                 if (desiredSpeed <= 0) setVehicleSpeed(0);
                 if (reported) passPermitted = myJudge->canPass(this);
+                if (passPermitted) {
+                    std::cout << myHolder.getID() << " is permitted to pass" << std::endl;
+                } else if (myHolder.isSelected())
+                    std::cout << myHolder.getID() << ": "<<deltaX << "m, "<< desiredSpeed << std::endl;
             } else {
                 setVehicleSpeed(-1);
             }
         }
-        if (!inJunction && deltaX < REPORT_DISTANCE) {
+        if (!inJunction && deltaX < STOP_DISTANCE-5) {
             myJudge->carPassedPONR(this);
             inJunction = true;
         }
@@ -165,11 +172,13 @@ MSDevice_SAL::notifyEnter(SUMOVehicle& veh, MSMoveReminder::Notification reason,
             entryMarkerFlag = 2;
            // libsumo::Vehicle::setLaneChangeMode(myHolder.getID(), 0);
         }
-        else {
+        else if (inJunction){
             MessagingProxy::getInstance().informEnterExitMarker(veh.getID(),
                                                                 (ExitMarker*)(MarkerSystem::getInstance().findMarkerByID(veh.getEdge()->getID())));
+            std::cout << myHolder.getID() << "has left junction." << std::endl;
             myJudge->carLeftJunction(this);
             inJunction=false;
+            reported = false;
           //  libsumo::Vehicle::setLaneChangeMode(myHolder.getID(), 1621);
         }
     }

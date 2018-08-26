@@ -4,11 +4,13 @@
 
 #include "libsumo/Simulation.h"
 #include <fstream>
+#include <iostream>
 #include "RRJudge.h"
 
 
 
 RRJudge::RRJudge(const std::string &path) {
+    activeCC = 0;
     std::ifstream input(path,std::ifstream::in);
 
     input >> nDirs; input >> nPrograms;
@@ -26,8 +28,8 @@ RRJudge::RRJudge(const std::string &path) {
         for (int j=0; j<nDirs; ++j) {
             input >> inNum;
             pe->passeable.insert(pe->passeable.end(), (inNum == 1));
-            input >> pe->duration;
         }
+        input >> pe->duration;
         programElements.insert(programElements.end(), pe);
     }
     input.close();
@@ -41,6 +43,7 @@ RRJudge::~RRJudge() {
 }
 
 void RRJudge::changeCC() {
+    std::cout << "came in: " << cameIn << "\twent out: "<< wentOut << std::endl;
     if (cameIn == wentOut) {
         activeCC = (activeCC==nPrograms-1)? 0: activeCC+1;
         startTime =(int) libsumo::Simulation::getCurrentTime()/1000;
@@ -52,12 +55,12 @@ int RRJudge::decideCC(Group *group, const std::string &direction) {
     for (dir = 0; *directions[dir]!=direction && dir<nDirs; ++dir);
     int acc;
     for (acc=0; !programElements[acc]->passeable[dir] && acc<nPrograms; ++acc);
-    conflictClasses[dir]->joinGroup(group);
+    conflictClasses[acc]->joinGroup(group);
     return acc;
 }
 
 bool RRJudge::canPass(MSDevice_SAL *who) {
     int now = (int) libsumo::Simulation::getCurrentTime() / 1000;
-    if (startTime-now > programElements[activeCC]->duration) changeCC();
+    if (now - startTime > programElements[activeCC]->duration) changeCC();
     return conflictClasses[activeCC]->hasVehicle(who);
 }

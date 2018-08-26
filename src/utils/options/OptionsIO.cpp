@@ -41,6 +41,11 @@
 #include <utils/common/MsgHandler.h>
 #include <utils/common/TplConvert.h>
 
+#ifdef XERCES_CPP_NAMESPACE
+    #undef XERCES_CPP_NAMESPACE
+#endif
+#define XERCES_CPP_NAMESPACE xercesc_3_2
+
 // ===========================================================================
 // static member definitions
 // ===========================================================================

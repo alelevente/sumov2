@@ -31,7 +31,7 @@ void ConflictClass::removeVehicle(MSDevice_SAL *sal) {
 
 bool ConflictClass::hasVehicle(MSDevice_SAL *vehicle) {
     auto i = myCars.begin();
-    for (i=myCars.begin(); *i != vehicle && i != myCars.end(); ++i);
+    for (i=myCars.begin(); i != myCars.end() && *i != vehicle ; ++i);
     return i != myCars.end();
 }
 
