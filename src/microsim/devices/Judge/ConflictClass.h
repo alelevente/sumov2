@@ -27,8 +27,10 @@ public:
     const libsumo::TraCIColor& getMyColor();
     virtual bool canJoinGroup(int nMembers, const std::string& inDirection, const std::string& outDirection);
     virtual void joinGroup(Group* group);
+    virtual void addVehicle(MSDevice_SAL* sal);
     virtual void removeVehicle(MSDevice_SAL* sal);
     bool hasVehicle(MSDevice_SAL* vehicle);
+    bool isEmpty();
 };
 
 

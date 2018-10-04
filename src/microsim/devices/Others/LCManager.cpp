@@ -15,6 +15,7 @@ void LCManager::setIsMember(Group* group) {
     SUMOVehicle* holder = myLC->getMyVehicle();
     MessagingProxy::getInstance().getGroupOf(holder->getID());
     libsumo::Vehicle::setLaneChangeMode(holder->getID(), 256);
+    //libsumo::Vehicle::setLaneChangeMode(holder->getID(), 0);
 
     for (auto i = group->LCFifo.begin(); i != group->LCFifo.end(); ++i) {
         LCFifo.insert(LCFifo.end(), *i);
@@ -50,7 +51,7 @@ void LCManager::groupChanging(MSLCM_SmartSL2015 *follower) {
 
 void LCManager::hasToChange(int direction) {
     //std::cout << myLC->getMyVehicle()->getID() << " has to change: " << direction << std::endl;
-    libsumo::Vehicle::changeLaneRelative(myLC->getMyVehicle()->getID(), direction, 0);
+    libsumo::Vehicle::changeLaneRelative(myLC->getMyVehicle()->getID(), direction, 2800);
     //libsumo::Vehicle::changeSublane(myLC->getMyVehicle()->getID(), direction*2.75);
     myLC->setOffset(direction);
     lastDir = direction;
@@ -69,7 +70,7 @@ void LCManager::synch() {
         if (myLC->getMyVehicle()->isSelected()) std::cout <<
                                                           myLC->getMyVehicle()->getID() <<": " << hasChanged << "/" << requestedChanges << std::endl;
         if ((hasChanged != requestedChanges) && (lastDir!=0)) {
-            libsumo::Vehicle::changeLaneRelative(myLC->getMyVehicle()->getID(), lastDir, 0);
+        // ->    libsumo::Vehicle::changeLaneRelative(myLC->getMyVehicle()->getID(), lastDir, 0);
             //libsumo::Vehicle::changeSublane(myLC->getMyVehicle()->getID(), lastDir*2.75);
           //  std::cout << myLC->getMyVehicle()->getID() << "is reset" << std::endl;
         }

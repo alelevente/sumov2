@@ -8,8 +8,9 @@
 #include <string>
 #include <vector>
 
-#define REPORT_DISTANCE 40
+#define REPORT_DISTANCE 50
 #define STOP_DISTANCE 20
+
 
 class MSDevice_SAL;
 class Group;
@@ -22,6 +23,13 @@ protected:
     virtual void changeCC() =0;
     int activeCC = -1;
     int cameIn = 0, wentOut = 0;
+    long int lastCameIn = 0;
+
+#ifdef KILLCARS
+    std::vector <std::string*> carsIn;
+#endif
+    long int lastCIChanged;
+
 
 public:
     double posX, posY;

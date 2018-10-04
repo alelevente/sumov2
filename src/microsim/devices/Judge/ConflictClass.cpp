@@ -22,11 +22,18 @@ void ConflictClass::joinGroup(Group *group) {
         myCars.insert(myCars.end(), msgs[i]->mySAL);
     }
 }
+void ConflictClass::addVehicle(MSDevice_SAL *sal) {
+    myCars.insert(myCars.end(), sal);
+    sal->setVehicleColor(myColor);
+}
 
 void ConflictClass::removeVehicle(MSDevice_SAL *sal) {
     auto i = myCars.begin();
     for (i=myCars.begin(); *i != sal && i != myCars.end(); ++i);
-    if (i != myCars.end()) myCars.erase(i);
+    if (*i == sal) {
+        *i = nullptr;
+        myCars.erase(i);
+    }
 }
 
 bool ConflictClass::hasVehicle(MSDevice_SAL *vehicle) {
@@ -41,4 +48,8 @@ bool ConflictClass::canJoinGroup(int nMembers, const std::string &inDirection, c
 
 double ConflictClass::calculatePrice() {
     return 0;
+}
+
+bool ConflictClass::isEmpty() {
+    return myCars.size() == 0;
 }

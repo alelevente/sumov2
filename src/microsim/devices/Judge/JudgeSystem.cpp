@@ -4,6 +4,7 @@
 
 #include "JudgeSystem.h"
 #include "RRJudge.h"
+#include "MDDFJudge.h"
 #include <fstream>
 
 JudgeSystem::JudgeSystem() {
@@ -22,6 +23,10 @@ JudgeSystem::JudgeSystem() {
         AbstractJudge* abstractJudge;
         if (type == "RR") {
             abstractJudge = new RRJudge(path);
+            abstractJudge->posX = posX;
+            abstractJudge->posY = posY;
+        } else if (type == "MDDF") {
+            abstractJudge = new MDDFJudge(path);
             abstractJudge->posX = posX;
             abstractJudge->posY = posY;
         }

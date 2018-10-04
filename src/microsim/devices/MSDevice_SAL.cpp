@@ -104,12 +104,13 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
         myLCm = new LCManager((MSLCM_SmartSL2015*) &((MSVehicle *) (&myHolder))->getLaneChangeModel());
     }
     myLCm->synch();
+    static MSLCM_SmartSL2015 &lcm = (MSLCM_SmartSL2015 &) ((MSVehicle *) (&myHolder))->getLaneChangeModel();
     //std::cout << "device '" << getID() << "' notifyMove: newSpeed=" << newSpeed << "\n";
     // check whether another device is present on the vehicle:
-    MSDevice_Tripinfo* otherDevice = static_cast<MSDevice_Tripinfo*>(veh.getDevice(typeid(MSDevice_Tripinfo)));
+    /*MSDevice_Tripinfo* otherDevice = static_cast<MSDevice_Tripinfo*>(veh.getDevice(typeid(MSDevice_Tripinfo)));
     if (otherDevice != 0) {
         std::cout << "  veh '" << veh.getID() << " has device '" << otherDevice->getID() << "'\n";
-    }
+    }*/
 
     if (entryMarkerFlag == 0 && veh.getEdge()->getID().length()>11 && (veh.getEdge()->getID()).compare(6,5,"Entry")==0) {
         MessagingProxy::getInstance().informEnterEntryMarker(veh.getID(),
@@ -122,8 +123,9 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
 
     Group* myGroup = MessagingProxy::getInstance().getGroupOf(myHolder.getID());
     if (myGroup != nullptr) {
-        double x = libsumo::Vehicle::getPosition(myHolder.getID()).x,
-            y = libsumo::Vehicle::getPosition(myHolder.getID()).y;
+        libsumo::TraCIPosition posi = libsumo::Vehicle::getPosition(myHolder.getID());
+        double x = posi.x,
+            y = posi.y;
         double deltaX = sqrt( pow((myJudge->posX - x),2) + pow((myJudge->posY-y),2) );
         if (myGroup->groupLeader->mySAL != this) {
             Messenger* myLeaderMessenger = myGroup->getLeaderOf(MessagingProxy::getInstance().getMessenger(myHolder.getID()));
@@ -131,25 +133,41 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
             SUMOVehicle* myLeader = &myLeaderMessenger->mySAL->myHolder;
             libsumo::TraCIPosition position = libsumo::Vehicle::getPosition(myLeader->getID());
             double deltaS = libsumo::Vehicle::getDrivingDistance2D(myHolder.getID(), position.x, position.y);
-            double desiredSpeed = myLeader->getSpeed()/(GROUP_GAP_DESIRED-GROUP_GAP_LIMIT)*(deltaS-GROUP_GAP_LIMIT);
+            //double desiredSpeed = deltaS < 50? myLeader->getSpeed()/(GROUP_GAP_DESIRED-GROUP_GAP_LIMIT)*(deltaS-GROUP_GAP_LIMIT): 20;
+            double desiredSpeed = deltaS > GROUP_GAP_DESIRED + GROUP_GAP_THRESHOLD? 25 :
+                                         deltaS > GROUP_GAP_DESIRED - GROUP_GAP_THRESHOLD?
+                                            myLeader->getSpeed()/(GROUP_GAP_DESIRED-GROUP_GAP_LIMIT)*(deltaS-GROUP_GAP_LIMIT):
+                                            0;
             if (myHolder.isSelected()) std::cout << myHolder.getID() << "has following distance of: " << deltaS << std::endl
                         << " desired speed: " << desiredSpeed << std::endl <<
-                        " lateral position: " << myHolder.getLateralPositionOnLane() << std::endl;
-            if (desiredSpeed < myHolder.getLane()->getSpeedLimit()) setVehicleSpeed(desiredSpeed);
-            if (desiredSpeed <= 0) setVehicleSpeed(0);
+                        " lateral position: " << lcm.getCommittedSpeed() << std::endl;
+
+            desiredSpeed = desiredSpeed<0? 0: desiredSpeed;
+
+
+            if (desiredSpeed < myHolder.getLane()->getSpeedLimit() && (desiredSpeed < lcm.getCommittedSpeed() || lcm.getCommittedSpeed()<0.0001)) setVehicleSpeed(desiredSpeed);
         } else {
+            if (reported) passPermitted = myJudge->canPass(this);
             if (!passPermitted && !inJunction) {
                 //double desiredSpeed = myHolder.getLane()->getSpeedLimit() / (REPORT_DISTANCE - STOP_DISTANCE) * deltaX;
                 double desiredSpeed = myHolder.getLane()->getSpeedLimit() * ((deltaX - STOP_DISTANCE) / REPORT_DISTANCE);
                 if (desiredSpeed < myHolder.getLane()->getSpeedLimit()) setVehicleSpeed(desiredSpeed);
                 if (desiredSpeed <= 0) setVehicleSpeed(0);
-                if (reported) passPermitted = myJudge->canPass(this);
                 if (passPermitted) {
                     std::cout << myHolder.getID() << " is permitted to pass" << std::endl;
                 } else if (myHolder.isSelected())
                     std::cout << myHolder.getID() << ": "<<deltaX << "m, "<< desiredSpeed << std::endl;
             } else {
-                setVehicleSpeed(-1);
+                /*if (!speedSetInJunction) {*/
+                    setVehicleSpeed(-1);
+                /*    speedSetInJunction = true;
+                    std::string myString;
+                    //libsumo::Vehicle::getStopState()
+                    if (!myHolder.hasValidRoute(myString, 0)) {
+                        if (myJudge!= nullptr) myJudge->carLeftJunction(this);
+                        libsumo::Vehicle::remove(myHolder.getID());
+                    }
+                }*/
             }
         }
         if (!inJunction && deltaX < STOP_DISTANCE-5) {
@@ -175,10 +193,11 @@ MSDevice_SAL::notifyEnter(SUMOVehicle& veh, MSMoveReminder::Notification reason,
         else if (inJunction){
             MessagingProxy::getInstance().informEnterExitMarker(veh.getID(),
                                                                 (ExitMarker*)(MarkerSystem::getInstance().findMarkerByID(veh.getEdge()->getID())));
-            std::cout << myHolder.getID() << "has left junction." << std::endl;
+            //std::cout << myHolder.getID() << "has left junction." << std::endl;
             myJudge->carLeftJunction(this);
             inJunction=false;
             reported = false;
+            speedSetInJunction = false;
           //  libsumo::Vehicle::setLaneChangeMode(myHolder.getID(), 1621);
         }
     }
@@ -240,6 +259,9 @@ MSDevice_SAL::setParameter(const std::string& key, const std::string& value) {
 }
 
 void MSDevice_SAL::setVehicleColor(const libsumo::TraCIColor &color) {
+    if (myHolder.isSelected()) {
+        std::cout << "";
+    }
     originalColor = libsumo::VehicleType::getColor(myHolder.getVehicleType().getID());
     libsumo::Vehicle::setColor(myHolder.getID(), color);
 }
@@ -254,6 +276,7 @@ void MSDevice_SAL::informBecomeLeader() {
     myLCm->setIsLeader();
     passPermitted = false;
     isMember = false;
+
 }
 
 void MSDevice_SAL::informNoLongerLeader() {
@@ -262,6 +285,7 @@ void MSDevice_SAL::informNoLongerLeader() {
     myLCm->leaveGroup();
     followerFIFO.clear();
     isMember = false;
+    inJunction = false;
 }
 
 void MSDevice_SAL::informBecomeMember(Group* group) {
@@ -350,4 +374,8 @@ void MSDevice_SAL::amBlocker(MSLCM_SmartSL2015 *blocker, MSLCM_SmartSL2015 *lead
         otherDevice->myLCm->groupChanging(blocker);
     }
     myLCm->blocker(blocker);
+}
+
+SUMOVehicle* MSDevice_SAL::getVehicle() {
+    return &myHolder;
 }

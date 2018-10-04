@@ -19,8 +19,9 @@
 
 
 
-#define GROUP_GAP_DESIRED 10
-#define GROUP_GAP_LIMIT 8
+#define GROUP_GAP_DESIRED 12
+#define GROUP_GAP_THRESHOLD 3
+#define GROUP_GAP_LIMIT 7
 
 
 // ===========================================================================
@@ -145,6 +146,7 @@ public:
     bool isGroupChanging();
     MSLCM_SmartSL2015* getGroupFollowerLC();
     SUMOVehicle* getMyGroupLeader();
+    SUMOVehicle* getVehicle();
     double getGroupLength();
     int getMemberCount();
     void informStoppedToContinue(MSLCM_SmartSL2015* stopped);
@@ -154,7 +156,8 @@ public:
 
 private:
     bool isMember = false, passPermitted = false,
-         reported = false, inJunction = false;
+         reported = false, inJunction = false,
+         speedSetInJunction = false;
     LCManager* myLCm = nullptr;
     AbstractJudge* myJudge = nullptr;
     std::vector<MSLCM_SmartSL2015*> followerFIFO;

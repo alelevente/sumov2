@@ -88,18 +88,18 @@
 // Debug flags
 // ===========================================================================
 //#define DEBUG_ACTIONSTEPS
-//#define DEBUG_STATE
+#define DEBUG_STATE
 //#define DEBUG_SURROUNDING
 //#define DEBUG_MANEUVER
 //#define DEBUG_PATCHSPEED
-#define DEBUG_INFORM
+//#define DEBUG_INFORM
 //#define DEBUG_ROUNDABOUTS
 //#define DEBUG_WANTSCHANGE
 //#define DEBUG_COOPERATE
 //#define DEBUG_SLOWDOWN
 //#define DEBUG_SAVE_BLOCKER_LENGTH
 //#define DEBUG_BLOCKING
-#define DEBUG_TRACI
+//#define DEBUG_TRACI
 //#define DEBUG_STRATEGIC_CHANGE
 //#define DEBUG_KEEP_LATGAP
 //#define DEBUG_EXPECTED_SLSPEED
@@ -186,12 +186,23 @@ MSLCM_SmartSL2015::wantsChangeSublane(
         double& latDist, double& maneuverDist, int& blocked) {
 
     if (laneOffset == 0) myFollower = const_cast<MSVehicle*>(followers[1].first);
+    if (myOwnState & LCA_BLOCKED) std::cerr << myVehicle.getID() << std::endl;
+
+    MSLeaderDistanceInfo leaders2 = leaders;
+    MSLeaderDistanceInfo neighLeaders2 = neighLeaders;
 
     if (myGroupState == LEADER) {
         smartLeaderDistance(const_cast<MSLeaderDistanceInfo&>(leaders));
         smartFollowerDistance(const_cast<MSLeaderDistanceInfo&>(followers));
         smartLeaderDistance(const_cast<MSLeaderDistanceInfo&>(neighLeaders));
         smartFollowerDistance(const_cast<MSLeaderDistanceInfo&>(neighFollowers));
+    } else if (myGroupState == MEMBER) {
+        if (myVehicle.isSelected()) std::cout << "changeing leaders for a MEMBER" << std::endl;
+        const MSLane* dummy = myVehicle.getLane();
+        leaders2.clear();
+        neighLeaders2.clear();
+        //leaders2 = MSLeaderDistanceInfo(std::make_pair((MSVehicle*)0, -1), dummy);
+        //neighLeaders2 = MSLeaderDistanceInfo(std::make_pair((MSVehicle*)0, -1), dummy);
     }
 
     gDebugFlag2 = DEBUG_COND;
@@ -211,12 +222,19 @@ MSLCM_SmartSL2015::wantsChangeSublane(
     }
 #endif
 
-    int result = _wantsChangeSublane(laneOffset,
+    int result;
+    if (myGroupState != MEMBER) result = _wantsChangeSublane(laneOffset,
                                      alternatives,
                                      leaders, followers, blockers,
                                      neighLeaders, neighFollowers, neighBlockers,
                                      neighLane, preb,
                                      lastBlocked, firstBlocked, latDist, maneuverDist, blocked);
+    else result = _wantsChangeSublane(laneOffset,
+                                      alternatives,
+                                      leaders2, followers, blockers,
+                                      neighLeaders2, neighFollowers, neighBlockers,
+                                      neighLane, preb,
+                                      lastBlocked, firstBlocked, latDist, maneuverDist, blocked);
 
     result = keepLatGap(result, leaders, followers, blockers,
                         neighLeaders, neighFollowers, neighBlockers,
@@ -3349,6 +3367,10 @@ MSLCM_SmartSL2015::wantsChange(
         smartFollowerDistance(followers);
         smartLeaderDistance(neighLeaders);
         smartFollowerDistance(neighFollowers);
+    } else if (myGroupState == MEMBER) {
+        if (myVehicle.isSelected()) std::cout << "changeing leaders for a MEMBER" << std::endl;
+        leaders = MSLeaderDistanceInfo(std::make_pair((MSVehicle*)0, -1), dummy);
+        neighLeaders = MSLeaderDistanceInfo(std::make_pair((MSVehicle*)0, -1), dummy);
     }
 
     double maneuverDist;
@@ -3434,11 +3456,21 @@ void MSLCM_SmartSL2015::smartLeaderDistance(MSLeaderDistanceInfo &leaderDistance
 
 void MSLCM_SmartSL2015::smartFollowerDistance(MSLeaderDistanceInfo &followerDistanceInfo) {
     if (DEBUG_COND) std::cout << myVehicle.getID() << " changes followers " << followerDistanceInfo.toString() << " into:" << std::endl;
+
     MSLeaderDistanceInfo* copy = new MSLeaderDistanceInfo(followerDistanceInfo);
     followerDistanceInfo.clear();
 
     for (int i=0; i<copy->numSublanes(); ++i){
+
+
         if (copy->operator[](i).first != nullptr) {
+            //if outside of grouping system, then do not bother him:
+            MSLCM_SmartSL2015* follower = (MSLCM_SmartSL2015*) &const_cast<MSAbstractLaneChangeModel&>((copy->operator[](i).first)->getLaneChangeModel());
+            if (follower->myGroupState != MEMBER || follower->myGroupState != LEADER) {
+                followerDistanceInfo.addLeader(copy->operator[](i).first, copy->operator[](i).second, 0, i);
+                continue;
+            }
+
             if (copy->operator[](i).second < 0) {
                 SUMOVehicle *behind = (SUMOVehicle *) (const_cast<MSVehicle *>(copy->operator[](i).first));
 
@@ -3451,7 +3483,7 @@ void MSLCM_SmartSL2015::smartFollowerDistance(MSLeaderDistanceInfo &followerDist
                     }
                 } else; //jelzés kellene
             } else {
-                MSLCM_SmartSL2015* follower = (MSLCM_SmartSL2015*) &const_cast<MSAbstractLaneChangeModel&>((copy->operator[](i).first)->getLaneChangeModel());
+
                 bool ok = follower != nullptr;
 
                 while (ok && follower != nullptr) {
@@ -3465,7 +3497,7 @@ void MSLCM_SmartSL2015::smartFollowerDistance(MSLeaderDistanceInfo &followerDist
                             SUMOVehicle *groupLeader = behindSAL->getMyGroupLeader();
                             // if (groupLeader!= nullptr) std::cout << "GroupLeader: " << groupLeader->getID() << std::endl;
                             // else std::cout << "Group leader: null" << std::endl;
-                            if (groupLeader == (SUMOVehicle*)&follower->myVehicle) {
+                            if (groupLeader == (SUMOVehicle*)&(follower->myVehicle)) {
                                 libsumo::TraCIPosition position = libsumo::Vehicle::getPosition(myVehicle.getID());
                                 followerDistanceInfo.addLeader((MSVehicle*)const_cast<SUMOVehicle*>(groupLeader),//&const_cast<MSVehicle&>(follower->myVehicle),
                                                                libsumo::Vehicle::getDrivingDistance2D(groupLeader->getID(),

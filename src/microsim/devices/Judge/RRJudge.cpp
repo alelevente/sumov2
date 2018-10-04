@@ -43,10 +43,20 @@ RRJudge::~RRJudge() {
 }
 
 void RRJudge::changeCC() {
-    std::cout << "came in: " << cameIn << "\twent out: "<< wentOut << std::endl;
+    //std::cout << *directions[0] << " came in: " << cameIn << "\twent out: "<< wentOut << " " << conflictClasses[activeCC] -> isEmpty() <<std::endl;
+
     if (cameIn == wentOut) {
-        activeCC = (activeCC==nPrograms-1)? 0: activeCC+1;
-        startTime =(int) libsumo::Simulation::getCurrentTime()/1000;
+        int currentTime = (int) libsumo::Simulation::getCurrentTime()/1000;
+        int kor = activeCC;
+        if (currentTime-startTime > programElements[activeCC]->duration
+                || conflictClasses[activeCC]->isEmpty() || currentTime - lastCameIn > 4) {
+            do {
+                activeCC = (activeCC == nPrograms - 1) ? 0 : activeCC + 1;
+            } while (conflictClasses[activeCC]->isEmpty() && activeCC != kor);
+            startTime = currentTime;
+            lastCameIn = currentTime;
+            std::cout << *directions[0] << std::endl;
+        }
     }
 }
 
@@ -61,6 +71,7 @@ int RRJudge::decideCC(Group *group, const std::string &direction) {
 
 bool RRJudge::canPass(MSDevice_SAL *who) {
     int now = (int) libsumo::Simulation::getCurrentTime() / 1000;
-    if (now - startTime > programElements[activeCC]->duration) changeCC();
+    if (now - startTime > programElements[activeCC]->duration
+            || now-lastCameIn > 3) changeCC();
     return conflictClasses[activeCC]->hasVehicle(who);
 }

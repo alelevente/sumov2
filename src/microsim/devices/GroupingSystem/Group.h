@@ -10,6 +10,7 @@
 #include <string>
 #include <libsumo/TraCIDefs.h>
 #include <microsim/lcmodels/MSLCM_SmartSL2015.h>
+#include <microsim/devices/Judge/ConflictClass.h>
 
 class Messenger;
 class MSLCM_SmartSL2015;
@@ -20,6 +21,7 @@ class Group {
     libsumo::TraCIColor myColor;
     void finishGroup();
     bool laneChangeInAction = false;
+    ConflictClass* myCC = nullptr;
    // MSLCM_SmartSL2015* followerLeader = nullptr;
 public:
     //MSLCM_SmartSL2015 *getFollowerLeader() const;
@@ -30,6 +32,7 @@ public:
     std::string direction;
     Messenger* groupLeader;
     bool canJoin;
+    void setMyCC (ConflictClass* cc);
     void addNewMember(Messenger* member);
     void removeFirstCar();
     Messenger* getFollowerOf(Messenger* who);

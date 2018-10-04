@@ -56,7 +56,7 @@ set(microsim_devices_STAT_SRCS
         MarkerSystem/EntryMarker.cpp
         MarkerSystem/EntryMarker.h
         MarkerSystem/ExitMarker.cpp
-        MarkerSystem/ExitMarker.h)
+        MarkerSystem/ExitMarker.h Judge/MDDFJudge.cpp Judge/MDDFJudge.h Judge/MDDFConflictClass.cpp Judge/MDDFConflictClass.h)
 
 add_library(microsim_devices STATIC ${microsim_devices_STAT_SRCS} MSDevice_SAL.h MSDevice_SAL.cpp MarkerSystem/MarkerSystem.cpp MarkerSystem/MarkerSystem.h MarkerSystem/BaseMarker.cpp MarkerSystem/BaseMarker.h MarkerSystem/EntryMarker.cpp MarkerSystem/EntryMarker.h MessagingSystem/MessagingProxy.cpp MessagingSystem/MessagingProxy.h)
 set_property(TARGET microsim_devices PROPERTY PROJECT_LABEL "z_microsim_devices")

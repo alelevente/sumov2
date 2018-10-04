@@ -26,16 +26,24 @@ Group::Group(Messenger *leader):
 Group::~Group() {
 }
 
+void Group::setMyCC(ConflictClass *cc) {
+    myCC = cc;
+}
+
 void Group::addNewMember(Messenger *member) {
     if (!canJoin) {
         std::cerr << "addNewMember function: out of bounds exception." << std::endl;
         throw OutOfBoundsException();
+    }
+    if (member->myVehicle->isSelected()){
+        std::cout << std::endl;
     }
     members[nMembers++] = member;
     ++totalMembers;
     if (totalMembers >= maxMembers) canJoin = false;
     member->mySAL->setVehicleColor(myColor);
     members[nMembers-1]->mySAL->informBecomeMember(this);
+    if (myCC != nullptr) myCC->addVehicle(member->mySAL);
     //if (followerLeader!= nullptr) members[nMembers-1]->mySAL->addFollower(followerLeader);
 }
 
