@@ -11,6 +11,7 @@
 
 
 #define MAX_CC_MEMBERS 10
+#define IN_DANGER 35
 
 class MSDevice_SAL;
 class Group;
@@ -31,6 +32,7 @@ public:
     virtual void removeVehicle(MSDevice_SAL* sal);
     bool hasVehicle(MSDevice_SAL* vehicle);
     bool isEmpty();
+    bool isThereCarInDanger(double x, double y);
 };
 
 

@@ -16,9 +16,11 @@ void LCManager::setIsMember(Group* group) {
     MessagingProxy::getInstance().getGroupOf(holder->getID());
     libsumo::Vehicle::setLaneChangeMode(holder->getID(), 256);
     //libsumo::Vehicle::setLaneChangeMode(holder->getID(), 0);
+    auto carId = group->carIDs.begin();
 
     for (auto i = group->LCFifo.begin(); i != group->LCFifo.end(); ++i) {
         LCFifo.insert(LCFifo.end(), *i);
+        carIDs.insert(carIDs.end(), *(carId++));
     }
 }
 
@@ -46,7 +48,10 @@ void LCManager::leaveGroup() {
 void LCManager::groupChanging(MSLCM_SmartSL2015 *follower) {
     bool benne = false;
     for (auto i = LCFifo.begin(); i != LCFifo.end(); ++i) if ((*i) == follower) benne = true;
-    if (!benne) LCFifo.insert(LCFifo.end(), follower);
+    if (!benne) {
+        LCFifo.insert(LCFifo.end(), follower);
+        carIDs.insert(carIDs.end(), new std::string(follower->getMyVehicle()->getID()));
+    }
 }
 
 void LCManager::hasToChange(int direction) {
@@ -80,8 +85,19 @@ void LCManager::synch() {
 
 
 void LCManager::groupChanged() {
-    if (LCFifo.size() != 0) {
-        //std::cout << myLC->getMyVehicle()->getID() << " has FIFO of: ";
+    if (LCFifo.size() != 0 && carIDs.size() != 0) {
+        std::vector<std::string> ids = libsumo::Vehicle::getIDList();
+        bool benne = false;
+        for (auto x: ids) {
+            if (x == *carIDs[0]) benne = true;
+        }
+        if (!benne) {
+            LCFifo.erase(LCFifo.begin());
+            delete *carIDs.begin();
+            carIDs.erase(carIDs.begin());
+            return;
+        }
+        std::cout << myLC->getMyVehicle()->getID() << " has FIFO of: ";
         // for (auto i = LCFifo.begin(); i != LCFifo.end(); ++i)
          //   std::cout << (*i)->getMyVehicle()->getID();
         //std::cout << std::endl;
@@ -91,6 +107,8 @@ void LCManager::groupChanged() {
         //libsumo::Vehicle::changeLaneRelative(ID, 0, 1);
         std::cout << ID << ": may continue" << std::endl;
         LCFifo.erase(LCFifo.begin());
+        delete *carIDs.begin();
+        carIDs.erase(carIDs.begin());
     }
 }
 

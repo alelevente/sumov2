@@ -14,7 +14,7 @@ MessagingProxy& MessagingProxy::getInstance() {
 }
 
 void MessagingProxy::informEnterEntryMarker(const std::string &messengerID, EntryMarker *entryMarker) {
-    std::string junctionName = MarkerSystem::getJunctionName(entryMarker->getMarkerID());
+    std::string junctionName = MarkerSystem::getInstance().getJunctionName(entryMarker->getMarkerID());
     MessengerSystem::getInstance().messengerMap[messengerID]->joinAGroup(*entryMarker);
 }
 

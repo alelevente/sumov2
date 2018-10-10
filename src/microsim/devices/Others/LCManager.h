@@ -16,6 +16,7 @@ class Group;
 class LCManager {
     MSLCM_SmartSL2015* letUsIn = nullptr, *myLC;
     std::vector<MSLCM_SmartSL2015*> LCFifo;
+    std::vector<std::string*> carIDs;
     int lastDir = 0, hasChanged = 0, requestedChanges = 0;
     SUMOTime  lastChange = 0;
 public:

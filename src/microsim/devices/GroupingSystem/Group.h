@@ -26,6 +26,7 @@ class Group {
 public:
     //MSLCM_SmartSL2015 *getFollowerLeader() const;
     std::vector<MSLCM_SmartSL2015*> LCFifo;
+    std::vector<std::string*> carIDs;
 public:
     Group(Messenger* leader);
     ~Group();

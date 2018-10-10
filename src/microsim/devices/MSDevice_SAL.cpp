@@ -6,7 +6,7 @@
 // included modules
 // ===========================================================================
 #include <config.h>
-
+#include <string>
 #include <utils/common/TplConvert.h>
 #include <utils/options/OptionsCont.h>
 #include <utils/iodevices/OutputDevice.h>
@@ -22,6 +22,7 @@
 #include "MSDevice_Tripinfo.h"
 #include "MSDevice_SAL.h"
 
+#include "microsim/devices/MarkerSystem/MarkerSystem.h"
 
 // ===========================================================================
 // method definitions
@@ -158,21 +159,32 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
                 } else if (myHolder.isSelected())
                     std::cout << myHolder.getID() << ": "<<deltaX << "m, "<< desiredSpeed << std::endl;
             } else {
-                /*if (!speedSetInJunction) {*/
-                    setVehicleSpeed(-1);
-                /*    speedSetInJunction = true;
-                    std::string myString;
+                //if (!speedSetInJunction) {
+                    if (!(lcm.getOwnState() & LCA_STAY)) setVehicleSpeed(20); else {
+                        if (myHolder.isSelected()) std::cout << "OKÉ" << std::endl;
+                        if (!speedSetInJunction) {
+                            speedSetInJunction = true;
+                            setVehicleSpeed(-1);
+                        }
+                    }
+
+                    if (myHolder.isSelected()) std::cout << myHolder.getID() << "make full speed "<<
+                                                         lcm.getCommittedSpeed() << std::endl;
+                //    speedSetInJunction = true;
+                /*    std::string myString;
                     //libsumo::Vehicle::getStopState()
                     if (!myHolder.hasValidRoute(myString, 0)) {
                         if (myJudge!= nullptr) myJudge->carLeftJunction(this);
                         libsumo::Vehicle::remove(myHolder.getID());
-                    }
-                }*/
+                    }*/
+                //}
             }
         }
         if (!inJunction && deltaX < STOP_DISTANCE-5) {
+            if (myHolder.isSelected()) std::cout << myHolder.getID() << "has passed PONR." << std::endl;
             myJudge->carPassedPONR(this);
             inJunction = true;
+            speedSetInJunction = false;
         }
     }
 
@@ -185,7 +197,7 @@ MSDevice_SAL::notifyEnter(SUMOVehicle& veh, MSMoveReminder::Notification reason,
     //std::cout << "device '" << getID() << "' notifyEnter: reason=" << reason << " currentEdge=" << veh.getEdge()->getID() << "\n";
 
     //is it a marker?
-    if(MarkerSystem::isMarkerID(veh.getEdge()->getID())) {
+    if(MarkerSystem::getInstance().isMarkerID(veh.getEdge()->getID())) {
         if ((veh.getEdge()->getID()).compare(6,5,"Entry")==0) {
             entryMarkerFlag = 2;
            // libsumo::Vehicle::setLaneChangeMode(myHolder.getID(), 0);
@@ -208,7 +220,7 @@ MSDevice_SAL::notifyEnter(SUMOVehicle& veh, MSMoveReminder::Notification reason,
 bool
 MSDevice_SAL::notifyLeave(SUMOVehicle& veh, double /*lastPos*/, MSMoveReminder::Notification reason, const MSLane* /* enteredLane */) {
     //std::cout << "device '" << getID() << "' notifyLeave: reason=" << reason << " currentEdge=" << veh.getEdge()->getID() << "\n";
-    if(MarkerSystem::isMarkerID(veh.getEdge()->getID())) {
+    if(MarkerSystem::getInstance().isMarkerID(veh.getEdge()->getID())) {
         if ((veh.getEdge()->getID()).compare(6, 5, "Entry") == 0) {
             //libsumo::Vehicle::changeLaneRelative(myHolder.getID(), -1, 15000);
             MSLCM_SmartSL2015 &lcm = (MSLCM_SmartSL2015 &) ((MSVehicle *) (&myHolder))->getLaneChangeModel();
@@ -299,7 +311,11 @@ void MSDevice_SAL::informBecomeMember(Group* group) {
 bool MSDevice_SAL::laneChanged(MSLCM_SmartSL2015 *follower, int offset) {
     //std::cout << myHolder.getID() << "'s lc-follower: " << follower << std::endl;
     bool isLast = MessagingProxy::getInstance().informLaneChange(myHolder.getID(), follower, offset);
-    if (isLast) myLCm -> groupChanged();
+    if (isLast) {
+        myLCm -> groupChanged();
+        Group* group = MessagingProxy::getInstance().getGroupOf(myHolder.getID());
+        if (group->carIDs.size()!=0) group->carIDs.erase(group->carIDs.begin());
+    }
     myLCm->changed();
     return isLast;
 }

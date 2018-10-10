@@ -18,7 +18,6 @@
 #include "GroupingSystem/Group.h"
 
 
-
 #define GROUP_GAP_DESIRED 12
 #define GROUP_GAP_THRESHOLD 3
 #define GROUP_GAP_LIMIT 7

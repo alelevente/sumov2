@@ -2,8 +2,10 @@
 // Created by levente on 2018.07.31..
 //
 
+
 #include "ConflictClass.h"
 #include "microsim/devices/MessagingSystem/Messenger.h"
+#include <libsumo/Vehicle.h>
 
 ConflictClass::ConflictClass() {
     myColor.a = 255;
@@ -18,18 +20,26 @@ const libsumo::TraCIColor& ConflictClass::getMyColor() {
 
 void ConflictClass::joinGroup(Group *group) {
     Messenger** msgs = group->getMembers();
+   // std::cout << "Group join: ";
     for (int i=0; i<group->getNMembers(); ++i) {
-        myCars.insert(myCars.end(), msgs[i]->mySAL);
+        //myCars.insert(myCars.end(), msgs[i]->mySAL);
+        //std::cout << msgs[i]->mySAL->getID() << " ";
+        addVehicle(msgs[i]->mySAL);
     }
+   // std::cout << std::endl;
 }
 void ConflictClass::addVehicle(MSDevice_SAL *sal) {
-    myCars.insert(myCars.end(), sal);
-    sal->setVehicleColor(myColor);
+    if (!hasVehicle(sal)) {
+        myCars.insert(myCars.end(), sal);
+        //std::cout << "Single car join: " << sal->getID();
+        sal->setVehicleColor(myColor);
+    }
 }
 
 void ConflictClass::removeVehicle(MSDevice_SAL *sal) {
     auto i = myCars.begin();
-    for (i=myCars.begin(); *i != sal && i != myCars.end(); ++i);
+    //for (i=myCars.begin(); *i != sal && i != myCars.end(); ++i);
+    while (*i != sal && i != myCars.end()) ++i;
     if (*i == sal) {
         *i = nullptr;
         myCars.erase(i);
@@ -52,4 +62,12 @@ double ConflictClass::calculatePrice() {
 
 bool ConflictClass::isEmpty() {
     return myCars.size() == 0;
+}
+
+bool ConflictClass::isThereCarInDanger(double x, double y) {
+    for (auto i: myCars) {
+        if (libsumo::Vehicle::getDrivingDistance2D((*i).getHolder().getID(), x, y) < IN_DANGER &&
+                i->getHolder().getSpeed()>5) return true;
+    }
+    return false;
 }

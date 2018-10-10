@@ -125,7 +125,10 @@ bool Group::isChanging() {
 void Group::laneChange(MSLCM_SmartSL2015 *follower) {
     bool benne = false;
     for (auto i = LCFifo.begin(); i != LCFifo.end(); ++i) if ((*i) == follower) benne = true;
-    if (!benne) LCFifo.insert(LCFifo.end(), follower);
+    if (!benne){
+        LCFifo.insert(LCFifo.end(), follower);
+        carIDs.insert(carIDs.end(), new std::string(follower->getMyVehicle()->getID()));
+    }
     for (int i=0; i<nMembers; ++i) {
         members[i]->mySAL->groupChanging(follower);
     }

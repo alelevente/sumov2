@@ -27,6 +27,10 @@ class RRJudge: public AbstractJudge {
 
     virtual void changeCC();
 
+protected:
+    bool yellow = false;
+    int nextActiveCC = 0, flaggedAt = 0;
+
 public:
     RRJudge(const std::string& path);
     ~RRJudge();

@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <string>
+#include <map>
 #include "BaseMarker.h"
 #include "ExitMarker.h"
 
@@ -22,9 +23,9 @@ class MarkerSystem{
 public:
     static MarkerSystem& getInstance();
     BaseMarker* findMarkerByID(const std::string& ID);
-    static inline bool isMarkerID(const std::string& ID);
+    bool isMarkerID(const std::string& ID);
     static inline bool isEntryMarker(const std::string& ID);
-    static inline std::string getJunctionName(const std::string& ID);
+    std::string getJunctionName(const std::string& ID);
     const std::map<std::string, BaseMarker*>& getMarkerMap();
 };
 
