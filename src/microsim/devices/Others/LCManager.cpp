@@ -26,6 +26,7 @@ void LCManager::setIsMember(Group* group) {
 
 void LCManager::setIsLeader() {
     myLC->setMyGroupState(LEADER);
+    //libsumo::Vehicle::changeLaneRelative(myLC->getMyVehicle()->getID(), 0, 0);
     libsumo::Vehicle::setLaneChangeMode(myLC->getMyVehicle()->getID(), 1621);
     libsumo::Vehicle::setSpeed(myLC->getMyVehicle()->getID(), -1);
     requestedChanges = 0;
@@ -66,6 +67,7 @@ void LCManager::hasToChange(int direction) {
 
 void LCManager::changed() {
     if (requestedChanges>hasChanged) ++hasChanged;
+    //myLC->lineUpForCenterOfLane();
 }
 
 void LCManager::synch() {

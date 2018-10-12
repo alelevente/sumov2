@@ -105,7 +105,8 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
         myLCm = new LCManager((MSLCM_SmartSL2015*) &((MSVehicle *) (&myHolder))->getLaneChangeModel());
     }
     myLCm->synch();
-    static MSLCM_SmartSL2015 &lcm = (MSLCM_SmartSL2015 &) ((MSVehicle *) (&myHolder))->getLaneChangeModel();
+    MSLCM_SmartSL2015 &lcm = (MSLCM_SmartSL2015 &) ((MSVehicle *) (&myHolder))->getLaneChangeModel();
+    //lcm.lineUpForCenterOfLane();
     //std::cout << "device '" << getID() << "' notifyMove: newSpeed=" << newSpeed << "\n";
     // check whether another device is present on the vehicle:
     /*MSDevice_Tripinfo* otherDevice = static_cast<MSDevice_Tripinfo*>(veh.getDevice(typeid(MSDevice_Tripinfo)));
@@ -343,6 +344,7 @@ int MSDevice_SAL::getMemberCount() {
 }
 
 void MSDevice_SAL::setVehicleSpeed(double speed) {
+    //libsumo::Vehicle::setSpeedMode(myHolder.getID(), 7);
     libsumo::Vehicle::setSpeed(myHolder.getID(), speed);
 }
 
@@ -394,4 +396,8 @@ void MSDevice_SAL::amBlocker(MSLCM_SmartSL2015 *blocker, MSLCM_SmartSL2015 *lead
 
 SUMOVehicle* MSDevice_SAL::getVehicle() {
     return &myHolder;
+}
+
+bool MSDevice_SAL::isFirst() {
+    return (libsumo::Vehicle::getLeader(myHolder.getID(), STOP_DISTANCE)).second < 0;
 }

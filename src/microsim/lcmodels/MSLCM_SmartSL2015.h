@@ -48,7 +48,7 @@ private:
     GroupState myGroupState;
     int myOffset;
     MSVehicle* myFollower = nullptr;
-    void lineUpForCenterOfLane();
+
     int blockerFlag = 0;
 
 public:
@@ -58,6 +58,7 @@ public:
 
 public:
     MSLCM_SmartSL2015(MSVehicle& v);
+    void lineUpForCenterOfLane();
 
     virtual ~MSLCM_SmartSL2015();
 

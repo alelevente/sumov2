@@ -1,15 +1,14 @@
 //
-// Created by levente on 2018.08.26..
+// Created by levente on 2018.08.01..
 //
-
-#include <microsim/devices/MessagingSystem/MessengerSystem.h>
-#include <microsim/devices/MessagingSystem/MessagingProxy.h>
-#include "MDDFJudge.h"
+#include <fstream>
+#include <iostream>
 #include "MDDFConflictClass.h"
+#include "MDDFJudge.h"
 #include "libsumo/Simulation.h"
-#include "libsumo/Vehicle.h"
 
-MDDFJudge::MDDFJudge(const std::string& path){
+
+MDDFJudge::MDDFJudge(const std::string &path) {
     activeCC = 0;
     std::ifstream input(path,std::ifstream::in);
 
@@ -42,10 +41,40 @@ MDDFJudge::~MDDFJudge() {
         delete programElements[i];
 }
 
-bool MDDFJudge::canPass(MSDevice_SAL *who) {
-    int now = (int) libsumo::Simulation::getCurrentTime() / 1000;
-    if (now - startTime > 7) changeCC();
-    return conflictClasses[activeCC]->hasVehicle(who);
+void MDDFJudge::changeCC() {
+    //std::cout << *directions[0] << " came in: " << cameIn << "\twent out: "<< wentOut << " " << conflictClasses[activeCC] -> isEmpty() <<std::endl;
+
+    if (cameIn == wentOut) {
+        int currentTime = (int) libsumo::Simulation::getCurrentTime()/1000;
+        if (yellow && flaggedAt+3<=currentTime) {
+            startTime = currentTime;
+            ((MDDFConflictClass*)conflictClasses[activeCC])->setLastTime(currentTime);
+            activeCC = nextActiveCC;
+            ((MDDFConflictClass*)conflictClasses[activeCC])->resetBadGuy();
+            yellow = false;
+            lastCameIn = currentTime;
+        }
+        int kor = activeCC;
+        if (currentTime-startTime > programElements[activeCC]->duration
+            || conflictClasses[activeCC]->isEmpty() || currentTime - lastCameIn > 3) {
+            if (currentTime - lastCameIn > 3) ((MDDFConflictClass*)conflictClasses[activeCC])->setBadGuy();
+            do {
+                nextActiveCC = selectNextCC();
+            } while (conflictClasses[activeCC]->isEmpty() && activeCC != kor);
+            if (conflictClasses[activeCC]->isThereCarInDanger(posX, posY)) {
+                yellow = true;
+                lastCameIn = currentTime;
+                flaggedAt = currentTime;
+            } else {
+                startTime = currentTime;
+                activeCC = nextActiveCC;
+                yellow = false;
+                lastCameIn = currentTime;
+            }
+
+            //std::cout << *directions[0] << std::endl;
+        }
+    }
 }
 
 int MDDFJudge::decideCC(Group *group, const std::string &direction) {
@@ -57,48 +86,44 @@ int MDDFJudge::decideCC(Group *group, const std::string &direction) {
     return acc;
 }
 
-void MDDFJudge::changeCC() {
-    std::cout << *(this->directions[0]) << " came in: " << cameIn << "\twent out: "<< wentOut << std::endl;
-    if (cameIn == wentOut) {
-        int minCC = 0, j = 0;
-        double min = 10000;
-        for (auto i = conflictClasses.begin(); i != conflictClasses.end(); ++i) {
+bool MDDFJudge::canPass(MSDevice_SAL *who) {
+    int now = (int) libsumo::Simulation::getCurrentTime() / 1000;
+    if (now - startTime > programElements[activeCC]->duration
+        || now-lastCameIn > 3) changeCC();
+    return !yellow && conflictClasses[activeCC]->hasVehicle(who);
+}
+
+int MDDFJudge::selectNextCC() {
+    int minCC = 0, j = 0;
+    double min = 10000;
+    j = lastRR;
+    std::cout << *directions[0];
+
+    //First priority: RR
+    do {
+        j = (j >= conflictClasses.size() - 1) ? 0 : j + 1;
+        if (!(conflictClasses[j])->isEmpty() &&
+                ((MDDFConflictClass*)(conflictClasses[j]))->isOld() &&
+                ((MDDFConflictClass*)(conflictClasses[j]))->isFirst()) {
+            lastRR = j;
+            return j;
+        }
+    } while (j!=lastRR);
+
+    //Second priority: MDDF
+    j=0;
+    std::cout << "(";
+    for (auto i = conflictClasses.begin(); i != conflictClasses.end(); ++i) {
+        if (((MDDFConflictClass*)(*i))->isFirst()) {
             double k = (*i)->calculatePrice();
-            if (k < min && k>=0) {
+            std::cout << k << ", ";
+            if (k < min && k >= 0) {
                 min = k;
                 minCC = j;
             }
-            ++j;
         }
-
-        activeCC = minCC;
-        startTime =(int) libsumo::Simulation::getCurrentTime()/1000;
-    } else {
-#ifdef KILLCARS
-        if (libsumo::Simulation::getCurrentTime() - lastCIChanged > 10000) {
-            for (auto i = carsIn.begin(); i != carsIn.end(); ++i) {
-                if (conflictClasses[activeCC]->hasVehicle(MessagingProxy::getInstance().getMessenger(*(*i))->mySAL)) {
-                    conflictClasses.at(activeCC)->removeVehicle(MessagingProxy::getInstance().getMessenger(*(*i))->mySAL);
-                } else {
-                    for (int j = 0; j < conflictClasses.size(); ++j) {
-                        if (conflictClasses[j]->hasVehicle(MessagingProxy::getInstance().getMessenger(*(*i))->mySAL)) {
-                            conflictClasses.at(j)->removeVehicle(
-                                    MessagingProxy::getInstance().getMessenger(*(*i))->mySAL);
-                        }
-                    }
-                }
-                libsumo::Vehicle::remove(*(*i));
-            }
-            cameIn = 0;
-            wentOut = 0;
-            lastCIChanged = libsumo::Simulation::getCurrentTime();
-            carsIn.erase(carsIn.begin(), carsIn.end());
-        }
-#endif
-        if (libsumo::Simulation::getCurrentTime() - lastCIChanged > 10000) {
-            ((MDDFConflictClass *) conflictClasses[activeCC])->makeOlder();
-            cameIn = 0;
-            wentOut = 0;
-        }
+        ++j;
     }
+    std::cout << ") " << minCC << std::endl;
+    return minCC;
 }

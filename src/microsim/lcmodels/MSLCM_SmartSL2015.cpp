@@ -88,7 +88,7 @@
 // Debug flags
 // ===========================================================================
 //#define DEBUG_ACTIONSTEPS
-#define DEBUG_STATE
+//#define DEBUG_STATE
 //#define DEBUG_SURROUNDING
 //#define DEBUG_MANEUVER
 //#define DEBUG_PATCHSPEED
@@ -98,8 +98,9 @@
 //#define DEBUG_COOPERATE
 //#define DEBUG_SLOWDOWN
 //#define DEBUG_SAVE_BLOCKER_LENGTH
-//#define DEBUG_BLOCKING
-//#define DEBUG_TRACI
+#define DEBUG_BLOCKING
+    #define safetyFactor 1
+#define DEBUG_TRACI
 //#define DEBUG_STRATEGIC_CHANGE
 //#define DEBUG_KEEP_LATGAP
 //#define DEBUG_EXPECTED_SLSPEED
@@ -231,8 +232,8 @@ MSLCM_SmartSL2015::wantsChangeSublane(
                                      lastBlocked, firstBlocked, latDist, maneuverDist, blocked);
     else result = _wantsChangeSublane(laneOffset,
                                       alternatives,
-                                      leaders2, followers, blockers,
-                                      neighLeaders2, neighFollowers, neighBlockers,
+                                      leaders, followers, blockers,
+                                      neighLeaders, neighFollowers, neighBlockers,
                                       neighLane, preb,
                                       lastBlocked, firstBlocked, latDist, maneuverDist, blocked);
 
@@ -988,7 +989,7 @@ void
 MSLCM_SmartSL2015::changed() {
     if (mySAL != nullptr) {
         mySAL->laneChanged(nullptr, myOffset);
-       // lineUpForCenterOfLane();
+        //lineUpForCenterOfLane();
 
     }
     if (!myCanChangeFully) {
@@ -3539,5 +3540,6 @@ void MSLCM_SmartSL2015::setOffset(int offset) {
 }
 
 void MSLCM_SmartSL2015::lineUpForCenterOfLane() {
-    libsumo::Vehicle::changeSublane(myVehicle.getID(), -myVehicle.getLateralPositionOnLane());
+    if (myOwnState&LCA_STAY)
+        libsumo::Vehicle::changeSublane(myVehicle.getID(), -myVehicle.getLateralPositionOnLane());
 }

@@ -2,9 +2,11 @@
 // Created by levente on 2018.08.26..
 //
 
+
 #include "MDDFConflictClass.h"
 #include "microsim/devices/MSDevice_SAL.h"
 #include "libsumo/Vehicle.h"
+#include "libsumo/Simulation.h"
 
 inline double destinationDistance(SUMOVehicle* actualCar){
     std::string myString;
@@ -19,7 +21,6 @@ inline double destinationDistance(SUMOVehicle* actualCar){
 }
 
 double MDDFConflictClass::calculatePrice() {
-    if (age > 0) --age;
     if (myCars.size() == 0) return -1;
     MSDevice_SAL* actualCar;
     actualCar = myCars[0];
@@ -32,7 +33,8 @@ double MDDFConflictClass::calculatePrice() {
         if (min > x) min = x;
     }
 
-    return min + age * 10000;
+    return min;
+    return badGuy? min*min: min;
 }
 
 bool MDDFConflictClass::canJoinGroup(int nMembers, const std::string &inDirection, const std::string &outDirection) {
@@ -40,9 +42,25 @@ bool MDDFConflictClass::canJoinGroup(int nMembers, const std::string &inDirectio
 }
 
 bool MDDFConflictClass::isFirst() {
-    return true;
+    for (auto x: myCars)
+    {
+        if (x->isFirst()) return true;
+    }
+    return false;
 }
 
-void MDDFConflictClass::makeOlder() {
-    age = age + 5;
+void MDDFConflictClass::setLastTime(long int time) {
+    age = time;
+}
+
+bool MDDFConflictClass::isOld() {
+    return (libsumo::Simulation::getCurrentTime()/1000 - age) > 90;
+}
+
+void MDDFConflictClass::setBadGuy() {
+    badGuy = true;
+}
+
+void MDDFConflictClass::resetBadGuy() {
+    badGuy = false;
 }

@@ -17,6 +17,11 @@ class MDDFJudge: public AbstractJudge {
     std::vector<ProgramElement*> programElements;
 
     virtual void changeCC();
+    int selectNextCC();
+
+    bool yellow = false;
+    int nextActiveCC = 0, flaggedAt = 0;
+    int lastRR=0;
 
 public:
     MDDFJudge(const std::string& path);
