@@ -47,7 +47,7 @@ private:
     MSDevice_SAL* mySAL = nullptr;
     GroupState myGroupState;
     int myOffset;
-    MSVehicle* myFollower = nullptr;
+
 
     int blockerFlag = 0;
 
@@ -55,6 +55,7 @@ public:
     void setMyGroupState(GroupState myGroupState);
     SUMOVehicle* getMyVehicle();
     void setOffset(int offset);
+    MSVehicle* myFollower = nullptr;
 
 public:
     MSLCM_SmartSL2015(MSVehicle& v);

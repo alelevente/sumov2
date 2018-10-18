@@ -135,6 +135,7 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
             SUMOVehicle* myLeader = &myLeaderMessenger->mySAL->myHolder;
             libsumo::TraCIPosition position = libsumo::Vehicle::getPosition(myLeader->getID());
             double deltaS = libsumo::Vehicle::getDrivingDistance2D(myHolder.getID(), position.x, position.y);
+            if (deltaS < -10) deltaS = 100;
             //double desiredSpeed = deltaS < 50? myLeader->getSpeed()/(GROUP_GAP_DESIRED-GROUP_GAP_LIMIT)*(deltaS-GROUP_GAP_LIMIT): 20;
             double desiredSpeed = deltaS > GROUP_GAP_DESIRED + GROUP_GAP_THRESHOLD? 25 :
                                          deltaS > GROUP_GAP_DESIRED - GROUP_GAP_THRESHOLD?
@@ -152,7 +153,7 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
             if (reported) passPermitted = myJudge->canPass(this);
             if (!passPermitted && !inJunction) {
                 //double desiredSpeed = myHolder.getLane()->getSpeedLimit() / (REPORT_DISTANCE - STOP_DISTANCE) * deltaX;
-                double desiredSpeed = myHolder.getLane()->getSpeedLimit() * ((deltaX - STOP_DISTANCE) / REPORT_DISTANCE);
+                double desiredSpeed = myHolder.getLane()->getSpeedLimit() * ((deltaX - myJudge->stopRadius) / REPORT_DISTANCE);
                 if (desiredSpeed < myHolder.getLane()->getSpeedLimit()) setVehicleSpeed(desiredSpeed);
                 if (desiredSpeed <= 0) setVehicleSpeed(0);
                 if (passPermitted) {
@@ -165,7 +166,7 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
                         if (myHolder.isSelected()) std::cout << "OKÉ" << std::endl;
                         if (!speedSetInJunction) {
                             speedSetInJunction = true;
-                            setVehicleSpeed(-1);
+                            setVehicleSpeed(25);
                         }
                     }
 
@@ -181,7 +182,7 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
                 //}
             }
         }
-        if (!inJunction && deltaX < STOP_DISTANCE-5) {
+        if (!inJunction && deltaX < myJudge->ponrRadius) {
             if (myHolder.isSelected()) std::cout << myHolder.getID() << "has passed PONR." << std::endl;
             myJudge->carPassedPONR(this);
             inJunction = true;

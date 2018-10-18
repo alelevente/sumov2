@@ -89,7 +89,7 @@ void LCManager::synch() {
 
 
 void LCManager::groupChanged() {
-    if (LCFifo.size() != 0 && carIDs.size() != 0) {
+    /*if (LCFifo.size() != 0 && carIDs.size() != 0) {
         //MSVehicleControl::loadedVehBegin()
         //std::vector<std::string> ids = libsumo::Vehicle::getIDList();
 
@@ -98,24 +98,30 @@ void LCManager::groupChanged() {
        /* for (auto x= vc.loadedVehBegin(); x!=vc.loadedVehEnd() && !benne; ++x) {
             if ((*x).first == *carIDs[0]) benne = true;
         }*/
-        if (!benne) {
+       /* if (!benne) {
 
             delete *carIDs.begin();LCFifo.erase(LCFifo.begin());
             carIDs.erase(carIDs.begin());
             return;
-        }
+        }*/
         //std::cout << myLC->getMyVehicle()->getID() << " has FIFO of: ";
         // for (auto i = LCFifo.begin(); i != LCFifo.end(); ++i)
          //   std::cout << (*i)->getMyVehicle()->getID();
         //std::cout << std::endl;
-        std::string ID = LCFifo[0]->getMyVehicle()->getID();
+      /*  std::string ID = LCFifo[0]->getMyVehicle()->getID();
         libsumo::Vehicle::setLaneChangeMode(ID, 1621);
-        libsumo::Vehicle::setSpeed(ID, -1);
+        libsumo::Vehicle::setSpeed(ID, -1);*/
         //libsumo::Vehicle::changeLaneRelative(ID, 0, 1);
         //std::cout << ID << ": may continue" << std::endl;
 
-        delete *carIDs.begin();LCFifo.erase(LCFifo.begin());
+     /*   delete *carIDs.begin();LCFifo.erase(LCFifo.begin());
         carIDs.erase(carIDs.begin());
+    }*/
+
+    if (myLC->myFollower != nullptr) {
+        std::string ID = myLC->myFollower->getID();
+        libsumo::Vehicle::setLaneChangeMode(ID, 1621);
+        libsumo::Vehicle::setSpeed(ID, 15);
     }
 }
 

@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-#define REPORT_DISTANCE 50
+#define REPORT_DISTANCE 80
 #define STOP_DISTANCE 20
 
 
@@ -32,7 +32,7 @@ protected:
 
 
 public:
-    double posX, posY;
+    double posX, posY, stopRadius = 15, ponrRadius = 5;
     virtual void informCCEnded(ConflictClass* cc);
     virtual bool canPass(MSDevice_SAL* who)=0;
     virtual void carPassedPONR(MSDevice_SAL* who);

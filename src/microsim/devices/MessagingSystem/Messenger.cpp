@@ -45,7 +45,7 @@ void Messenger::joinAGroup(EntryMarker &entryMarker) {
     //we can join:
     if (other != nullptr) {
         Messenger *otherAgent = MessengerSystem::getInstance().messengerMap[other->getID()];
-        if (otherAgent != nullptr) {
+        if (otherAgent != nullptr && otherAgent->myGroup != nullptr) {
             if (otherAgent->myGroup->canJoin && otherAgent->myExitMarker == myExitMarker) {
                 otherAgent->myGroup->addNewMember(this);
                 myGroup = otherAgent->myGroup;

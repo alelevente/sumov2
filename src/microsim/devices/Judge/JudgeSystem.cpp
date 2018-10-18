@@ -21,20 +21,24 @@ JudgeSystem::JudgeSystem() {
     std::string inStr;
     for (int i=0; i<nJudges; ++i){
         std::string name, type, path;
-        int posX, posY;
+        int posX, posY, radius, ponrRadius;
         input >> name;
         input >> type;
-        input >> posX >> posY;
+        input >> posX >> posY >> radius >> ponrRadius;
         input >> path;
         AbstractJudge* abstractJudge;
         if (type == "RR") {
             abstractJudge = new RRJudge(path);
             abstractJudge->posX = posX;
             abstractJudge->posY = posY;
+            abstractJudge->stopRadius = radius;
+            abstractJudge->ponrRadius = ponrRadius;
         } else if (type == "MDDF") {
             abstractJudge = new MDDFJudge(path);
             abstractJudge->posX = posX;
             abstractJudge->posY = posY;
+            abstractJudge->stopRadius = radius;
+            abstractJudge->ponrRadius = ponrRadius;
         }
         judgeMap.insert(judgeMap.end(), std::make_pair(name, abstractJudge));
     }
