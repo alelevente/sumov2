@@ -56,9 +56,11 @@ void RRJudge::changeCC() {
         int kor = activeCC;
         if (currentTime-startTime > programElements[activeCC]->duration
                 || conflictClasses[activeCC]->isEmpty() || currentTime - lastCameIn > 3) {
+            nextActiveCC = activeCC;
             do {
-                nextActiveCC = (activeCC == nPrograms - 1) ? 0 : activeCC + 1;
-            } while (conflictClasses[activeCC]->isEmpty() && activeCC != kor);
+                nextActiveCC = (nextActiveCC == nPrograms - 1) ? 0 : nextActiveCC + 1;
+            } while (conflictClasses[nextActiveCC]->isEmpty() && nextActiveCC != kor
+                     && !conflictClasses[nextActiveCC]->isFirst());
             if (conflictClasses[activeCC]->isThereCarInDanger(posX, posY)) {
                 yellow = true;
                 lastCameIn = currentTime;

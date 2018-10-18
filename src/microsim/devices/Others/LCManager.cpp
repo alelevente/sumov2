@@ -5,6 +5,8 @@
 #include <libsumo/Vehicle.h>
 #include <microsim/devices/MessagingSystem/MessagingProxy.h>
 #include <libsumo/Simulation.h>
+#include <microsim/MSVehicleContainer.h>
+#include <microsim/MSVehicleControl.h>
 
 
 LCManager::LCManager(MSLCM_SmartSL2015 *myLC):
@@ -14,7 +16,7 @@ void LCManager::setIsMember(Group* group) {
     myLC->setMyGroupState(MEMBER);
     SUMOVehicle* holder = myLC->getMyVehicle();
     MessagingProxy::getInstance().getGroupOf(holder->getID());
-    libsumo::Vehicle::setLaneChangeMode(holder->getID(), 256);
+    libsumo::Vehicle::setLaneChangeMode(holder->getID(), 512);
     //libsumo::Vehicle::setLaneChangeMode(holder->getID(), 0);
     auto carId = group->carIDs.begin();
 
@@ -74,8 +76,8 @@ void LCManager::synch() {
     //std::cout << libsumo::Simulation::getCurrentTime()-lastChange << std::endl;
     if (libsumo::Simulation::getCurrentTime()-lastChange > 3500) {
         //std::cout << myLC->getMyVehicle()->getID() << ": has resent the request of " << lastDir << std::endl;
-        if (myLC->getMyVehicle()->isSelected()) std::cout <<
-                                                          myLC->getMyVehicle()->getID() <<": " << hasChanged << "/" << requestedChanges << std::endl;
+       /* if (myLC->getMyVehicle()->isSelected()) std::cout <<
+                                                          myLC->getMyVehicle()->getID() <<": " << hasChanged << "/" << requestedChanges << std::endl;*/
         if ((hasChanged != requestedChanges) && (lastDir!=0)) {
         // ->    libsumo::Vehicle::changeLaneRelative(myLC->getMyVehicle()->getID(), lastDir, 0);
             //libsumo::Vehicle::changeSublane(myLC->getMyVehicle()->getID(), lastDir*2.75);
@@ -88,18 +90,21 @@ void LCManager::synch() {
 
 void LCManager::groupChanged() {
     if (LCFifo.size() != 0 && carIDs.size() != 0) {
-        std::vector<std::string> ids = libsumo::Vehicle::getIDList();
-        bool benne = false;
-        for (auto x: ids) {
-            if (x == *carIDs[0]) benne = true;
-        }
+        //MSVehicleControl::loadedVehBegin()
+        //std::vector<std::string> ids = libsumo::Vehicle::getIDList();
+
+        MSVehicleControl& vc = MSNet::getInstance()->getVehicleControl();
+        bool benne = vc.getVehicle(*carIDs[0]) != 0;
+       /* for (auto x= vc.loadedVehBegin(); x!=vc.loadedVehEnd() && !benne; ++x) {
+            if ((*x).first == *carIDs[0]) benne = true;
+        }*/
         if (!benne) {
-            LCFifo.erase(LCFifo.begin());
-            delete *carIDs.begin();
+
+            delete *carIDs.begin();LCFifo.erase(LCFifo.begin());
             carIDs.erase(carIDs.begin());
             return;
         }
-        std::cout << myLC->getMyVehicle()->getID() << " has FIFO of: ";
+        //std::cout << myLC->getMyVehicle()->getID() << " has FIFO of: ";
         // for (auto i = LCFifo.begin(); i != LCFifo.end(); ++i)
          //   std::cout << (*i)->getMyVehicle()->getID();
         //std::cout << std::endl;
@@ -107,9 +112,9 @@ void LCManager::groupChanged() {
         libsumo::Vehicle::setLaneChangeMode(ID, 1621);
         libsumo::Vehicle::setSpeed(ID, -1);
         //libsumo::Vehicle::changeLaneRelative(ID, 0, 1);
-        std::cout << ID << ": may continue" << std::endl;
-        LCFifo.erase(LCFifo.begin());
-        delete *carIDs.begin();
+        //std::cout << ID << ": may continue" << std::endl;
+
+        delete *carIDs.begin();LCFifo.erase(LCFifo.begin());
         carIDs.erase(carIDs.begin());
     }
 }
@@ -117,7 +122,7 @@ void LCManager::groupChanged() {
 void LCManager::blocker(MSLCM_SmartSL2015 *who) {
     std::string ID = who->getMyVehicle()->getID();
     libsumo::Vehicle::setSpeed(ID, 0);
-    libsumo::Vehicle::setLaneChangeMode(ID, 256);
+    libsumo::Vehicle::setLaneChangeMode(ID, 512);
     //libsumo::Vehicle::changeLaneRelative(ID, 0, 60000);
     //std::cout << who->getMyVehicle()->getID() << ": is blocker" << std::endl;
 }

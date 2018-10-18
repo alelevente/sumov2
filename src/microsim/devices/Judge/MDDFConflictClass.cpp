@@ -41,14 +41,6 @@ bool MDDFConflictClass::canJoinGroup(int nMembers, const std::string &inDirectio
     return true;
 }
 
-bool MDDFConflictClass::isFirst() {
-    for (auto x: myCars)
-    {
-        if (x->isFirst()) return true;
-    }
-    return false;
-}
-
 void MDDFConflictClass::setLastTime(long int time) {
     age = time;
 }

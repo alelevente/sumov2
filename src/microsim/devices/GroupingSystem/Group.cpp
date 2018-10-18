@@ -78,7 +78,7 @@ void Group::finishGroup() {
 Messenger* Group::getFollowerOf(Messenger *who) {
     int i=0;
     for (i=0; members[i]!=who && i<nMembers; ++i);
-    if (members[i+1] == nullptr) std::cout << who->myVehicle->getID() << " is last." << std::endl;
+    //if (members[i+1] == nullptr) std::cout << who->myVehicle->getID() << " is last." << std::endl;
     return members[i+1];
 }
 

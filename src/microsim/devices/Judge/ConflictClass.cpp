@@ -64,6 +64,14 @@ bool ConflictClass::isEmpty() {
     return myCars.size() == 0;
 }
 
+bool ConflictClass::isFirst() {
+    for (auto x: myCars)
+    {
+        if (x->isFirst()) return true;
+    }
+    return false;
+}
+
 bool ConflictClass::isThereCarInDanger(double x, double y) {
     for (auto i: myCars) {
         if (libsumo::Vehicle::getDrivingDistance2D((*i).getHolder().getID(), x, y) < IN_DANGER &&

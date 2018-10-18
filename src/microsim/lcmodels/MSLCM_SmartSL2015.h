@@ -42,8 +42,8 @@ typedef enum {OUT, MEMBER, LEADER} GroupState;
 
 class MSLCM_SmartSL2015 : public MSAbstractLaneChangeModel {
 private:
-    void smartFollowerDistance(MSLeaderDistanceInfo &followerDistanceInfo);
-    void smartLeaderDistance(MSLeaderDistanceInfo &leaderDistanceInfo);
+    MSLeaderDistanceInfo * smartFollowerDistance(const MSLeaderDistanceInfo &followerDistanceInfo);
+    MSLeaderDistanceInfo * smartLeaderDistance(const MSLeaderDistanceInfo &leaderDistanceInfo);
     MSDevice_SAL* mySAL = nullptr;
     GroupState myGroupState;
     int myOffset;

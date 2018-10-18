@@ -33,6 +33,7 @@ public:
     bool hasVehicle(MSDevice_SAL* vehicle);
     bool isEmpty();
     bool isThereCarInDanger(double x, double y);
+    bool isFirst();
 };
 
 

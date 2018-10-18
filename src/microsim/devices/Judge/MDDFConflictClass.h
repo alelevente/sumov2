@@ -16,7 +16,6 @@ class MDDFConflictClass: public ConflictClass {
 public:
     virtual double calculatePrice();
     virtual bool canJoinGroup(int nMembers, const std::string& inDirection, const std::string& outDirection);
-    bool isFirst();
     void setLastTime(long int time);
     bool isOld();
     void setBadGuy();
