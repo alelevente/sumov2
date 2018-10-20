@@ -28,10 +28,19 @@ void Messenger::joinAGroup(EntryMarker &entryMarker) {
     ExitMarker *exitMarker = NULL;
     myExitMarker = nullptr;
     //actualJudge = ((EntryMarkerAnswer*)result)->judge;
-    for (auto i = exitMarkers->begin(); i != exitMarkers->end(); ++i) {
+    /*for (auto i = exitMarkers->begin(); i != exitMarkers->end(); ++i) {
         if (myVehicle->getRoute().contains((*i)->getPosition())) {
             myExitMarker = *i;
         }
+    }*/
+    for (auto e: myVech->getRoute().getEdges()){
+        for (auto m: *exitMarkers) {
+            if (e->getID() == m->getMarkerID()) {
+                myExitMarker = m;
+                break;
+            }
+        }
+        if (myExitMarker != nullptr) break;
     }
     if (myExitMarker == nullptr) {
         std::cout << "have not find at: " << entryMarker.getMarkerID() << std::endl;

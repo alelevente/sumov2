@@ -85,3 +85,5 @@ set_property(TARGET generate-version-h PROPERTY FOLDER "CMake")
 
 set_source_files_properties(${CMAKE_BINARY_DIR}/src/version.h
     PROPERTIES GENERATED TRUE)
+
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")

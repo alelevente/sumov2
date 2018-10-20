@@ -153,6 +153,7 @@ public:
     void amBlocker(MSLCM_SmartSL2015* blocker, MSLCM_SmartSL2015* leader);
     std::string myDirection;
     bool isFirst();
+    bool locked = false;
 
 private:
     bool isMember = false, passPermitted = false,

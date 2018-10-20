@@ -104,7 +104,7 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
     if (myLCm == nullptr) {
         myLCm = new LCManager((MSLCM_SmartSL2015*) &((MSVehicle *) (&myHolder))->getLaneChangeModel());
     }
-    myLCm->synch();
+    //myLCm->synch();
     MSLCM_SmartSL2015 &lcm = (MSLCM_SmartSL2015 &) ((MSVehicle *) (&myHolder))->getLaneChangeModel();
     //lcm.lineUpForCenterOfLane();
     //std::cout << "device '" << getID() << "' notifyMove: newSpeed=" << newSpeed << "\n";
@@ -150,7 +150,9 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
 
             if (desiredSpeed < myHolder.getLane()->getSpeedLimit() && (desiredSpeed < lcm.getCommittedSpeed() || lcm.getCommittedSpeed()<0.0001)) setVehicleSpeed(desiredSpeed);
         } else {
-            if (reported) passPermitted = myJudge->canPass(this);
+            locked = true;
+            if (reported && !inJunction) passPermitted = myJudge->canPass(this);
+            locked = false;
             if (!passPermitted && !inJunction) {
                 //double desiredSpeed = myHolder.getLane()->getSpeedLimit() / (REPORT_DISTANCE - STOP_DISTANCE) * deltaX;
                 double desiredSpeed = myHolder.getLane()->getSpeedLimit() * ((deltaX - myJudge->stopRadius) / REPORT_DISTANCE);

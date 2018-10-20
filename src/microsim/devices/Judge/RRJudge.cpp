@@ -47,11 +47,12 @@ void RRJudge::changeCC() {
 
     if (cameIn == wentOut) {
         int currentTime = (int) libsumo::Simulation::getCurrentTime()/1000;
-        if (yellow && flaggedAt+3<=currentTime) {
+        if (yellow && flaggedAt+3<=currentTime && !conflictClasses[activeCC]->isThereCarInDanger(posX, posY)) {
             startTime = currentTime;
             activeCC = nextActiveCC;
             yellow = false;
             lastCameIn = currentTime;
+            return;
         }
         int kor = activeCC;
         if (currentTime-startTime > programElements[activeCC]->duration
@@ -72,8 +73,10 @@ void RRJudge::changeCC() {
                 lastCameIn = currentTime;
             }
 
-            //std::cout << *directions[0] << std::endl;
+            //std::cout << *directions[0] << " " << nextActiveCC << std::endl;
         }
+    } else {
+        //std::cerr << *directions[0] << " " << cameIn-wentOut << std::endl;
     }
 }
 
@@ -88,7 +91,11 @@ int RRJudge::decideCC(Group *group, const std::string &direction) {
 
 bool RRJudge::canPass(MSDevice_SAL *who) {
     int now = (int) libsumo::Simulation::getCurrentTime() / 1000;
+    if (now - lastCheck > 1) {
+        this->makeKill();
+        lastCheck = now;
+    }
     if (now - startTime > programElements[activeCC]->duration
             || now-lastCameIn > 3) changeCC();
-    return !yellow && conflictClasses[activeCC]->hasVehicle(who);
+    return !yellow && (now - startTime <= programElements[activeCC]->duration) && conflictClasses[activeCC]->hasVehicle(who);
 }
