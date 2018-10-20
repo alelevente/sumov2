@@ -69,7 +69,7 @@ void Messenger::joinAGroup(EntryMarker &entryMarker) {
 
 void Messenger::leaveGroup() {
     if (myGroup == nullptr) return;
-    myGroup->removeFirstCar();
+    myGroup->removeCar(this);
     myGroup = nullptr;
     mySAL->resetVehicleColor();
 }

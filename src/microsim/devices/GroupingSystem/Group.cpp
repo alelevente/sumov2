@@ -47,14 +47,16 @@ void Group::addNewMember(Messenger *member) {
     //if (followerLeader!= nullptr) members[nMembers-1]->mySAL->addFollower(followerLeader);
 }
 
-void Group::removeFirstCar() {
+void Group::removeCar(Messenger *who) {
     if (nMembers == 1) {
        /* if (followerLeader != nullptr) {
             members[0]->mySAL->informStoppedToContinue(followerLeader);
         }*/
     }
-    Messenger* first = members[0];
-    for (int i=1; i<nMembers; ++i){
+    int idx = 0;
+    while (members[idx] != who && idx < nMembers) ++idx;
+    Messenger* first = members[idx];
+    for (int i=idx+1; i<nMembers; ++i){
         members[i-1] = members[i];
     }
     members[nMembers-1] = nullptr;
@@ -65,7 +67,7 @@ void Group::removeFirstCar() {
     first->myGroup = nullptr;
 
     if (nMembers == 0) finishGroup();
-    else {
+    else if (idx == 0){
         members[0]->mySAL->informBecomeLeader();
         groupLeader = members[0];
     }

@@ -35,7 +35,7 @@ public:
     bool canJoin;
     void setMyCC (ConflictClass* cc);
     void addNewMember(Messenger* member);
-    void removeFirstCar();
+    void removeCar(Messenger *who);
     Messenger* getFollowerOf(Messenger* who);
     Messenger* getLeaderOf(Messenger* who);
     double getGroupLength();
