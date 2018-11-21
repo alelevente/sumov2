@@ -1,0 +1,10 @@
+./out/bah0
+--step-length 0.1 --lateral-resolution 0.8 -c /home/levente/Egyetem/7_felev/szakdoga/BAH/BAH0_normal.sumocfg --collision.action=warn --duration-log.statistics
+./out/bah21600
+--step-length 0.1 --lateral-resolution 0.8 -c /home/levente/Egyetem/7_felev/szakdoga/BAH/BAH21600_normal.sumocfg --collision.action=warn --duration-log.statistics
+./out/testmap_smart
+--step-length 0.1 --lateral-resolution 0.8 -c /home/levente/Egyetem/6_felev/EFOP/TestMap/testmap.sumocfg --collision.action=warn --duration-log.statistics
+./out/bah0_smart
+--step-length 0.1 --lateral-resolution 0.8 -c /home/levente/Egyetem/7_felev/szakdoga/BAH/BAH0_smart.sumocfg --collision.action=warn --duration-log.statistics
+./out/bah21600_smart
+--step-length 0.1 --lateral-resolution 0.8 -c /home/levente/Egyetem/7_felev/szakdoga/BAH/BAH21600_smart.sumocfg --collision.action=warn --duration-log.statistics

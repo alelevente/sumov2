@@ -1,0 +1,22 @@
+--step-length 0.1 --lateral-resolution 0.8 -c /home/levente/Egyetem/6_felev/EFOP/TestMap/testmap.sumocfg --collision.action=warn --duration-log.statisticsMDDF.txt
+Loading configuration... done.
+Loading net-file from '/home/levente/Egyetem/6_felev/EFOP/TestMap/testmap_smart.net.xml'... done (11ms).
+Loading done.
+Simulation started with time: 0.00
+./out/bah0_smartMDDF.txt
+
+Performance: 
+ Duration: 261208ms
+ Real time factor: 1.91418
+ UPS: 1816.020183
+Vehicles: 
+ Inserted: 398
+ Running: 114
+ Waiting: 0
+Teleports: 0 (Collisions: 428)
+Statistics (avg):
+ RouteLength: 1070.02
+ Duration: 131.94
+ WaitingTime: 13.60
+ TimeLoss: 54.84
+ DepartDelay: 0.01

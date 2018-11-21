@@ -1,0 +1,36 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{t1enc}
+\usepackage{setspace}
+\usepackage[magyar]{babel}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{enumitem}
+\usepackage{listingsutf8}
+\usepackage{hyperref}
+\usepackage{ragged2e}
+\usepackage{lmodern}
+
+\begin{document}
+	\section{Kapcsolódó irodalom}
+		A járművek csoportosításának \emph{(platooning, konvoj)} igen sok előnyét vizsgálták már. Például \cite[Alam et al.]{bib:fuel} megmutatta azt, hogy kb. 4-7\% üzemanyagmegtakarítást is hozhat a haszongépjárművek konvojban haladása autópályán. Kíváncsiak vagyunk, hogy városi környezetben jelent-e valamennyi üzemanyagmegtakarítást egy csoportosítás.
+		
+		Emellett a csoportosítás megnöveli a járműfolyamok nagyságát egy-egy útszakaszon, ahogy arra \cite[Fernandes]{bib:fernandes} rámutat. Érdekes kérdés viszont, hogy mi történik, ha \cite[Fernandes]{bib:fernandes}-szel ellentétben nem egy főpálya mellett lévő mellékvágányon lévő állomás metaforája mentén, hanem egy valós környezetben vizsgáljuk a csoportosítás előnyeit.
+		
+		Mivel \cite{bib:LC} eredménye, hogy egyetlen sávváltás is 8-18\%-os kapacitáscsökkenést tud okozni egy útszakaszon, ezért érdemesnek tűnik vizsgálni annak a lehetőségét, hogy egy-egy járműcsoport együttes sávváltása vajon hatékonyabb közlekedést eredményez-e, mintha az egyes járművek külön-külön próbálnának sávot váltani.
+		
+		Egyetlen járműcsoport biztonságos sávváltását vizsgálta \cite[Hsu és Liu]{bib:kinem}, illetve \cite[Sun et al.]{bib:merging} leír egy hatékony módszert két csoport egymásba olvadására úgy, hogy egyik csoportot sem kell felosztani. Viszont a mindennapi forgalomban inkább az a szituáció jellemző, hogy egy csoportnak két másik csoportok közé kell beférnie, anélkül, hogy összeolvadnának.\footnote{Például egy forgalmi sávból balra és egyenesen lehet továbbhaladni. A mi csoportunk a jobbra forduló sávban halad, de egyenesen szeretne továbbmenni. Előttünk már van egy csoport, de messze, velük nem előnyös összeolvadni. Mellettünk pedig halad egy csoport, akik balra akarnak fordulni, velük pedig az eltérő cél miatt nem szeretnénk összeolvadni. A feladatunk az lenne, hogy sávot váltsunk, és mindenki a lehető legzavartalanabbul haladhasson tovább.}
+		
+		\cite[Besa Vial et al.]{bib:platSched} igen érdekes matematikai bizonyításokat ad járműcsoportok ütemezéséről előre ismert csoportok és útvonalak esetén, ám nem vizsgálják a futási időben jelentkező csoportok igényeinek kiszolgálását. \cite[Ahmad et al.]{bib:MDDF} előáll egy online időben is alkalmazható megoldással, ám mérési eredményei egy tesztpálya alkalmazásával kapta, kérdéses, hogy valós úttopológiával megismételhetőek-e az elért eredményeik.
+		
+	\begin{thebibliography}{9}
+		\bibitem{bib:fernandes}P. Fernandes, ``Platooning of IVC-enabled Autonomous Vehicles Information and Positioning Management Algorithms for High Traffic Capacity and Urban Mobility Improvement'', 2012.
+		\bibitem{bib:fuel}A. A. Alam, A. Gattami, és K. H. Johansson, ``An experimental study on the fuel reduction potential of heavy duty vehicle platooning'', in 13th International IEEE Conference on Intelligent Transportation Systems, 2010, o. 306–311.
+		\bibitem{bib:LC}W.-L. Jin, ``A kinematic wave theory of lane-changing traffic flow'', arXiv:math/0503036, márc. 2005.
+		\bibitem{bib:kinem}H. C. Hsu és A. Liu, ``Kinematic Design for Platoon-Lane-Change Maneuvers'', IEEE Transactions on Intelligent Transportation Systems, köt. 9, sz. 1, o. 185–190, jan. 2008.
+		\bibitem{bib:merging}X. Sun, R. Horowitz, és C.-W. Tan, ``An Efficient Lane Change Maneuver for Platoons of Vehicles in an Automated Highway System'', in Dynamic Systems and Control, Volumes 1 and 2, Washington, DC, USA, 2003, köt. 2003, o. 355–362.
+		\bibitem{bib:platSched}J. J. Besa Vial, W. E. Devanny, D. Eppstein, és M. T. Goodrich, ``Scheduling Autonomous Vehicle Platoons Through an Unregulated Intersection'', 2016.
+		\bibitem{bib:MDDF}F. Ahmad, S. A. Mahmud, G. M. Khan, és F. Z. Yousaf, ``Shortest remaining processing time based schedulers for reduction of traffic congestion'', in 2013 International Conference on Connected Vehicles and Expo (ICCVE), Las Vegas, NV, USA, 2013, o. 271–276.
+		
+	\end{thebibliography}
+\end{document}

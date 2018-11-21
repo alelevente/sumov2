@@ -1,0 +1,22 @@
+\BOOKMARK [1][-]{section.1}{Motiv\341ci\363}{}% 1
+\BOOKMARK [1][-]{section.2}{Simulation of Urban MObility}{}% 2
+\BOOKMARK [1][-]{section.3}{R\351tegmodell}{}% 3
+\BOOKMARK [1][-]{section.4}{\334zenetk\374ldo rendszer}{}% 4
+\BOOKMARK [1][-]{section.5}{Az intelligens keretrendszer alapfunkci\363i}{}% 5
+\BOOKMARK [2][-]{subsection.5.1}{Csoportkezel\351s}{section.5}% 6
+\BOOKMARK [3][-]{subsubsection.5.1.1}{Markerrendszer}{subsection.5.1}% 7
+\BOOKMARK [3][-]{subsubsection.5.1.2}{Csoportform\341l\341s}{subsection.5.1}% 8
+\BOOKMARK [3][-]{subsubsection.5.1.3}{Viselked\351si szab\341lyok csoporton bel\374l}{subsection.5.1}% 9
+\BOOKMARK [2][-]{subsection.5.2}{S\341vv\341lt\341si rendszer}{section.5}% 10
+\BOOKMARK [3][-]{subsubsection.5.2.1}{Implement\341ci\363}{subsection.5.2}% 11
+\BOOKMARK [2][-]{subsection.5.3}{Csom\363ponti rendszer}{section.5}% 12
+\BOOKMARK [3][-]{subsubsection.5.3.1}{Konfliktusoszt\341lyok}{subsection.5.3}% 13
+\BOOKMARK [3][-]{subsubsection.5.3.2}{A b\355r\363, mint \374temezo}{subsection.5.3}% 14
+\BOOKMARK [3][-]{subsubsection.5.3.3}{Preempci\363 \351s megval\363s\355t\341sa}{subsection.5.3}% 15
+\BOOKMARK [1][-]{section.6}{N\351h\341ny gyakorlati p\351lda}{}% 16
+\BOOKMARK [2][-]{subsection.6.1}{B\355r\363implement\341ci\363k}{section.6}% 17
+\BOOKMARK [3][-]{subsubsection.6.1.1}{Round Robin alap\372 b\355r\363}{subsection.6.1}% 18
+\BOOKMARK [3][-]{subsubsection.6.1.2}{MDDF alap\372 \374temezo}{subsection.6.1}% 19
+\BOOKMARK [2][-]{subsection.6.2}{J\366vobeli felhaszn\341l\341si lehetos\351gek}{section.6}% 20
+\BOOKMARK [3][-]{subsubsection.6.2.1}{Megk\374l\366nb\366zteto jelz\351st haszn\341l\363 j\341rmuvek kezel\351se}{subsection.6.2}% 21
+\BOOKMARK [3][-]{subsubsection.6.2.2}{MI-beli algoritmusok haszn\341lata forgalomir\341ny\355t\341sra}{subsection.6.2}% 22

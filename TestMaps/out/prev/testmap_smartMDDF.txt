@@ -1,0 +1,6 @@
+--step-length 0.1 --lateral-resolution 0.8 -c /home/levente/Egyetem/6_felev/EFOP/TestMap/testmap.sumocfg --duration-log.statisticsMDDF.txt
+Loading configuration... done.
+Loading net-file from '/home/levente/Egyetem/6_felev/EFOP/TestMap/testmap_smart.net.xml'... done (11ms).
+Loading done.
+Simulation started with time: 0.00
+./out/bah0_smartMDDF.txt

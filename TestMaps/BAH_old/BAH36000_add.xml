@@ -1,0 +1,40 @@
+<additionals>
+    <busStop id="AlsoHegyV1" lane="-gneE83_0" startPos="512.06" endPos="542.06" lines="17 "/>
+    <busStop id="AlsoHegyV2" lane="gneE83_0" startPos="51.83" endPos="81.83" lines="17 "/>
+    <busStop id="Alsohegy1" lane="541319920#0_0" startPos="314.98" endPos="324.98" lines="212 "/>
+    <busStop id="Alsohegy2" lane="175896549_0" startPos="40.58" endPos="50.58" lines="212 "/>
+    <busStop id="BAHAE" lane="170130983_0" startPos="68.91" endPos="78.91" lines="139 140 142 212 "/>
+    <busStop id="BAHHegy1" lane="287676605#1_0" startPos="8.87" endPos="18.87" lines="110 112 8E 908 108E "/>
+    <busStop id="BAHHegy2" lane="-gneE39_0" startPos="23.66" endPos="33.66" lines="8E 908 "/>
+    <busStop id="BAHHegy3" lane="24722378#0.40_0" startPos="53.77" endPos="63.77" lines="110 112 8E 908 108E "/>
+    <busStop id="BAHV2" lane="-gneE74_0" startPos="50.98" endPos="70.98"/>
+    <busStop id="BAHVD" lane="170118728.0_0" startPos="15.08" endPos="25.08" lines="139 140 142 212 960 "/>
+    <busStop id="BAHViNy" lane="gneE74_0" startPos="20.78" endPos="40.78" lines="villamos "/>
+    <busStop id="Brezno1" lane="22804486_0" startPos="640.35" endPos="650.35" lines="8E "/>
+    <busStop id="Brezno2" lane="HegyaljaNyugatBe_0" startPos="298.12" endPos="308.12" lines="8E "/>
+    <busStop id="BudVill1" lane="24301310_0" startPos="34.21" endPos="44.21" lines="212 240 "/>
+    <busStop id="BudVill2" lane="384884559#1_0" startPos="191.38" endPos="201.38" lines="212 240 "/>
+    <busStop id="BudVillV1" lane="-gneE79_0" startPos="182.69" endPos="212.69"/>
+    <busStop id="BudVillV2" lane="gneE79_0" startPos="25.22" endPos="55.22"/>
+    <busStop id="Csorsz1" lane="53864729#0_0" startPos="63.75" endPos="73.75" lines="139 140 142 "/>
+    <busStop id="Csorsz2" lane="AlkotasBe_0" startPos="18.72" endPos="28.72" lines="139 140 142 "/>
+    <busStop id="CsorszV1" lane="AlkotasViKi_0" startPos="154.90" endPos="174.90"/>
+    <busStop id="CsorszV2" lane="AlkotasViBe_0" startPos="269.35" endPos="289.35"/>
+    <busStop id="Meszaros1" lane="gneE16_0" startPos="2.49" endPos="12.49" lines="110 112 8E 908 108E "/>
+    <busStop id="Meszaros2" lane="gneE18_0" startPos="36.82" endPos="46.82" lines="110 112 8E 908 108E "/>
+    <busStop id="Muskotaly" lane="50676959.14_0" startPos="4.99" endPos="14.99" lines="108E 139 140 142 "/>
+    <busStop id="PetoV1" lane="-gneE83_0" startPos="309.59" endPos="339.59" lines="17 "/>
+    <busStop id="PetoV2" lane="gneE83_0" startPos="223.56" endPos="253.56" lines="17 "/>
+    <busStop id="Sanc1" lane="293201860#0_0" startPos="183.63" endPos="193.63" lines="110 112 8E 908 108E "/>
+    <busStop id="Sanc2" lane="162135494#0.17_0" startPos="30.58" endPos="40.58" lines="110 112 8E 908 108E "/>
+    <busStop id="Siraly1" lane="JagelloKi_0" startPos="398.36" endPos="408.36" lines="110 112 "/>
+    <busStop id="Siraly2" lane="JagelloBe_0" startPos="80.16" endPos="90.16" lines="110 112 "/>
+    <busStop id="SzuretV1" lane="-gneE83_0" startPos="37.72" endPos="67.72" lines="17 "/>
+    <busStop id="SzuretV2" lane="gneE83_0" startPos="495.14" endPos="525.14" lines="17 "/>
+    <busStop id="TasV1" lane="VillanyiViBe_0" startPos="235.26" endPos="265.26" lines="17 "/>
+    <busStop id="TasV2" lane="VillanyiViKi_0" startPos="156.38" endPos="186.38" lines="17 "/>
+    <busStop id="Verellato1" lane="32266083#0_0" startPos="34.79" endPos="44.79" lines="212 "/>
+    <busStop id="Verellato2" lane="307214694_0" startPos="19.44" endPos="29.44" lines="212 "/>
+    <busStop id="Zolyomi1" lane="22804486_0" startPos="328.29" endPos="338.29" lines="8E 908 "/>
+    <busStop id="Zolyomi2" lane="HegyaljaNyugatBe_0" startPos="590.37" endPos="600.37" lines="8E 908 "/>
+</additionals>

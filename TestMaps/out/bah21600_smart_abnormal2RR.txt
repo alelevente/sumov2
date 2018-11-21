@@ -1,0 +1,4 @@
+--step-length 0.1 --lateral-resolution 0.8 -c /home/levente/Egyetem/7_felev/szakdoga/BAH/BAH36000_smart.sumocfg --collision.action=warn --duration-log.statisticsRR.txt
+Loading configuration... done.
+Loading net-file from '/home/levente/Egyetem/7_felev/szakdoga/BAH/BAH0_smart.net.xml'... done (17ms).
+./out/bah21600_abnormMDDF.txt

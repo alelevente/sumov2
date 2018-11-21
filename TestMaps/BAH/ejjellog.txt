@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on Tue Jun 12 15:47:12 2018 by SUMO Version 0.30.0
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="/home/levente/Egyetem/6_felev/onlab/BAH/BAH0.net.xml"/>
+        <route-files value="/home/levente/Egyetem/6_felev/onlab/BAH/BAH0.rou.xml"/>
+    </input>
+
+    <output>
+        <tripinfo-output value="ejjellog.txt"/>
+    </output>
+
+    <time>
+        <begin value="0"/>
+        <end value="500"/>
+    </time>
+
+    <processing>
+        <time-to-teleport value="-1"/>
+    </processing>
+
+    <report>
+        <verbose value="true"/>
+        <log value="/home/levente/Egyetem/6_felev/onlab/nappal.txt"/>
+        <duration-log.statistics value="true"/>
+    </report>
+
+    <emissions>
+        <device.emissions.probability value="1"/>
+    </emissions>
+
+</configuration>
+-->
+
+<tripinfos xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/tripinfo_file.xsd">
+    <tripinfo id="carflow23.0" depart="0.00" departLane="AlkotasBe_0" departPos="61.45" departSpeed="13.89" departDelay="0.00" arrival="83.00" arrivalLane="JagelloKi_0" arrivalPos="459.55" arrivalSpeed="12.98" duration="83.00" routeLength="1060.45" waitSteps="0" timeLoss="6.59" rerouteNo="1" devices="tripinfo_carflow23.0 routing_carflow23.0 emissions_carflow23.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="1561.146289" CO2_abs="176958.948249" HC_abs="11.191509" PMx_abs="2.472608" NOx_abs="66.702430" fuel_abs="76.067235" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow17.0" depart="0.00" departLane="JagelloBe_0" departPos="414.13" departSpeed="13.89" departDelay="0.00" arrival="110.00" arrivalLane="AlkotasKi_1" arrivalPos="139.14" arrivalSpeed="12.84" duration="110.00" routeLength="779.09" waitSteps="37" timeLoss="53.10" rerouteNo="1" devices="tripinfo_carflow17.0 routing_carflow17.0 emissions_carflow17.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="2693.379871" CO2_abs="171393.581429" HC_abs="16.283322" PMx_abs="2.983152" NOx_abs="69.463937" fuel_abs="73.674920" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow10.0" depart="0.00" departLane="HegyaljaNyugatBe_0" departPos="915.12" departSpeed="13.89" departDelay="0.00" arrival="112.00" arrivalLane="AlkotasKi_2" arrivalPos="139.14" arrivalSpeed="13.76" duration="112.00" routeLength="720.82" waitSteps="47" timeLoss="59.20" rerouteNo="1" devices="tripinfo_carflow10.0 routing_carflow10.0 emissions_carflow10.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="5944.180440" CO2_abs="226278.007698" HC_abs="32.327124" PMx_abs="4.130403" NOx_abs="92.837560" fuel_abs="97.269195" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow21.0" depart="0.00" departLane="AlkotasBe_2" departPos="82.09" departSpeed="13.89" departDelay="0.00" arrival="115.00" arrivalLane="HegyaljaKeletKi_1" arrivalPos="55.97" arrivalSpeed="13.72" duration="115.00" routeLength="1324.16" waitSteps="5" timeLoss="19.03" rerouteNo="1" devices="tripinfo_carflow21.0 routing_carflow21.0 emissions_carflow21.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="2625.161069" CO2_abs="236663.279976" HC_abs="17.395228" PMx_abs="3.564545" NOx_abs="91.278444" fuel_abs="101.731640" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow3.0" depart="0.00" departLane="HegyaljaKeletBe_0" departPos="78.95" departSpeed="13.89" departDelay="0.00" arrival="115.00" arrivalLane="AlkotasKi_1" arrivalPos="139.14" arrivalSpeed="13.28" duration="115.00" routeLength="1449.12" waitSteps="0" timeLoss="10.55" rerouteNo="1" devices="tripinfo_carflow3.0 routing_carflow3.0 emissions_carflow3.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="2334.880852" CO2_abs="232263.748853" HC_abs="15.984791" PMx_abs="3.394099" NOx_abs="88.777097" fuel_abs="99.840436" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow27.0" depart="0.00" departLane="AlkotasBe_2" departPos="40.81" departSpeed="13.89" departDelay="0.00" arrival="134.00" arrivalLane="KarolinaKi_1" arrivalPos="90.50" arrivalSpeed="13.84" duration="134.00" routeLength="1781.24" waitSteps="0" timeLoss="5.46" rerouteNo="1" devices="tripinfo_carflow27.0 routing_carflow27.0 emissions_carflow27.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="1615.946145" CO2_abs="244361.468276" HC_abs="12.973490" PMx_abs="3.145057" NOx_abs="89.541418" fuel_abs="105.040789" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow7.0" depart="0.00" departLane="HegyaljaNyugatBe_0" departPos="935.76" departSpeed="13.89" departDelay="0.00" arrival="136.00" arrivalLane="HegyaljaKeletKi_1" arrivalPos="55.97" arrivalSpeed="13.76" duration="136.00" routeLength="1098.41" waitSteps="41" timeLoss="56.74" rerouteNo="1" devices="tripinfo_carflow7.0 routing_carflow7.0 emissions_carflow7.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="4413.893181" CO2_abs="247536.254015" HC_abs="25.844250" PMx_abs="4.090462" NOx_abs="98.243676" fuel_abs="106.406314" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow14.0" depart="0.00" departLane="JagelloBe_0" departPos="455.41" departSpeed="13.89" departDelay="0.00" arrival="137.00" arrivalLane="HegyaljaKeletKi_2" arrivalPos="55.97" arrivalSpeed="13.63" duration="137.00" routeLength="1136.04" waitSteps="32" timeLoss="54.21" rerouteNo="1" devices="tripinfo_carflow14.0 routing_carflow14.0 emissions_carflow14.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="5782.143663" CO2_abs="287924.859559" HC_abs="33.050048" PMx_abs="5.115027" NOx_abs="117.317287" fuel_abs="123.767754" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow41.0" depart="1.00" departLane="BudaorsiBe_1" departPos="8.72" departSpeed="16.67" departDelay="1.00" arrival="142.00" arrivalLane="KarolinaKi_1" arrivalPos="90.50" arrivalSpeed="13.51" duration="141.00" routeLength="1806.26" waitSteps="0" timeLoss="10.57" rerouteNo="1" devices="tripinfo_carflow41.0 routing_carflow41.0 emissions_carflow41.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="2407.391452" CO2_abs="284050.734669" HC_abs="17.462890" PMx_abs="3.882203" NOx_abs="106.258852" fuel_abs="122.101572" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow20.0" depart="0.00" departLane="JagelloBe_0" departPos="352.21" departSpeed="13.89" departDelay="0.00" arrival="150.00" arrivalLane="KarolinaKi_1" arrivalPos="90.50" arrivalSpeed="13.36" duration="150.00" routeLength="1587.34" waitSteps="20" timeLoss="34.80" rerouteNo="1" devices="tripinfo_carflow20.0 routing_carflow20.0 emissions_carflow20.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="2568.844803" CO2_abs="247361.393517" HC_abs="17.401403" PMx_abs="3.599458" NOx_abs="94.276778" fuel_abs="106.330393" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow44.0" depart="0.00" departLane="KarolinaBe_0" departPos="36.12" departSpeed="13.89" departDelay="0.00" arrival="150.00" arrivalLane="JagelloKi_0" arrivalPos="459.55" arrivalSpeed="13.83" duration="150.00" routeLength="1920.18" waitSteps="0" timeLoss="10.95" rerouteNo="1" devices="tripinfo_carflow44.0 routing_carflow44.0 emissions_carflow44.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="2578.530549" CO2_abs="292771.877775" HC_abs="18.479546" PMx_abs="4.144840" NOx_abs="110.596603" fuel_abs="125.850279" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow26.0" depart="0.00" departLane="AlkotasBe_1" departPos="82.09" departSpeed="13.89" departDelay="0.00" arrival="151.00" arrivalLane="BudaorsiKi_0" arrivalPos="614.60" arrivalSpeed="13.83" duration="151.00" routeLength="2016.15" waitSteps="0" timeLoss="5.60" rerouteNo="1" devices="tripinfo_carflow26.0 routing_carflow26.0 emissions_carflow26.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="1572.556867" CO2_abs="265512.952183" HC_abs="13.192213" PMx_abs="3.251404" NOx_abs="95.920156" fuel_abs="114.133048" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow15.0" depart="0.00" departLane="JagelloBe_0" departPos="434.77" departSpeed="13.89" departDelay="0.00" arrival="155.00" arrivalLane="HegyaljaNyugatKi_0" arrivalPos="401.54" arrivalSpeed="12.85" duration="155.00" routeLength="1662.69" waitSteps="25" timeLoss="35.07" rerouteNo="1" devices="tripinfo_carflow15.0 routing_carflow15.0 emissions_carflow15.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="3343.620866" CO2_abs="270920.393338" HC_abs="21.438763" PMx_abs="3.957492" NOx_abs="103.175516" fuel_abs="116.457873" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow2.0" depart="0.00" departLane="HegyaljaKeletBe_0" departPos="99.59" departSpeed="13.89" departDelay="0.00" arrival="160.00" arrivalLane="JagelloKi_0" arrivalPos="459.55" arrivalSpeed="13.74" duration="160.00" routeLength="1675.06" waitSteps="24" timeLoss="38.59" rerouteNo="1" devices="tripinfo_carflow2.0 routing_carflow2.0 emissions_carflow2.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="3963.207400" CO2_abs="308023.200338" HC_abs="25.198505" PMx_abs="4.871749" NOx_abs="120.656996" fuel_abs="132.406368" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow38.0" depart="0.00" departLane="BudaorsiBe_1" departPos="16.85" departSpeed="16.67" departDelay="0.00" arrival="170.00" arrivalLane="AlkotasKi_2" arrivalPos="139.14" arrivalSpeed="13.35" duration="170.00" routeLength="1808.24" waitSteps="15" timeLoss="39.64" rerouteNo="1" devices="tripinfo_carflow38.0 routing_carflow38.0 emissions_carflow38.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="4045.337299" CO2_abs="337325.190307" HC_abs="26.153710" PMx_abs="5.066515" NOx_abs="130.114114" fuel_abs="145.002252" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow45.0" depart="0.00" departLane="KarolinaBe_0" departPos="15.48" departSpeed="13.89" departDelay="0.00" arrival="171.00" arrivalLane="AlkotasKi_1" arrivalPos="139.14" arrivalSpeed="13.44" duration="171.00" routeLength="1802.68" waitSteps="21" timeLoss="40.32" rerouteNo="1" devices="tripinfo_carflow45.0 routing_carflow45.0 emissions_carflow45.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="3242.319459" CO2_abs="309262.492077" HC_abs="21.859579" PMx_abs="4.344133" NOx_abs="116.899654" fuel_abs="132.939365" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow19.0" depart="0.00" departLane="JagelloBe_0" departPos="372.85" departSpeed="13.89" departDelay="0.00" arrival="174.00" arrivalLane="BudaorsiKi_0" arrivalPos="614.60" arrivalSpeed="13.55" duration="174.00" routeLength="1831.98" waitSteps="21" timeLoss="41.51" rerouteNo="1" devices="tripinfo_carflow19.0 routing_carflow19.0 emissions_carflow19.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="3461.182261" CO2_abs="327460.917386" HC_abs="23.308570" PMx_abs="4.643455" NOx_abs="123.973389" fuel_abs="140.762099" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow3.1" depart="60.00" departLane="HegyaljaKeletBe_0" departPos="99.59" departSpeed="13.89" departDelay="0.00" arrival="181.00" arrivalLane="AlkotasKi_1" arrivalPos="139.14" arrivalSpeed="13.45" duration="121.00" routeLength="1428.48" waitSteps="1" timeLoss="17.75" rerouteNo="1" devices="tripinfo_carflow3.1 routing_carflow3.1 emissions_carflow3.1" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="3223.111584" CO2_abs="256493.024022" HC_abs="20.630496" PMx_abs="4.059858" NOx_abs="100.704908" fuel_abs="110.255594" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow22.0" depart="0.00" departLane="AlkotasBe_0" departPos="82.09" departSpeed="13.89" departDelay="0.00" arrival="184.00" arrivalLane="HegyaljaNyugatKi_0" arrivalPos="401.54" arrivalSpeed="13.11" duration="184.00" routeLength="2096.08" waitSteps="14" timeLoss="32.78" rerouteNo="1" devices="tripinfo_carflow22.0 routing_carflow22.0 emissions_carflow22.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="3373.879516" CO2_abs="335765.967132" HC_abs="23.109589" PMx_abs="4.783896" NOx_abs="127.371133" fuel_abs="144.331905" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow42.0" depart="0.00" departLane="KarolinaBe_0" departPos="77.40" departSpeed="13.89" departDelay="0.00" arrival="192.00" arrivalLane="HegyaljaKeletKi_1" arrivalPos="55.97" arrivalSpeed="13.04" duration="192.00" routeLength="1466.48" waitSteps="67" timeLoss="86.09" rerouteNo="1" devices="tripinfo_carflow42.0 routing_carflow42.0 emissions_carflow42.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="7005.903818" CO2_abs="337964.468250" HC_abs="39.675626" PMx_abs="5.585354" NOx_abs="134.118583" fuel_abs="145.278756" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow6.0" depart="0.00" departLane="HegyaljaKeletBe_1" departPos="99.59" departSpeed="13.89" departDelay="0.00" arrival="193.00" arrivalLane="KarolinaKi_1" arrivalPos="90.50" arrivalSpeed="13.55" duration="193.00" routeLength="1817.89" waitSteps="41" timeLoss="61.95" rerouteNo="1" devices="tripinfo_carflow6.0 routing_carflow6.0 emissions_carflow6.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="5861.250756" CO2_abs="350405.657559" HC_abs="34.767199" PMx_abs="5.621872" NOx_abs="137.570566" fuel_abs="150.625874" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow28.0" depart="0.00" departLane="VillanyiBe_0" departPos="598.48" departSpeed="13.89" departDelay="0.00" arrival="194.00" arrivalLane="HegyaljaKeletKi_1" arrivalPos="55.97" arrivalSpeed="13.20" duration="194.00" routeLength="1504.74" waitSteps="66" timeLoss="84.97" rerouteNo="1" devices="tripinfo_carflow28.0 routing_carflow28.0 emissions_carflow28.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="9055.123981" CO2_abs="379400.229512" HC_abs="50.042266" PMx_abs="6.670476" NOx_abs="153.524314" fuel_abs="163.090874" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow37.0" depart="0.00" departLane="BudaorsiBe_0" departPos="16.85" departSpeed="16.67" departDelay="0.00" arrival="200.00" arrivalLane="JagelloKi_0" arrivalPos="459.55" arrivalSpeed="13.66" duration="200.00" routeLength="1946.38" waitSteps="36" timeLoss="59.32" rerouteNo="1" devices="tripinfo_carflow37.0 routing_carflow37.0 emissions_carflow37.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="5011.854229" CO2_abs="380793.665920" HC_abs="31.658576" PMx_abs="6.087131" NOx_abs="149.710298" fuel_abs="163.687348" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow35.0" depart="0.00" departLane="BudaorsiBe_0" departPos="48.61" departSpeed="13.89" departDelay="0.00" arrival="203.00" arrivalLane="HegyaljaKeletKi_2" arrivalPos="55.97" arrivalSpeed="13.28" duration="203.00" routeLength="2158.18" waitSteps="24" timeLoss="46.84" rerouteNo="1" devices="tripinfo_carflow35.0 routing_carflow35.0 emissions_carflow35.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="4885.718059" CO2_abs="425413.334356" HC_abs="32.107020" PMx_abs="6.502273" NOx_abs="165.016098" fuel_abs="182.867367" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow13.0" depart="0.00" departLane="HegyaljaNyugatBe_0" departPos="853.20" departSpeed="13.89" departDelay="0.00" arrival="204.00" arrivalLane="KarolinaKi_1" arrivalPos="90.50" arrivalSpeed="13.61" duration="204.00" routeLength="1529.07" waitSteps="74" timeLoss="93.61" rerouteNo="1" devices="tripinfo_carflow13.0 routing_carflow13.0 emissions_carflow13.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="8767.653632" CO2_abs="370647.984333" HC_abs="48.514365" PMx_abs="6.517760" NOx_abs="149.886754" fuel_abs="159.328528" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow14.1" depart="100.00" departLane="JagelloBe_0" departPos="455.41" departSpeed="13.89" departDelay="0.00" arrival="205.00" arrivalLane="HegyaljaKeletKi_1" arrivalPos="55.97" arrivalSpeed="13.47" duration="105.00" routeLength="1136.04" waitSteps="13" timeLoss="22.96" rerouteNo="1" devices="tripinfo_carflow14.1 routing_carflow14.1 emissions_carflow14.1" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="1915.971688" CO2_abs="189163.263422" HC_abs="13.051383" PMx_abs="2.751375" NOx_abs="72.070555" fuel_abs="81.313388" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow25.0" depart="0.00" departLane="AlkotasBe_2" departPos="61.45" departSpeed="13.89" departDelay="0.00" arrival="209.00" arrivalLane="VillanyiKi_0" arrivalPos="613.00" arrivalSpeed="13.65" duration="209.00" routeLength="2354.91" waitSteps="26" timeLoss="39.13" rerouteNo="1" devices="tripinfo_carflow25.0 routing_carflow25.0 emissions_carflow25.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="4473.485573" CO2_abs="362114.867382" HC_abs="28.708314" PMx_abs="5.338547" NOx_abs="138.195775" fuel_abs="155.658677" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow39.0" depart="1.00" departLane="BudaorsiBe_0" departPos="9.90" departSpeed="16.67" departDelay="1.00" arrival="211.00" arrivalLane="VillanyiKi_0" arrivalPos="613.00" arrivalSpeed="12.86" duration="210.00" routeLength="2399.39" waitSteps="17" timeLoss="37.23" rerouteNo="1" devices="tripinfo_carflow39.0 routing_carflow39.0 emissions_carflow39.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="4013.775625" CO2_abs="400073.172121" HC_abs="27.428758" PMx_abs="5.710992" NOx_abs="151.812307" fuel_abs="171.974879" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow2.1" depart="60.00" departLane="HegyaljaKeletBe_0" departPos="120.23" departSpeed="13.89" departDelay="0.00" arrival="212.00" arrivalLane="JagelloKi_0" arrivalPos="459.55" arrivalSpeed="12.97" duration="152.00" routeLength="1654.42" waitSteps="11" timeLoss="32.24" rerouteNo="1" devices="tripinfo_carflow2.1 routing_carflow2.1 emissions_carflow2.1" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="4057.882889" CO2_abs="329165.549897" HC_abs="26.043871" PMx_abs="5.072986" NOx_abs="128.111543" fuel_abs="141.494623" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow31.0" depart="0.00" departLane="VillanyiBe_0" departPos="536.56" departSpeed="13.89" departDelay="0.00" arrival="222.00" arrivalLane="AlkotasKi_1" arrivalPos="139.14" arrivalSpeed="13.55" duration="222.00" routeLength="1846.03" waitSteps="63" timeLoss="88.15" rerouteNo="1" devices="tripinfo_carflow31.0 routing_carflow31.0 emissions_carflow31.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="5867.602540" CO2_abs="397773.814198" HC_abs="35.851490" PMx_abs="6.190161" NOx_abs="154.981106" fuel_abs="170.987228" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow35.1" depart="30.00" departLane="BudaorsiBe_0" departPos="48.61" departSpeed="13.89" departDelay="0.00" arrival="226.00" arrivalLane="HegyaljaKeletKi_1" arrivalPos="55.97" arrivalSpeed="13.22" duration="196.00" routeLength="2158.18" waitSteps="10" timeLoss="40.51" rerouteNo="1" devices="tripinfo_carflow35.1 routing_carflow35.1 emissions_carflow35.1" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="5100.921629" CO2_abs="406563.011080" HC_abs="32.600022" PMx_abs="6.246608" NOx_abs="158.012631" fuel_abs="174.764704" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow12.0" depart="0.00" departLane="HegyaljaNyugatBe_0" departPos="873.84" departSpeed="13.89" departDelay="0.00" arrival="226.00" arrivalLane="BudaorsiKi_0" arrivalPos="614.60" arrivalSpeed="12.94" duration="226.00" routeLength="1773.71" waitSteps="78" timeLoss="97.70" rerouteNo="1" devices="tripinfo_carflow12.0 routing_carflow12.0 emissions_carflow12.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="6859.570570" CO2_abs="355231.425527" HC_abs="39.420092" PMx_abs="5.868121" NOx_abs="140.696224" fuel_abs="152.700797" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow19.1" depart="85.00" departLane="JagelloBe_0" departPos="455.41" departSpeed="13.89" departDelay="-0.71" arrival="228.00" arrivalLane="BudaorsiKi_0" arrivalPos="614.60" arrivalSpeed="13.85" duration="143.00" routeLength="1749.42" waitSteps="4" timeLoss="16.41" rerouteNo="1" devices="tripinfo_carflow19.1 routing_carflow19.1 emissions_carflow19.1" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="2746.106918" CO2_abs="290607.159031" HC_abs="19.191311" PMx_abs="4.111088" NOx_abs="109.842202" fuel_abs="124.919915" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow7.1" depart="120.00" departLane="HegyaljaNyugatBe_0" departPos="935.76" departSpeed="13.89" departDelay="0.00" arrival="230.00" arrivalLane="HegyaljaKeletKi_1" arrivalPos="55.97" arrivalSpeed="12.89" duration="110.00" routeLength="1098.41" waitSteps="21" timeLoss="30.45" rerouteNo="1" devices="tripinfo_carflow7.1 routing_carflow7.1 emissions_carflow7.1" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="1750.334168" CO2_abs="164794.734004" HC_abs="11.783888" PMx_abs="2.453137" NOx_abs="63.276292" fuel_abs="70.838353" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow4.0" depart="0.00" departLane="HegyaljaKeletBe_1" departPos="120.23" departSpeed="13.89" departDelay="0.00" arrival="235.00" arrivalLane="VillanyiKi_0" arrivalPos="613.00" arrivalSpeed="13.50" duration="235.00" routeLength="2378.21" waitSteps="45" timeLoss="63.48" rerouteNo="1" devices="tripinfo_carflow4.0 routing_carflow4.0 emissions_carflow4.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="5131.666295" CO2_abs="408383.777344" HC_abs="32.766591" PMx_abs="5.936151" NOx_abs="155.492078" fuel_abs="175.548016" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow5.0" depart="0.00" departLane="HegyaljaKeletBe_0" departPos="58.31" departSpeed="13.89" departDelay="0.00" arrival="243.00" arrivalLane="BudaorsiKi_0" arrivalPos="614.60" arrivalSpeed="13.81" duration="243.00" routeLength="2661.54" waitSteps="33" timeLoss="50.92" rerouteNo="1" devices="tripinfo_carflow5.0 routing_carflow5.0 emissions_carflow5.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="5791.981672" CO2_abs="444872.469575" HC_abs="36.655380" PMx_abs="6.622711" NOx_abs="170.614272" fuel_abs="191.232975" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow5.1" depart="20.00" departLane="HegyaljaKeletBe_0" departPos="120.23" departSpeed="13.89" departDelay="0.00" arrival="245.00" arrivalLane="BudaorsiKi_0" arrivalPos="614.60" arrivalSpeed="12.86" duration="225.00" routeLength="2599.62" waitSteps="20" timeLoss="37.23" rerouteNo="1" devices="tripinfo_carflow5.1 routing_carflow5.1 emissions_carflow5.1" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="3710.534914" CO2_abs="404580.592367" HC_abs="26.176826" PMx_abs="5.660260" NOx_abs="152.320110" fuel_abs="173.912363" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow1.0" depart="0.00" departLane="HegyaljaKeletBe_0" departPos="120.23" departSpeed="13.89" departDelay="0.00" arrival="247.00" arrivalLane="HegyaljaNyugatKi_0" arrivalPos="401.54" arrivalSpeed="12.90" duration="247.00" routeLength="2710.69" waitSteps="25" timeLoss="51.09" rerouteNo="1" devices="tripinfo_carflow1.0 routing_carflow1.0 emissions_carflow1.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="6127.037149" CO2_abs="488660.333107" HC_abs="39.126542" PMx_abs="7.346488" NOx_abs="188.293774" fuel_abs="210.055265" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow3.2" depart="120.00" departLane="HegyaljaKeletBe_0" departPos="78.95" departSpeed="13.89" departDelay="0.00" arrival="248.00" arrivalLane="AlkotasKi_1" arrivalPos="139.14" arrivalSpeed="13.35" duration="128.00" routeLength="1449.12" waitSteps="8" timeLoss="22.87" rerouteNo="1" devices="tripinfo_carflow3.2 routing_carflow3.2 emissions_carflow3.2" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="3069.395329" CO2_abs="264676.793945" HC_abs="20.123010" PMx_abs="4.046988" NOx_abs="102.736917" fuel_abs="113.773483" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow26.1" depart="60.00" departLane="AlkotasBe_0" departPos="82.09" departSpeed="13.89" departDelay="0.00" arrival="249.00" arrivalLane="BudaorsiKi_0" arrivalPos="614.60" arrivalSpeed="13.56" duration="189.00" routeLength="2016.15" waitSteps="33" timeLoss="43.30" rerouteNo="1" devices="tripinfo_carflow26.1 routing_carflow26.1 emissions_carflow26.1" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="4660.282260" CO2_abs="332727.331280" HC_abs="28.800921" PMx_abs="4.795235" NOx_abs="126.038771" fuel_abs="143.026806" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow30.0" depart="0.00" departLane="VillanyiBe_0" departPos="557.20" departSpeed="13.89" departDelay="0.00" arrival="253.00" arrivalLane="JagelloKi_0" arrivalPos="459.55" arrivalSpeed="12.94" duration="253.00" routeLength="1963.53" waitSteps="84" timeLoss="110.92" rerouteNo="1" devices="tripinfo_carflow30.0 routing_carflow30.0 emissions_carflow30.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="10338.077920" CO2_abs="465280.822351" HC_abs="57.876410" PMx_abs="8.182322" NOx_abs="188.416045" fuel_abs="200.007257" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow2.2" depart="120.00" departLane="HegyaljaKeletBe_0" departPos="99.59" departSpeed="13.89" departDelay="0.00" arrival="265.00" arrivalLane="JagelloKi_0" arrivalPos="459.55" arrivalSpeed="13.54" duration="145.00" routeLength="1675.06" waitSteps="6" timeLoss="24.02" rerouteNo="1" devices="tripinfo_carflow2.2 routing_carflow2.2 emissions_carflow2.2" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="3742.681576" CO2_abs="317574.160021" HC_abs="24.363758" PMx_abs="4.925638" NOx_abs="123.765849" fuel_abs="136.511775" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow10.1" depart="150.00" departLane="HegyaljaNyugatBe_0" departPos="935.76" departSpeed="13.89" departDelay="0.00" arrival="267.00" arrivalLane="AlkotasKi_1" arrivalPos="139.14" arrivalSpeed="13.07" duration="117.00" routeLength="700.18" waitSteps="50" timeLoss="65.75" rerouteNo="1" devices="tripinfo_carflow10.1 routing_carflow10.1 emissions_carflow10.1" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="3431.594526" CO2_abs="177344.555214" HC_abs="19.753788" PMx_abs="3.066874" NOx_abs="71.825892" fuel_abs="76.233567" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow18.0" depart="0.00" departLane="JagelloBe_0" departPos="393.49" departSpeed="13.89" departDelay="0.00" arrival="268.00" arrivalLane="VillanyiKi_0" arrivalPos="613.00" arrivalSpeed="13.24" duration="268.00" routeLength="2140.37" waitSteps="79" timeLoss="113.05" rerouteNo="1" devices="tripinfo_carflow18.0 routing_carflow18.0 emissions_carflow18.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="7600.784750" CO2_abs="472077.016477" HC_abs="45.521551" PMx_abs="7.529893" NOx_abs="185.453866" fuel_abs="202.927477" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow11.0" depart="0.00" departLane="HegyaljaNyugatBe_0" departPos="894.48" departSpeed="13.89" departDelay="0.00" arrival="269.00" arrivalLane="VillanyiKi_0" arrivalPos="613.00" arrivalSpeed="13.69" duration="269.00" routeLength="2082.10" waitSteps="92" timeLoss="118.92" rerouteNo="1" devices="tripinfo_carflow11.0 routing_carflow11.0 emissions_carflow11.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="10242.238027" CO2_abs="484779.333075" HC_abs="57.864165" PMx_abs="8.278782" NOx_abs="194.240796" fuel_abs="208.388929" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow38.1" depart="120.00" departLane="BudaorsiBe_1" departPos="48.61" departSpeed="13.89" departDelay="0.00" arrival="273.00" arrivalLane="AlkotasKi_1" arrivalPos="139.14" arrivalSpeed="13.40" duration="153.00" routeLength="1776.48" waitSteps="11" timeLoss="24.92" rerouteNo="1" devices="tripinfo_carflow38.1 routing_carflow38.1 emissions_carflow38.1" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="2957.624043" CO2_abs="303301.713485" HC_abs="20.379473" PMx_abs="4.391414" NOx_abs="115.355399" fuel_abs="130.376677" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow5.4" depart="80.00" departLane="HegyaljaKeletBe_0" departPos="120.23" departSpeed="13.89" departDelay="0.00" arrival="278.00" arrivalLane="BudaorsiKi_0" arrivalPos="614.60" arrivalSpeed="13.46" duration="198.00" routeLength="2590.32" waitSteps="0" timeLoss="10.77" rerouteNo="1" devices="tripinfo_carflow5.4 routing_carflow5.4 emissions_carflow5.4" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="2657.661084" CO2_abs="368604.358797" HC_abs="20.560226" PMx_abs="4.781870" NOx_abs="135.600705" fuel_abs="158.447718" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow23.1" depart="200.00" departLane="AlkotasBe_0" departPos="82.09" departSpeed="13.89" departDelay="0.00" arrival="283.00" arrivalLane="JagelloKi_0" arrivalPos="459.55" arrivalSpeed="13.04" duration="83.00" routeLength="1039.81" waitSteps="0" timeLoss="7.88" rerouteNo="1" devices="tripinfo_carflow23.1 routing_carflow23.1 emissions_carflow23.1" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="1816.378197" CO2_abs="175141.770554" HC_abs="12.317051" PMx_abs="2.608974" NOx_abs="67.340841" fuel_abs="75.286060" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow3.3" depart="180.00" departLane="HegyaljaKeletBe_0" departPos="99.59" departSpeed="13.89" departDelay="0.00" arrival="291.00" arrivalLane="AlkotasKi_1" arrivalPos="139.14" arrivalSpeed="13.28" duration="111.00" routeLength="1428.48" waitSteps="0" timeLoss="7.86" rerouteNo="1" devices="tripinfo_carflow3.3 routing_carflow3.3 emissions_carflow3.3" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="1866.317640" CO2_abs="227115.333052" HC_abs="13.699150" PMx_abs="3.094480" NOx_abs="84.855677" fuel_abs="97.627385" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow5.2" depart="40.00" departLane="HegyaljaKeletBe_0" departPos="120.23" departSpeed="13.89" departDelay="0.00" arrival="295.00" arrivalLane="BudaorsiKi_0" arrivalPos="614.60" arrivalSpeed="12.82" duration="255.00" routeLength="2599.62" waitSteps="44" timeLoss="67.31" rerouteNo="1" devices="tripinfo_carflow5.2 routing_carflow5.2 emissions_carflow5.2" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="8126.837612" CO2_abs="505723.455885" HC_abs="48.584776" PMx_abs="7.758518" NOx_abs="195.611198" fuel_abs="217.391324" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow5.5" depart="100.00" departLane="HegyaljaKeletBe_0" departPos="120.23" departSpeed="13.89" departDelay="0.00" arrival="297.00" arrivalLane="BudaorsiKi_1" arrivalPos="614.60" arrivalSpeed="13.82" duration="197.00" routeLength="2590.32" waitSteps="0" timeLoss="10.22" rerouteNo="1" devices="tripinfo_carflow5.5 routing_carflow5.5 emissions_carflow5.5" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="2753.474789" CO2_abs="377820.581857" HC_abs="21.164321" PMx_abs="4.961258" NOx_abs="139.378712" fuel_abs="162.409313" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow5.3" depart="60.00" departLane="HegyaljaKeletBe_0" departPos="78.95" departSpeed="13.89" departDelay="0.00" arrival="297.00" arrivalLane="BudaorsiKi_0" arrivalPos="614.60" arrivalSpeed="13.60" duration="237.00" routeLength="2640.90" waitSteps="21" timeLoss="46.28" rerouteNo="1" devices="tripinfo_carflow5.3 routing_carflow5.3 emissions_carflow5.3" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="4637.841452" CO2_abs="442526.992861" HC_abs="31.292646" PMx_abs="6.303137" NOx_abs="167.778543" fuel_abs="190.224225" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow43.0" depart="0.00" departLane="KarolinaBe_0" departPos="56.76" departSpeed="13.89" departDelay="0.00" arrival="310.00" arrivalLane="HegyaljaNyugatKi_0" arrivalPos="401.54" arrivalSpeed="13.17" duration="310.00" routeLength="2955.81" waitSteps="67" timeLoss="96.62" rerouteNo="1" devices="tripinfo_carflow43.0 routing_carflow43.0 emissions_carflow43.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="11001.646957" CO2_abs="624690.882402" HC_abs="64.518724" PMx_abs="10.082056" NOx_abs="245.817057" fuel_abs="268.530880" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow36.0" depart="0.00" departLane="BudaorsiBe_1" departPos="48.61" departSpeed="13.89" departDelay="0.00" arrival="313.00" arrivalLane="HegyaljaNyugatKi_0" arrivalPos="401.54" arrivalSpeed="13.25" duration="313.00" routeLength="2970.89" waitSteps="65" timeLoss="98.92" rerouteNo="1" devices="tripinfo_carflow36.0 routing_carflow36.0 emissions_carflow36.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="7163.229871" CO2_abs="566029.665133" HC_abs="45.626533" PMx_abs="8.545709" NOx_abs="218.512777" fuel_abs="243.313188" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow35.2" depart="60.00" departLane="BudaorsiBe_0" departPos="48.61" departSpeed="13.89" departDelay="0.00" arrival="314.00" arrivalLane="HegyaljaKeletKi_1" arrivalPos="55.97" arrivalSpeed="13.23" duration="254.00" routeLength="2158.18" waitSteps="73" timeLoss="98.17" rerouteNo="1" devices="tripinfo_carflow35.2 routing_carflow35.2 emissions_carflow35.2" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="7829.313314" CO2_abs="468669.209846" HC_abs="46.459395" PMx_abs="7.535215" NOx_abs="184.285709" fuel_abs="201.462762" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow35.3" depart="90.00" departLane="BudaorsiBe_0" departPos="48.61" departSpeed="13.89" departDelay="0.00" arrival="314.00" arrivalLane="HegyaljaKeletKi_2" arrivalPos="55.97" arrivalSpeed="13.67" duration="224.00" routeLength="2158.18" waitSteps="36" timeLoss="68.31" rerouteNo="1" devices="tripinfo_carflow35.3 routing_carflow35.3 emissions_carflow35.3" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="6129.028223" CO2_abs="438373.056256" HC_abs="38.043728" PMx_abs="6.874961" NOx_abs="171.395163" fuel_abs="188.438850" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow35.4" depart="120.00" departLane="BudaorsiBe_0" departPos="48.61" departSpeed="13.89" departDelay="0.00" arrival="316.00" arrivalLane="HegyaljaKeletKi_1" arrivalPos="55.97" arrivalSpeed="13.89" duration="196.00" routeLength="2158.18" waitSteps="14" timeLoss="40.13" rerouteNo="1" devices="tripinfo_carflow35.4 routing_carflow35.4 emissions_carflow35.4" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="5021.934145" CO2_abs="413872.180106" HC_abs="32.425982" PMx_abs="6.340603" NOx_abs="160.647674" fuel_abs="177.906509" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow35.5" depart="150.00" departLane="BudaorsiBe_0" departPos="48.61" departSpeed="13.89" departDelay="0.00" arrival="316.00" arrivalLane="HegyaljaKeletKi_2" arrivalPos="55.97" arrivalSpeed="13.42" duration="166.00" routeLength="2187.35" waitSteps="0" timeLoss="8.00" rerouteNo="1" devices="tripinfo_carflow35.5 routing_carflow35.5 emissions_carflow35.5" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="2099.548344" CO2_abs="311822.556242" HC_abs="16.718210" PMx_abs="3.992127" NOx_abs="114.223713" fuel_abs="134.039548" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow2.3" depart="180.00" departLane="HegyaljaKeletBe_0" departPos="120.23" departSpeed="13.89" departDelay="0.00" arrival="317.00" arrivalLane="JagelloKi_0" arrivalPos="459.55" arrivalSpeed="13.43" duration="137.00" routeLength="1654.42" waitSteps="0" timeLoss="17.08" rerouteNo="1" devices="tripinfo_carflow2.3 routing_carflow2.3 emissions_carflow2.3" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="3338.037184" CO2_abs="309387.469988" HC_abs="22.351448" PMx_abs="4.614991" NOx_abs="119.089697" fuel_abs="132.992717" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow21.1" depart="200.00" departLane="AlkotasBe_2" departPos="82.09" departSpeed="13.89" departDelay="0.00" arrival="320.00" arrivalLane="HegyaljaKeletKi_1" arrivalPos="55.97" arrivalSpeed="13.09" duration="120.00" routeLength="1324.16" waitSteps="13" timeLoss="24.38" rerouteNo="1" devices="tripinfo_carflow21.1 routing_carflow21.1 emissions_carflow21.1" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="2012.096493" CO2_abs="208166.373820" HC_abs="13.964196" PMx_abs="2.891454" NOx_abs="78.229929" fuel_abs="89.482190" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow12.1" depart="120.00" departLane="HegyaljaNyugatBe_0" departPos="915.12" departSpeed="13.89" departDelay="0.00" arrival="328.00" arrivalLane="BudaorsiKi_0" arrivalPos="614.60" arrivalSpeed="13.29" duration="208.00" routeLength="1732.43" waitSteps="65" timeLoss="82.92" rerouteNo="1" devices="tripinfo_carflow12.1 routing_carflow12.1 emissions_carflow12.1" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="8433.652806" CO2_abs="376413.273311" HC_abs="47.159236" PMx_abs="6.512559" NOx_abs="151.246481" fuel_abs="161.806620" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow46.0" depart="1.00" departLane="KarolinaBe_0" departPos="8.60" departSpeed="13.89" departDelay="1.00" arrival="331.00" arrivalLane="VillanyiKi_0" arrivalPos="613.00" arrivalSpeed="13.14" duration="330.00" routeLength="3431.91" waitSteps="52" timeLoss="82.67" rerouteNo="1" devices="tripinfo_carflow46.0 routing_carflow46.0 emissions_carflow46.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="7059.657271" CO2_abs="622576.158709" HC_abs="46.548471" PMx_abs="9.328389" NOx_abs="239.554824" fuel_abs="267.619687" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow19.2" depart="171.00" departLane="JagelloBe_0" departPos="455.41" departSpeed="13.89" departDelay="-0.43" arrival="334.00" arrivalLane="BudaorsiKi_0" arrivalPos="614.60" arrivalSpeed="13.17" duration="163.00" routeLength="1749.42" waitSteps="25" timeLoss="36.46" rerouteNo="1" devices="tripinfo_carflow19.2 routing_carflow19.2 emissions_carflow19.2" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="2891.955092" CO2_abs="266378.777587" HC_abs="19.336520" PMx_abs="3.908926" NOx_abs="101.682650" fuel_abs="114.505244" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow14.2" depart="200.00" departLane="JagelloBe_0" departPos="455.41" departSpeed="13.89" departDelay="0.00" arrival="335.00" arrivalLane="HegyaljaKeletKi_1" arrivalPos="55.97" arrivalSpeed="13.14" duration="135.00" routeLength="1136.04" waitSteps="36" timeLoss="52.29" rerouteNo="1" devices="tripinfo_carflow14.2 routing_carflow14.2 emissions_carflow14.2" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="3377.738619" CO2_abs="229233.352929" HC_abs="20.701962" PMx_abs="3.661720" NOx_abs="90.141993" fuel_abs="98.538189" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow5.6" depart="120.00" departLane="HegyaljaKeletBe_0" departPos="58.31" departSpeed="13.89" departDelay="0.00" arrival="335.00" arrivalLane="BudaorsiKi_1" arrivalPos="614.60" arrivalSpeed="12.95" duration="215.00" routeLength="2652.24" waitSteps="4" timeLoss="23.65" rerouteNo="1" devices="tripinfo_carflow5.6 routing_carflow5.6 emissions_carflow5.6" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="3880.131720" CO2_abs="415210.180302" HC_abs="27.199971" PMx_abs="5.747116" NOx_abs="155.979965" fuel_abs="178.481735" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow7.2" depart="240.00" departLane="HegyaljaNyugatBe_0" departPos="935.76" departSpeed="13.89" departDelay="0.00" arrival="336.00" arrivalLane="HegyaljaKeletKi_1" arrivalPos="55.97" arrivalSpeed="12.92" duration="96.00" routeLength="1098.41" waitSteps="7" timeLoss="16.84" rerouteNo="1" devices="tripinfo_carflow7.2 routing_carflow7.2 emissions_carflow7.2" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="1834.989432" CO2_abs="182280.308098" HC_abs="12.526849" PMx_abs="2.519397" NOx_abs="68.469597" fuel_abs="78.354903" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow26.2" depart="120.00" departLane="AlkotasBe_0" departPos="82.09" departSpeed="13.89" departDelay="0.00" arrival="336.00" arrivalLane="BudaorsiKi_0" arrivalPos="614.60" arrivalSpeed="13.68" duration="216.00" routeLength="2194.99" waitSteps="31" timeLoss="56.99" rerouteNo="1" devices="tripinfo_carflow26.2 routing_carflow26.2 emissions_carflow26.2" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="4368.539780" CO2_abs="386665.659981" HC_abs="28.748861" PMx_abs="5.680381" NOx_abs="147.935950" fuel_abs="166.211700" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow35.6" depart="180.00" departLane="BudaorsiBe_0" departPos="48.61" departSpeed="13.89" departDelay="0.00" arrival="345.00" arrivalLane="HegyaljaKeletKi_1" arrivalPos="55.97" arrivalSpeed="13.73" duration="165.00" routeLength="2187.35" waitSteps="0" timeLoss="6.58" rerouteNo="1" devices="tripinfo_carflow35.6 routing_carflow35.6 emissions_carflow35.6" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="1788.518815" CO2_abs="287323.768836" HC_abs="14.687391" PMx_abs="3.580974" NOx_abs="104.364754" fuel_abs="123.508580" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow5.7" depart="140.00" departLane="HegyaljaKeletBe_0" departPos="120.23" departSpeed="13.89" departDelay="0.00" arrival="353.00" arrivalLane="BudaorsiKi_1" arrivalPos="614.60" arrivalSpeed="13.66" duration="213.00" routeLength="2590.32" waitSteps="10" timeLoss="26.34" rerouteNo="1" devices="tripinfo_carflow5.7 routing_carflow5.7 emissions_carflow5.7" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="3395.905546" CO2_abs="405605.786444" HC_abs="24.720324" PMx_abs="5.418815" NOx_abs="150.683088" fuel_abs="174.353201" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow26.3" depart="180.00" departLane="AlkotasBe_0" departPos="82.09" departSpeed="13.89" departDelay="0.00" arrival="354.00" arrivalLane="BudaorsiKi_0" arrivalPos="614.60" arrivalSpeed="12.82" duration="174.00" routeLength="2016.15" waitSteps="15" timeLoss="28.61" rerouteNo="1" devices="tripinfo_carflow26.3 routing_carflow26.3 emissions_carflow26.3" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="2418.018602" CO2_abs="269806.137840" HC_abs="17.181818" PMx_abs="3.701910" NOx_abs="100.995269" fuel_abs="115.978506" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow5.8" depart="160.00" departLane="HegyaljaKeletBe_0" departPos="120.23" departSpeed="13.89" departDelay="0.00" arrival="356.00" arrivalLane="BudaorsiKi_0" arrivalPos="614.60" arrivalSpeed="13.42" duration="196.00" routeLength="2590.32" waitSteps="0" timeLoss="9.37" rerouteNo="1" devices="tripinfo_carflow5.8 routing_carflow5.8 emissions_carflow5.8" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="2906.018641" CO2_abs="381399.780405" HC_abs="21.988681" PMx_abs="5.184175" NOx_abs="142.024285" fuel_abs="163.947685" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow37.1" depart="200.00" departLane="BudaorsiBe_0" departPos="48.61" departSpeed="13.89" departDelay="0.00" arrival="358.00" arrivalLane="JagelloKi_0" arrivalPos="459.55" arrivalSpeed="13.19" duration="158.00" routeLength="1914.62" waitSteps="3" timeLoss="19.27" rerouteNo="1" devices="tripinfo_carflow37.1 routing_carflow37.1 emissions_carflow37.1" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="3487.643247" CO2_abs="345002.378345" HC_abs="23.815145" PMx_abs="4.967032" NOx_abs="131.264284" fuel_abs="148.302184" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow3.4" depart="240.00" departLane="HegyaljaKeletBe_0" departPos="78.95" departSpeed="13.89" departDelay="0.00" arrival="361.00" arrivalLane="AlkotasKi_1" arrivalPos="139.14" arrivalSpeed="13.67" duration="121.00" routeLength="1449.12" waitSteps="0" timeLoss="16.33" rerouteNo="1" devices="tripinfo_carflow3.4 routing_carflow3.4 emissions_carflow3.4" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="3300.907841" CO2_abs="278349.443707" HC_abs="21.441646" PMx_abs="4.279807" NOx_abs="108.292663" fuel_abs="119.650789" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow6.1" depart="150.00" departLane="HegyaljaKeletBe_1" departPos="120.23" departSpeed="13.89" departDelay="0.00" arrival="366.00" arrivalLane="KarolinaKi_1" arrivalPos="90.50" arrivalSpeed="13.76" duration="216.00" routeLength="1797.25" waitSteps="61" timeLoss="85.98" rerouteNo="1" devices="tripinfo_carflow6.1 routing_carflow6.1 emissions_carflow6.1" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="7056.627930" CO2_abs="393882.942609" HC_abs="41.212037" PMx_abs="6.352025" NOx_abs="155.093226" fuel_abs="169.315410" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow42.1" depart="200.00" departLane="KarolinaBe_0" departPos="77.40" departSpeed="13.89" departDelay="0.00" arrival="370.00" arrivalLane="HegyaljaKeletKi_1" arrivalPos="55.97" arrivalSpeed="13.44" duration="170.00" routeLength="1466.48" waitSteps="47" timeLoss="63.99" rerouteNo="1" devices="tripinfo_carflow42.1 routing_carflow42.1 emissions_carflow42.1" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="4538.026482" CO2_abs="315988.669681" HC_abs="27.953523" PMx_abs="4.952203" NOx_abs="123.437751" fuel_abs="135.830866" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow10.2" depart="300.00" departLane="HegyaljaNyugatBe_0" departPos="935.76" departSpeed="13.89" departDelay="0.00" arrival="370.00" arrivalLane="AlkotasKi_1" arrivalPos="139.14" arrivalSpeed="12.94" duration="70.00" routeLength="700.18" waitSteps="10" timeLoss="19.46" rerouteNo="1" devices="tripinfo_carflow10.2 routing_carflow10.2 emissions_carflow10.2" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="1616.632261" CO2_abs="135057.605446" HC_abs="10.458587" PMx_abs="2.048358" NOx_abs="52.276518" fuel_abs="58.055681" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow29.0" depart="0.00" departLane="VillanyiBe_0" departPos="577.84" departSpeed="13.89" departDelay="0.00" arrival="373.00" arrivalLane="HegyaljaNyugatKi_0" arrivalPos="401.54" arrivalSpeed="12.86" duration="373.00" routeLength="2999.16" waitSteps="119" timeLoss="156.00" rerouteNo="1" devices="tripinfo_carflow29.0 routing_carflow29.0 emissions_carflow29.0" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="11806.450870" CO2_abs="646549.965023" HC_abs="68.662124" PMx_abs="10.506537" NOx_abs="255.078060" fuel_abs="277.927494" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow1.1" depart="120.00" departLane="HegyaljaKeletBe_0" departPos="120.23" departSpeed="13.89" departDelay="0.00" arrival="375.00" arrivalLane="HegyaljaNyugatKi_0" arrivalPos="401.54" arrivalSpeed="12.86" duration="255.00" routeLength="2710.69" waitSteps="30" timeLoss="59.08" rerouteNo="1" devices="tripinfo_carflow1.1 routing_carflow1.1 emissions_carflow1.1" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="5302.868444" CO2_abs="481648.201193" HC_abs="35.205799" PMx_abs="7.138756" NOx_abs="184.890269" fuel_abs="207.040562" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow31.1" depart="200.00" departLane="VillanyiBe_0" departPos="598.48" departSpeed="13.89" departDelay="0.00" arrival="378.00" arrivalLane="AlkotasKi_1" arrivalPos="139.14" arrivalSpeed="13.73" duration="178.00" routeLength="1784.11" waitSteps="32" timeLoss="49.38" rerouteNo="1" devices="tripinfo_carflow31.1 routing_carflow31.1 emissions_carflow31.1" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="4098.925978" CO2_abs="324723.457272" HC_abs="26.061556" PMx_abs="4.732515" NOx_abs="123.844007" fuel_abs="139.585726" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow35.7" depart="210.00" departLane="BudaorsiBe_0" departPos="48.61" departSpeed="13.89" departDelay="0.00" arrival="383.00" arrivalLane="HegyaljaKeletKi_1" arrivalPos="55.97" arrivalSpeed="13.11" duration="173.00" routeLength="2187.35" waitSteps="3" timeLoss="15.09" rerouteNo="1" devices="tripinfo_carflow35.7 routing_carflow35.7 emissions_carflow35.7" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="2707.807413" CO2_abs="331917.316516" HC_abs="19.922437" PMx_abs="4.462969" NOx_abs="123.346704" fuel_abs="142.677479" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow27.2" depart="240.00" departLane="AlkotasBe_2" departPos="82.09" departSpeed="13.89" departDelay="0.00" arrival="385.00" arrivalLane="KarolinaKi_1" arrivalPos="90.50" arrivalSpeed="13.29" duration="145.00" routeLength="1739.96" waitSteps="8" timeLoss="19.20" rerouteNo="1" devices="tripinfo_carflow27.2 routing_carflow27.2 emissions_carflow27.2" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="2306.780654" CO2_abs="269782.175268" HC_abs="16.653214" PMx_abs="3.603556" NOx_abs="100.128256" fuel_abs="115.968282" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow5.9" depart="180.00" departLane="HegyaljaKeletBe_0" departPos="78.95" departSpeed="13.89" departDelay="0.00" arrival="399.00" arrivalLane="BudaorsiKi_0" arrivalPos="614.60" arrivalSpeed="12.94" duration="219.00" routeLength="2640.90" waitSteps="13" timeLoss="28.00" rerouteNo="1" devices="tripinfo_carflow5.9 routing_carflow5.9 emissions_carflow5.9" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="3662.804747" CO2_abs="415996.131802" HC_abs="26.240653" PMx_abs="5.743400" NOx_abs="155.969514" fuel_abs="178.819436" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow5.10" depart="200.00" departLane="HegyaljaKeletBe_0" departPos="120.23" departSpeed="13.89" departDelay="0.00" arrival="401.00" arrivalLane="BudaorsiKi_0" arrivalPos="614.60" arrivalSpeed="12.90" duration="201.00" routeLength="2599.62" waitSteps="0" timeLoss="13.03" rerouteNo="1" devices="tripinfo_carflow5.10 routing_carflow5.10 emissions_carflow5.10" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="3271.967982" CO2_abs="401452.613405" HC_abs="24.112203" PMx_abs="5.513110" NOx_abs="150.178417" fuel_abs="172.567615" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow26.4" depart="240.00" departLane="AlkotasBe_0" departPos="82.09" departSpeed="13.89" departDelay="0.00" arrival="405.00" arrivalLane="BudaorsiKi_0" arrivalPos="614.60" arrivalSpeed="12.84" duration="165.00" routeLength="2016.15" waitSteps="8" timeLoss="19.45" rerouteNo="1" devices="tripinfo_carflow26.4 routing_carflow26.4 emissions_carflow26.4" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="2301.470835" CO2_abs="296916.707292" HC_abs="17.203194" PMx_abs="3.806466" NOx_abs="108.916633" fuel_abs="127.632366" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow4.1" depart="200.00" departLane="HegyaljaKeletBe_1" departPos="120.23" departSpeed="13.89" departDelay="0.00" arrival="411.00" arrivalLane="VillanyiKi_0" arrivalPos="613.00" arrivalSpeed="12.91" duration="211.00" routeLength="2378.21" waitSteps="19" timeLoss="39.08" rerouteNo="1" devices="tripinfo_carflow4.1 routing_carflow4.1 emissions_carflow4.1" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="3967.679964" CO2_abs="385818.196963" HC_abs="26.927926" PMx_abs="5.490284" NOx_abs="146.020861" fuel_abs="165.847400" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow2.4" depart="240.00" departLane="HegyaljaKeletBe_0" departPos="99.59" departSpeed="13.89" departDelay="0.00" arrival="421.00" arrivalLane="JagelloKi_0" arrivalPos="459.55" arrivalSpeed="13.22" duration="181.00" routeLength="1675.06" waitSteps="37" timeLoss="59.94" rerouteNo="1" devices="tripinfo_carflow2.4 routing_carflow2.4 emissions_carflow2.4" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="7294.123462" CO2_abs="384074.497262" HC_abs="42.133085" PMx_abs="6.525157" NOx_abs="154.043017" fuel_abs="165.098911" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow3.5" depart="300.00" departLane="HegyaljaKeletBe_0" departPos="99.59" departSpeed="13.89" departDelay="0.00" arrival="426.00" arrivalLane="AlkotasKi_1" arrivalPos="139.14" arrivalSpeed="13.49" duration="126.00" routeLength="1428.48" waitSteps="7" timeLoss="22.22" rerouteNo="1" devices="tripinfo_carflow3.5 routing_carflow3.5 emissions_carflow3.5" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="3006.246133" CO2_abs="267756.691995" HC_abs="19.887012" PMx_abs="4.058347" NOx_abs="103.581215" fuel_abs="115.097381" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow38.2" depart="240.00" departLane="BudaorsiBe_1" departPos="48.61" departSpeed="13.89" departDelay="0.00" arrival="430.00" arrivalLane="AlkotasKi_1" arrivalPos="139.14" arrivalSpeed="13.22" duration="190.00" routeLength="1776.48" waitSteps="40" timeLoss="61.20" rerouteNo="1" devices="tripinfo_carflow38.2 routing_carflow38.2 emissions_carflow38.2" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="4132.314329" CO2_abs="329990.437511" HC_abs="26.430710" PMx_abs="5.050876" NOx_abs="127.974048" fuel_abs="141.849347" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow19.3" depart="257.00" departLane="JagelloBe_0" departPos="455.41" departSpeed="13.89" departDelay="-0.14" arrival="434.00" arrivalLane="BudaorsiKi_0" arrivalPos="614.60" arrivalSpeed="12.82" duration="177.00" routeLength="1749.42" waitSteps="32" timeLoss="50.88" rerouteNo="1" devices="tripinfo_carflow19.3 routing_carflow19.3 emissions_carflow19.3" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="3793.933192" CO2_abs="288604.860811" HC_abs="23.935957" PMx_abs="4.328207" NOx_abs="111.171939" fuel_abs="124.059698" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow41.1" depart="300.00" departLane="BudaorsiBe_1" departPos="48.61" departSpeed="13.89" departDelay="0.00" arrival="435.00" arrivalLane="KarolinaKi_1" arrivalPos="90.50" arrivalSpeed="12.83" duration="135.00" routeLength="1766.37" waitSteps="0" timeLoss="6.93" rerouteNo="1" devices="tripinfo_carflow41.1 routing_carflow41.1 emissions_carflow41.1" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="2044.453076" CO2_abs="268089.723122" HC_abs="15.473117" PMx_abs="3.637787" NOx_abs="99.873516" fuel_abs="115.240473" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow12.2" depart="240.00" departLane="HegyaljaNyugatBe_0" departPos="915.12" departSpeed="13.89" departDelay="0.00" arrival="436.00" arrivalLane="BudaorsiKi_1" arrivalPos="614.60" arrivalSpeed="13.79" duration="196.00" routeLength="1732.43" waitSteps="51" timeLoss="70.67" rerouteNo="1" devices="tripinfo_carflow12.2 routing_carflow12.2 emissions_carflow12.2" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="7315.316041" CO2_abs="363976.776744" HC_abs="41.729242" PMx_abs="6.040801" NOx_abs="144.331475" fuel_abs="156.460309" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow7.3" depart="360.00" departLane="HegyaljaNyugatBe_0" departPos="935.76" departSpeed="13.89" departDelay="0.00" arrival="442.00" arrivalLane="HegyaljaKeletKi_1" arrivalPos="55.97" arrivalSpeed="12.93" duration="82.00" routeLength="1098.41" waitSteps="0" timeLoss="2.80" rerouteNo="1" devices="tripinfo_carflow7.3 routing_carflow7.3 emissions_carflow7.3" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="833.655613" CO2_abs="146456.320709" HC_abs="7.121873" PMx_abs="1.762561" NOx_abs="52.660197" fuel_abs="62.955545" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow5.11" depart="220.00" departLane="HegyaljaKeletBe_0" departPos="120.23" departSpeed="13.89" departDelay="0.00" arrival="451.00" arrivalLane="BudaorsiKi_0" arrivalPos="614.60" arrivalSpeed="12.98" duration="231.00" routeLength="2599.62" waitSteps="20" timeLoss="43.23" rerouteNo="1" devices="tripinfo_carflow5.11 routing_carflow5.11 emissions_carflow5.11" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="4533.943790" CO2_abs="439761.309128" HC_abs="30.743093" PMx_abs="6.358553" NOx_abs="167.344865" fuel_abs="189.035155" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow5.12" depart="240.00" departLane="HegyaljaKeletBe_0" departPos="58.31" departSpeed="13.89" departDelay="0.00" arrival="453.00" arrivalLane="BudaorsiKi_0" arrivalPos="614.60" arrivalSpeed="13.85" duration="213.00" routeLength="2661.54" waitSteps="0" timeLoss="20.92" rerouteNo="1" devices="tripinfo_carflow5.12 routing_carflow5.12 emissions_carflow5.12" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="4332.102813" CO2_abs="446591.556851" HC_abs="29.995346" PMx_abs="6.366775" NOx_abs="169.371074" fuel_abs="191.971104" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow27.1" depart="120.00" departLane="AlkotasBe_0" departPos="61.45" departSpeed="13.89" departDelay="0.00" arrival="455.00" arrivalLane="KarolinaKi_1" arrivalPos="90.50" arrivalSpeed="13.67" duration="335.00" routeLength="1950.35" waitSteps="153" timeLoss="193.88" rerouteNo="1" devices="tripinfo_carflow27.1 routing_carflow27.1 emissions_carflow27.1" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="11321.046130" CO2_abs="484145.882277" HC_abs="62.770717" PMx_abs="8.517626" NOx_abs="196.489802" fuel_abs="208.117093" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow26.5" depart="300.00" departLane="AlkotasBe_1" departPos="82.09" departSpeed="13.89" departDelay="0.00" arrival="457.00" arrivalLane="BudaorsiKi_0" arrivalPos="614.60" arrivalSpeed="13.56" duration="157.00" routeLength="2016.15" waitSteps="0" timeLoss="11.56" rerouteNo="1" devices="tripinfo_carflow26.5 routing_carflow26.5 emissions_carflow26.5" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="2436.664331" CO2_abs="292752.874767" HC_abs="17.755481" PMx_abs="3.901380" NOx_abs="108.494313" fuel_abs="125.842407" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow28.1" depart="300.00" departLane="VillanyiBe_0" departPos="598.48" departSpeed="13.89" departDelay="0.00" arrival="460.00" arrivalLane="HegyaljaKeletKi_1" arrivalPos="55.97" arrivalSpeed="13.56" duration="160.00" routeLength="1504.74" waitSteps="30" timeLoss="51.06" rerouteNo="1" devices="tripinfo_carflow28.1 routing_carflow28.1 emissions_carflow28.1" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="4526.595209" CO2_abs="307370.305571" HC_abs="27.678603" PMx_abs="4.741998" NOx_abs="119.417174" fuel_abs="132.126403" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow44.1" depart="300.00" departLane="KarolinaBe_0" departPos="77.40" departSpeed="13.89" departDelay="0.00" arrival="461.00" arrivalLane="JagelloKi_0" arrivalPos="459.55" arrivalSpeed="13.73" duration="161.00" routeLength="1878.90" waitSteps="11" timeLoss="24.75" rerouteNo="1" devices="tripinfo_carflow44.1 routing_carflow44.1 emissions_carflow44.1" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="2803.483849" CO2_abs="312332.337550" HC_abs="19.942264" PMx_abs="4.296336" NOx_abs="116.967572" fuel_abs="134.258756" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow30.1" depart="300.00" departLane="VillanyiBe_0" departPos="577.84" departSpeed="13.89" departDelay="0.00" arrival="464.00" arrivalLane="JagelloKi_0" arrivalPos="459.55" arrivalSpeed="12.82" duration="164.00" routeLength="1942.89" waitSteps="2" timeLoss="23.53" rerouteNo="1" devices="tripinfo_carflow30.1 routing_carflow30.1 emissions_carflow30.1" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="4258.137926" CO2_abs="375530.284528" HC_abs="28.092391" PMx_abs="5.664700" NOx_abs="144.985566" fuel_abs="161.424824" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow3.6" depart="360.00" departLane="HegyaljaKeletBe_0" departPos="120.23" departSpeed="13.89" departDelay="0.00" arrival="469.00" arrivalLane="AlkotasKi_1" arrivalPos="139.14" arrivalSpeed="13.13" duration="109.00" routeLength="1407.84" waitSteps="0" timeLoss="7.42" rerouteNo="1" devices="tripinfo_carflow3.6 routing_carflow3.6 emissions_carflow3.6" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="1618.429240" CO2_abs="217469.271130" HC_abs="12.285679" PMx_abs="2.792446" NOx_abs="79.891064" fuel_abs="93.481082" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow2.5" depart="300.00" departLane="HegyaljaKeletBe_0" departPos="120.23" departSpeed="13.89" departDelay="0.00" arrival="472.00" arrivalLane="JagelloKi_0" arrivalPos="459.55" arrivalSpeed="13.34" duration="172.00" routeLength="1654.42" waitSteps="36" timeLoss="52.11" rerouteNo="1" devices="tripinfo_carflow2.5 routing_carflow2.5 emissions_carflow2.5" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="6000.585903" CO2_abs="365457.079807" HC_abs="35.743188" PMx_abs="5.893493" NOx_abs="143.796649" fuel_abs="157.095743" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow35.9" depart="270.00" departLane="BudaorsiBe_0" departPos="48.61" departSpeed="13.89" departDelay="0.00" arrival="473.00" arrivalLane="HegyaljaKeletKi_2" arrivalPos="55.97" arrivalSpeed="12.86" duration="203.00" routeLength="2158.18" waitSteps="21" timeLoss="46.93" rerouteNo="1" devices="tripinfo_carflow35.9 routing_carflow35.9 emissions_carflow35.9" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="4846.134419" CO2_abs="395903.533979" HC_abs="31.154225" PMx_abs="5.993162" NOx_abs="153.123840" fuel_abs="170.182679" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow35.8" depart="240.00" departLane="BudaorsiBe_0" departPos="48.61" departSpeed="13.89" departDelay="0.00" arrival="473.00" arrivalLane="HegyaljaKeletKi_1" arrivalPos="55.97" arrivalSpeed="13.08" duration="233.00" routeLength="2158.18" waitSteps="50" timeLoss="76.62" rerouteNo="1" devices="tripinfo_carflow35.8 routing_carflow35.8 emissions_carflow35.8" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="5525.685959" CO2_abs="403351.123681" HC_abs="34.507880" PMx_abs="6.276415" NOx_abs="157.233378" fuel_abs="173.384336" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow35.10" depart="300.00" departLane="BudaorsiBe_0" departPos="48.61" departSpeed="13.89" departDelay="0.00" arrival="474.00" arrivalLane="HegyaljaKeletKi_1" arrivalPos="55.97" arrivalSpeed="13.74" duration="174.00" routeLength="2187.35" waitSteps="2" timeLoss="16.30" rerouteNo="1" devices="tripinfo_carflow35.10 routing_carflow35.10 emissions_carflow35.10" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="2829.211968" CO2_abs="333380.306087" HC_abs="20.510785" PMx_abs="4.489509" NOx_abs="124.034945" fuel_abs="143.306431" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow6.2" depart="300.00" departLane="HegyaljaKeletBe_1" departPos="120.23" departSpeed="13.89" departDelay="0.00" arrival="481.00" arrivalLane="KarolinaKi_1" arrivalPos="90.50" arrivalSpeed="13.00" duration="181.00" routeLength="1797.25" waitSteps="35" timeLoss="51.15" rerouteNo="1" devices="tripinfo_carflow6.2 routing_carflow6.2 emissions_carflow6.2" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="4001.044431" CO2_abs="298385.842290" HC_abs="25.148852" PMx_abs="4.695613" NOx_abs="116.494135" fuel_abs="128.263869" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow45.1" depart="300.00" departLane="KarolinaBe_0" departPos="56.76" departSpeed="13.89" departDelay="0.00" arrival="482.00" arrivalLane="AlkotasKi_1" arrivalPos="139.14" arrivalSpeed="13.02" duration="182.00" routeLength="1761.40" waitSteps="36" timeLoss="54.92" rerouteNo="1" devices="tripinfo_carflow45.1 routing_carflow45.1 emissions_carflow45.1" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="4709.223177" CO2_abs="326687.282229" HC_abs="29.062742" PMx_abs="5.293457" NOx_abs="128.875207" fuel_abs="140.429516" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow23.2" depart="400.00" departLane="AlkotasBe_0" departPos="82.09" departSpeed="13.89" departDelay="0.00" arrival="483.00" arrivalLane="JagelloKi_0" arrivalPos="459.55" arrivalSpeed="13.21" duration="83.00" routeLength="1039.81" waitSteps="0" timeLoss="7.93" rerouteNo="1" devices="tripinfo_carflow23.2 routing_carflow23.2 emissions_carflow23.2" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="1734.416478" CO2_abs="170573.982927" HC_abs="11.838268" PMx_abs="2.529862" NOx_abs="65.443604" fuel_abs="73.322555" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow14.3" depart="300.00" departLane="JagelloBe_0" departPos="455.41" departSpeed="13.89" departDelay="0.00" arrival="491.00" arrivalLane="HegyaljaKeletKi_1" arrivalPos="55.97" arrivalSpeed="13.42" duration="191.00" routeLength="1136.04" waitSteps="85" timeLoss="108.62" rerouteNo="1" devices="tripinfo_carflow14.3 routing_carflow14.3 emissions_carflow14.3" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="8078.411246" CO2_abs="313596.192801" HC_abs="44.082932" PMx_abs="5.606632" NOx_abs="127.797696" fuel_abs="134.804362" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow35.11" depart="330.00" departLane="BudaorsiBe_0" departPos="48.61" departSpeed="13.89" departDelay="0.00" arrival="495.00" arrivalLane="HegyaljaKeletKi_1" arrivalPos="55.97" arrivalSpeed="13.69" duration="165.00" routeLength="2187.35" waitSteps="0" timeLoss="6.56" rerouteNo="1" devices="tripinfo_carflow35.11 routing_carflow35.11 emissions_carflow35.11" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="1647.129902" CO2_abs="290486.037500" HC_abs="14.113939" PMx_abs="3.468450" NOx_abs="104.313593" fuel_abs="124.868029" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow1.2" depart="240.00" departLane="HegyaljaKeletBe_0" departPos="120.23" departSpeed="13.89" departDelay="0.00" arrival="498.00" arrivalLane="HegyaljaNyugatKi_0" arrivalPos="401.54" arrivalSpeed="13.18" duration="258.00" routeLength="2710.69" waitSteps="41" timeLoss="62.72" rerouteNo="1" devices="tripinfo_carflow1.2 routing_carflow1.2 emissions_carflow1.2" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="6331.705805" CO2_abs="502822.467228" HC_abs="40.433824" PMx_abs="7.532548" NOx_abs="193.254522" fuel_abs="216.143100" electricity_abs="0"/>
+    </tripinfo>
+    <tripinfo id="carflow25.1" depart="300.00" departLane="AlkotasBe_2" departPos="82.09" departSpeed="13.89" departDelay="0.00" arrival="499.00" arrivalLane="VillanyiKi_0" arrivalPos="613.00" arrivalSpeed="13.58" duration="199.00" routeLength="2334.27" waitSteps="12" timeLoss="30.78" rerouteNo="1" devices="tripinfo_carflow25.1 routing_carflow25.1 emissions_carflow25.1" vType="golfiv" speedFactor="1.00" vaporized="">
+        <emissions CO_abs="3704.210126" CO2_abs="377948.079943" HC_abs="25.557832" PMx_abs="5.324063" NOx_abs="142.668545" fuel_abs="162.464292" electricity_abs="0"/>
+    </tripinfo>
+</tripinfos>

@@ -1,0 +1,21 @@
+--step-length 0.1 --lateral-resolution 0.8 -c /home/levente/Egyetem/6_felev/EFOP/TestMap/testmap.sumocfg --collision.action=warn --duration-log.statisticsRR.txt
+Loading configuration... done.
+Loading net-file from '/home/levente/Egyetem/6_felev/EFOP/TestMap/testmap_smart.net.xml'... done (35ms).
+Loading done.
+Simulation started with time: 0.00
+./out/bah0_smartRR.txt
+Reason: The final simulation step has been reached.
+Performance: 
+ Duration: 220162ms
+ Real time factor: 2.27105
+ UPS: 1931.455019
+Vehicles: 
+ Inserted: 398
+ Running: 104
+ Waiting: 0
+Statistics (avg):
+ RouteLength: 1063.51
+ Duration: 118.12
+ WaitingTime: 4.81
+ TimeLoss: 41.48
+ DepartDelay: 0.01

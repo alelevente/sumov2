@@ -1,0 +1,79 @@
+...TP...
+-MDDF-
+Vehicles: 
+ Inserted: 398
+ Running: 91
+ Waiting: 0
+Statistics (avg):
+ RouteLength: 1090.40
+ Duration: 110.91
+ WaitingTime: 9.01
+ TimeLoss: 32.34
+ DepartDelay: 0.01
+
+-RR-
+Vehicles: 
+ Inserted: 398
+ Running: 86
+ Waiting: 0
+Statistics (avg):
+ RouteLength: 1075.42
+ Duration: 108.84
+ WaitingTime: 6.86
+ TimeLoss: 31.36
+ DepartDelay: 0.01
+
+
+
+
+...BAH...
+--norm--
+Performance: 
+ Duration: 4977ms
+ Real time factor: 100.462
+ UPS: 48719.710669
+Vehicles: 
+ Inserted: 157
+ Running: 44
+ Waiting: 0
+Emergency Stops: 5
+Statistics (avg):
+ RouteLength: 1906.09
+ Duration: 177.07
+ WaitingTime: 22.00
+ TimeLoss: 39.82
+ DepartDelay: 0.01
+
+--RR--
+Performance: 
+ Duration: 318630ms
+ Real time factor: 1.56922
+ UPS: 737.322286
+Vehicles: 
+ Inserted: 156
+ Running: 49
+ Waiting: 0
+Teleports: 1 (Collisions: 1)
+Statistics (avg):
+ RouteLength: 1925.34
+ Duration: 170.60
+ WaitingTime: 7.10
+ TimeLoss: 31.04
+ DepartDelay: 0.01
+
+--MDDF--
+Performance: 
+ Duration: 65760ms
+ Real time factor: 7.60341
+ UPS: 3620.103406
+Vehicles: 
+ Inserted: 156
+ Running: 50
+ Waiting: 0
+Teleports: 1 (Collisions: 1)
+Statistics (avg):
+ RouteLength: 1856.58
+ Duration: 172.87
+ WaitingTime: 12.72
+ TimeLoss: 37.88
+ DepartDelay: 0.01

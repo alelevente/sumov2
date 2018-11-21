@@ -1,0 +1,53 @@
+<routes>
+<vType id="golfiv" vClass="passenger" color="1,1,0" length="4.149" accel="2.14"/>
+<flow id="carflow0" type="golfiv" begin="0" end="600" number="0" from="HegyaljaKeletBe" to="HegyaljaKeletKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow1" type="golfiv" begin="0" end="600" number="7" from="HegyaljaKeletBe" to="HegyaljaNyugatKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow2" type="golfiv" begin="0" end="600" number="25" from="HegyaljaKeletBe" to="JagelloKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow3" type="golfiv" begin="0" end="600" number="32" from="HegyaljaKeletBe" to="AlkotasKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow4" type="golfiv" begin="0" end="600" number="5" from="HegyaljaKeletBe" to="VillanyiKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow5" type="golfiv" begin="0" end="600" number="50" from="HegyaljaKeletBe" to="BudaorsiKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow6" type="golfiv" begin="0" end="600" number="10" from="HegyaljaKeletBe" to="KarolinaKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow7" type="golfiv" begin="0" end="600" number="30" from="HegyaljaNyugatBe" to="HegyaljaKeletKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow8" type="golfiv" begin="0" end="600" number="0" from="HegyaljaNyugatBe" to="HegyaljaNyugatKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow9" type="golfiv" begin="0" end="600" number="0" from="HegyaljaNyugatBe" to="JagelloKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow10" type="golfiv" begin="0" end="600" number="5" from="HegyaljaNyugatBe" to="AlkotasKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow11" type="golfiv" begin="0" end="600" number="5" from="HegyaljaNyugatBe" to="VillanyiKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow12" type="golfiv" begin="0" end="600" number="15" from="HegyaljaNyugatBe" to="BudaorsiKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow13" type="golfiv" begin="0" end="600" number="5" from="HegyaljaNyugatBe" to="KarolinaKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow14" type="golfiv" begin="0" end="600" number="40" from="JagelloBe" to="HegyaljaKeletKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow15" type="golfiv" begin="0" end="600" number="5" from="JagelloBe" to="HegyaljaNyugatKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow16" type="golfiv" begin="0" end="600" number="0" from="JagelloBe" to="JagelloKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow17" type="golfiv" begin="0" end="600" number="4" from="JagelloBe" to="AlkotasKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow18" type="golfiv" begin="0" end="600" number="2" from="JagelloBe" to="VillanyiKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow19" type="golfiv" begin="0" end="600" number="10" from="JagelloBe" to="BudaorsiKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow20" type="golfiv" begin="0" end="600" number="5" from="JagelloBe" to="KarolinaKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow21" type="golfiv" begin="0" end="600" number="5" from="AlkotasBe" to="HegyaljaKeletKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow22" type="golfiv" begin="0" end="600" number="5" from="AlkotasBe" to="HegyaljaNyugatKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow23" type="golfiv" begin="0" end="600" number="7" from="AlkotasBe" to="JagelloKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow24" type="golfiv" begin="0" end="600" number="0" from="AlkotasBe" to="AlkotasKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow25" type="golfiv" begin="0" end="600" number="5" from="AlkotasBe" to="VillanyiKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow26" type="golfiv" begin="0" end="600" number="90" from="AlkotasBe" to="BudaorsiKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow27" type="golfiv" begin="0" end="600" number="9" from="AlkotasBe" to="KarolinaKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow28" type="golfiv" begin="0" end="600" number="160" from="VillanyiBe" to="HegyaljaKeletKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow29" type="golfiv" begin="0" end="600" number="7" from="VillanyiBe" to="HegyaljaNyugatKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow30" type="golfiv" begin="0" end="600" number="25" from="VillanyiBe" to="JagelloKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow31" type="golfiv" begin="0" end="600" number="70" from="VillanyiBe" to="AlkotasKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow32" type="golfiv" begin="0" end="600" number="0" from="VillanyiBe" to="VillanyiKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow33" type="golfiv" begin="0" end="600" number="0" from="VillanyiBe" to="BudaorsiKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow34" type="golfiv" begin="0" end="600" number="0" from="VillanyiBe" to="KarolinaKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow35" type="golfiv" begin="0" end="600" number="0" from="BudaorsiBe" to="HegyaljaKeletKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow36" type="golfiv" begin="0" end="600" number="0" from="BudaorsiBe" to="HegyaljaNyugatKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow37" type="golfiv" begin="0" end="600" number="0" from="BudaorsiBe" to="JagelloKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow38" type="golfiv" begin="0" end="600" number="0" from="BudaorsiBe" to="AlkotasKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow39" type="golfiv" begin="0" end="600" number="0" from="BudaorsiBe" to="VillanyiKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow40" type="golfiv" begin="0" end="600" number="0" from="BudaorsiBe" to="BudaorsiKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow41" type="golfiv" begin="0" end="600" number="0" from="BudaorsiBe" to="KarolinaKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow42" type="golfiv" begin="0" end="600" number="10" from="KarolinaBe" to="HegyaljaKeletKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow43" type="golfiv" begin="0" end="600" number="5" from="KarolinaBe" to="HegyaljaNyugatKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow44" type="golfiv" begin="0" end="600" number="5" from="KarolinaBe" to="JagelloKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow45" type="golfiv" begin="0" end="600" number="10" from="KarolinaBe" to="AlkotasKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow46" type="golfiv" begin="0" end="600" number="2" from="KarolinaBe" to="VillanyiKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow47" type="golfiv" begin="0" end="600" number="0" from="KarolinaBe" to="BudaorsiKi" departSpeed="max" departPos="last" departLane="best" />
+<flow id="carflow48" type="golfiv" begin="0" end="600" number="0" from="KarolinaBe" to="KarolinaKi" departSpeed="max" departPos="last" departLane="best" />
+</routes>
+

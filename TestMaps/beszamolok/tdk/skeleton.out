@@ -1,0 +1,44 @@
+\BOOKMARK [0][-]{chapter.1}{Bevezet\351s}{}% 1
+\BOOKMARK [1][-]{section.1.1}{Motiv\341ci\363}{chapter.1}% 2
+\BOOKMARK [1][-]{section.1.2}{Elv\351gzendo k\355s\351rletek, el\351rendo c\351lok}{chapter.1}% 3
+\BOOKMARK [1][-]{section.1.3}{Kapcsol\363d\363 irodalom}{chapter.1}% 4
+\BOOKMARK [0][-]{chapter.2}{Algoritmusok \351s kommunik\341ci\363s protokolljavaslatok}{}% 5
+\BOOKMARK [1][-]{section.2.1}{Elvi \341ttekint\351s}{chapter.2}% 6
+\BOOKMARK [1][-]{section.2.2}{Defin\355ci\363k}{chapter.2}% 7
+\BOOKMARK [2][-]{subsection.2.2.1}{Statikus infrastruktur\341lis elemek}{section.2.2}% 8
+\BOOKMARK [2][-]{subsection.2.2.2}{Okosaut\363k \351s k\351pess\351geik}{section.2.2}% 9
+\BOOKMARK [2][-]{subsection.2.2.3}{Csoportos\355t\341sok defin\355ci\363i}{section.2.2}% 10
+\BOOKMARK [2][-]{subsection.2.2.4}{B\355r\363k}{section.2.2}% 11
+\BOOKMARK [1][-]{section.2.3}{Csoportos\355t\341s}{chapter.2}% 12
+\BOOKMARK [2][-]{subsection.2.3.1}{Csoportform\341l\341s}{section.2.3}% 13
+\BOOKMARK [2][-]{subsection.2.3.2}{Csoport k\351pess\351gei \351s elonyei}{section.2.3}% 14
+\BOOKMARK [2][-]{subsection.2.3.3}{Csoportok felbont\341sa}{section.2.3}% 15
+\BOOKMARK [1][-]{section.2.4}{S\341vv\341lt\341sok}{chapter.2}% 16
+\BOOKMARK [2][-]{subsection.2.4.1}{A SUMO s\341vv\341lt\341s\341nak ismertet\351se}{section.2.4}% 17
+\BOOKMARK [2][-]{subsection.2.4.2}{A m\363dos\355t\341sok ismertet\351se}{section.2.4}% 18
+\BOOKMARK [1][-]{section.2.5}{B\355r\363k}{chapter.2}% 19
+\BOOKMARK [2][-]{subsection.2.5.1}{Csom\363ponti \341thalad\341s protokollja}{section.2.5}% 20
+\BOOKMARK [2][-]{subsection.2.5.2}{Forgalomir\341ny\355t\341si algoritmus}{section.2.5}% 21
+\BOOKMARK [2][-]{subsection.2.5.3}{Konfliktusoszt\341ly-v\341lt\341si algoritmusok}{section.2.5}% 22
+\BOOKMARK [0][-]{chapter.3}{Szimul\341ci\363s platform}{}% 23
+\BOOKMARK [1][-]{section.3.1}{A SUMO r\366vid bemutat\341sa}{chapter.3}% 24
+\BOOKMARK [1][-]{section.3.2}{A SUMO-n v\351gzett bov\355t\351sek}{chapter.3}% 25
+\BOOKMARK [0][-]{chapter.4}{M\351r\351sek}{}% 26
+\BOOKMARK [1][-]{section.4.1}{M\351r\351si elrendez\351sek}{chapter.4}% 27
+\BOOKMARK [2][-]{subsection.4.1.1}{M\351r\351sek p\341ly\341i}{section.4.1}% 28
+\BOOKMARK [2][-]{subsection.4.1.2}{L\341mpaprogramok}{section.4.1}% 29
+\BOOKMARK [2][-]{subsection.4.1.3}{Norm\341lis \351s rendhagy\363 forgalom}{section.4.1}% 30
+\BOOKMARK [2][-]{subsection.4.1.4}{\(Intelligens\) l\341mpavez\351rl\351s}{section.4.1}% 31
+\BOOKMARK [1][-]{section.4.2}{M\351rendo mennyis\351gek}{chapter.4}% 32
+\BOOKMARK [1][-]{section.4.3}{M\351r\351si eredm\351nyek}{chapter.4}% 33
+\BOOKMARK [1][-]{section.4.4}{M\351r\351si eredm\351nyek \351rt\351kel\351se}{chapter.4}% 34
+\BOOKMARK [0][-]{chapter.5}{\326sszefoglal\341s, konkl\372zi\363}{}% 35
+\BOOKMARK [0][-]{chapter.6}{F\374ggel\351k}{}% 36
+\BOOKMARK [1][-]{section.6.1}{Pontos protokolle\355r\341sok}{chapter.6}% 37
+\BOOKMARK [2][-]{subsection.6.1.1}{Csoportos\355t\341s}{section.6.1}% 38
+\BOOKMARK [2][-]{subsection.6.1.2}{S\341vv\341lt\341s}{section.6.1}% 39
+\BOOKMARK [2][-]{subsection.6.1.3}{B\355r\363val kapcsolatos \374zenetv\341lt\341s}{section.6.1}% 40
+\BOOKMARK [1][-]{section.6.2}{Algoritmusle\355r\341sok}{chapter.6}% 41
+\BOOKMARK [2][-]{subsection.6.2.1}{P-szab\341lyoz\363k}{section.6.2}% 42
+\BOOKMARK [2][-]{subsection.6.2.2}{Preempt\355v RR \374temezo}{section.6.2}% 43
+\BOOKMARK [2][-]{subsection.6.2.3}{MDDF \374temezo}{section.6.2}% 44

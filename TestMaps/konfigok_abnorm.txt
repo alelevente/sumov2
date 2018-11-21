@@ -1,0 +1,4 @@
+./out/bah21600_abnorm
+--step-length 0.1 --lateral-resolution 0.8 -c /home/levente/Egyetem/7_felev/szakdoga/BAH/BAH21600_abnormal.sumocfg --collision.action=warn --duration-log.statistics
+./out/bah21600_smart_abnormal
+--step-length 0.1 --lateral-resolution 0.8 -c /home/levente/Egyetem/7_felev/szakdoga/BAH/BAH21600_abnormal_smart.sumocfg --collision.action=warn --duration-log.statistics

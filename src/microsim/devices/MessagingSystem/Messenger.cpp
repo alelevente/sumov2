@@ -4,6 +4,7 @@
 
 #include <microsim/MSVehicle.h>
 #include <microsim/devices/MarkerSystem/EntryMarker.h>
+#include <libsumo/Vehicle.h>
 #include "Messenger.h"
 #include "MessengerSystem.h"
 
@@ -77,6 +78,11 @@ void Messenger::leaveGroup() {
 Group* Messenger::getGroup() { return myGroup; }
 
 void Messenger::needToChangeLane(MSLCM_SmartSL2015 *follower, int offset) {
-    if (mySAL == nullptr) return;
-    mySAL->laneChangeNeeded(follower, offset);
+    if (mySAL == nullptr || follower == nullptr) return;
+    try {
+        libsumo::Vehicle::getSpeed(follower->getMyVehicle()->getID());
+        mySAL->laneChangeNeeded(follower, offset);
+    } catch (...) {
+
+    }
 }

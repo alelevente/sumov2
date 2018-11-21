@@ -1,0 +1,245 @@
+\documentclass{report}
+\usepackage[utf8]{inputenc}
+\usepackage{t1enc}
+\usepackage{setspace}
+\usepackage[magyar]{babel}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{enumitem}
+\usepackage{listingsutf8}
+\usepackage{hyperref}
+\usepackage{ragged2e}
+\usepackage{lmodern}
+
+\begin{document}
+	\tableofcontents
+	\chapter{Bevezetés}
+		\section{Motiváció}
+			Napjainkra az emberek széles körének vált elérhetővé a gépkocsival való közlekedés. Sajnos amikor úthálózatunkat a múltszázad közepén megtervezték, még álmodni sem mertek a mérnökök a mai forgalom méretéről. Ez sajnos meg is látszik, az útjaink állandóan telítettek, mindennapossá váltak a kilométeres forgalmi torlódások.
+			
+			Mivel a torlódásokat, dugókat sokszor az emberi figyelmetlenség -- vagy egyszerűen csak a lassabb reakcióidő -- okozza, a járműgyártók igyekeznek minél több és minél kifinomultabb vezetéstámogató rendszert szerelni autóinkba. Ez a technológia kezd elég fejletté válni ahhoz, hogy a gépjárművek akár saját magukat is vezessék, akár emberi beavatkozás nélkül is. Másfél-két évtizeden belül valós elképzelésnek tűnik, hogy a mindennapi forgalom egy részét már ilyen, önvezető járművek adják.
+			
+			Ha ezen autókat felruházzuk megfelelő kommunikációs képességekkel, akkor minden lehetőség adott egy kooperatívan működő ágensrendszer kialakításához is. Lehetővé válhat általa az útfelület jobb kihasználása kisebb követési távolságokkal. Megnövelhető lenne a forgalmi csomópontok áteresztő képessége új, kommunikáción alapuló forgalomirányító mechanizmusokkal. A sávváltások forgalomcsökkentő hatása is csökkenthető lenne, ha a járművek egy csoportja váltana egyszerre sávot és nem egyesével kellene sávot váltania az egyes autóknak. Emellett persze nem mehetünk el olyan előnyök mellett sem, mint a forgalom biztonságának növekedése, vagy az üzemanyagfogyasztás -- ezzel együtt a károsanyag-kibocsátás -- csökkenése.
+				
+		\section{Elvégzendő kísérletek, elérendő célok}
+			\begin{itemize}
+				\item szűk egy oldal
+				\item milyen kísérleteket, miért végzek el, mit várok tőlük
+			\end{itemize}
+		\section{Kapcsolódó irodalom}
+			\begin{itemize}
+				\item Kibővítem az eddigit
+				\item Kb. másfél--két oldal
+			\end{itemize}
+		
+	\chapter{Algoritmusok és kommunikációs protokolljavaslatok}
+		\section{Elvi áttekintés}
+			Az általam javasolt megoldások törekszenek használni a már meglévő közúti infrastruktúrát (pl. sávjelzések), ám szükséges lehet néhány új jelzés bevezetése. Ilyen jelzés lehet egy forgalmi csomópont megközelítését vagy éppen elhagyására figyelmeztető marker elhelyezése.
+			
+			Járműveink, hívjuk őket \emph{okosautóknak} ezen jelzések között \emph{csoportokba} tömörülnek Azok a járművek alkothatnak egy csoportot, akik a csomóponton azonos mozgási pályán kívánnak átmenni. Egy-egy csoportot a csoport élén haladó \emph{csoportvezető} vezeti, a többiek, a \emph{csoporttagok} pedig a csoportvezetőt követve próbálnak átkelni a kereszteződésen.
+			
+			A csoportvezetők döntései nyomán történnek a sávváltások is. Amennyiben egy csoportvezető úgy határoz, hogy a csoportja sávot fog váltani, ezt a szándékot közli a célsávban lévő csoport vezetőjével is. A két csoportvezető ezután megegyezik abban, hogy melyikük csoportja lesz a manőver végén előrébb. Ha szükséges, a célsávban lévő csoport beengedi maga elé a másik csoportot. 
+		
+			A csomópontot megközelítve pedig a csoportvezető jelenti be a csomópontban az áthaladási jogot osztó \emph{bíró} számára csoportja érkezését. A bíró saját logikája szerint az egyes csoportokat olyan ``nagyobb csoportokba'' sorolja, amely nagyobb csoportok egyszerre áthaladhatnak az adott csomóponton. Hívjuk ezeket a ``nagyobb csoportokat'' \emph{konfliktusosztálynak}! A bíró a konfliktusosztályok közül választja ki azt, aki éppen áthaladhat a csomóponton.
+			
+			Vegyük észre, hogy a bírók hasonló dolgot csinálnak, mint az operációs rendszerek ütemezői: egy szűkös erőforrás elosztásán dolgoznak egymással ``versengő'' kliensek számára. Innen jött az ötlet, hogy a már jól ismert algoritmusokat (némi módosítással) a bírók konfliktusosztály-váltó logikájaként fel lehetne használni.
+			
+		\section{Definíciók}
+			\subsection{Statikus infrastrukturális elemek}
+				\subsubsection{Belépési marker}
+					A \emph{belépési marker} egy néhányszor tízméter hosszú szakaszt\footnote{A pontos hosszt nem érdemes definiálni. Azt az aktuális topológia befolyásolja ugyanis.} jelöl a csomópontba befelé vezető oldalon, de a csomóponttól viszonylag messzebb kezdve.
+					
+					A belépési marker jelzi az okosautók számára, hogy össze kell állni csoportokba.
+					
+				\subsubsection{Bejelentési távolság}
+					A bejelentési távolság a csoportvezető számára hordoz információt. Ekkora távolságból kell ugyanis bejelentkeznie a bírónál. A bíró ekkor határozza meg, hogy egy csoport melyik konfliktusosztályba tartozik.
+					
+				\subsubsection{Megállási távolság}
+					Ez gyakorlatilag a Kreszből ismert STOP-vonal megjelenítése. Technikai okokból a csomóponttól nagyjából 10~méteres távolságra van.\footnote{A preempció miatt előfordulhat olyan eset, hogy egy járműnek relatíve intenzíven kell fékeznie ahhoz, hogy ne fusson bele a csomópontba...}
+				
+				\subsubsection{Kritikus pont}
+					A csomóponttól egy-két méter távolságra elhelyezett pont. Amelyik autó ezen a ponton áthalad, annak a csomóponton is minél előbb át kell haladnia. Az okosautók mindig bejelentik, ha áthaladnak ezen a ponton, így tudja a bíró, hogy éppen van-e autó a csomópontban.
+					
+				\subsubsection{Kilépési marker}
+					Amint egy autó áthaladt a csomóponton, a kilépési markerhez ér. Itt egyfelől jelzi a bíró számára, hogy áthaladt a csomóponton. Másrészről a jármű kilép a csoportjából és konfliktusosztályából is.
+					
+					Mivel az csoport élén halad a csoportvezető, ezért természetesen ő lép ki először a csoportból. Ilyenkor gondoskodunk az új csoportvezető kiválasztásáról is.
+					
+				\subsubsection{Magyarázat a megállási távolság és kritikus pont létére}
+					A mindennapi közlekedésünk során is elő-előfordul az a jelenség, hogy hiába észleljük időben a sárga lámpát, már nem tudunk biztonsággal megállni a lámpa előtt, ezért továbbhaladunk. Eközben elképzelhető, hogy a lámpa már pirosra is váltott.
+					
+					Ilyen esemény természetesen egy intelligens közlekedési rendszerben is bekövetkezhet. Csakhogy itt az algoritmusok érzékenyebbek arra, hogy éppen van-e valaki a kereszteződésben, akinek már elvileg nem lenne szabad ott lennie. Valószínűleg bonyolult implementációval ez a helyzet is számítható lenne, de ennél egyszerűbb megoldás, ha a következők szerint járunk el:
+					\begin{enumerate}
+						\item Csak bizonyos idő (pl. 3~s) letelte után indítjuk el a következő konfliktusosztályt. Ez nagyjából a sárga lámpa esete.
+						\item Csak akkor indítjuk el az új konfliktusosztályt, ha már letelt az előző pontban említett idő, és a kereszteződés is üres. Ez pedig a pirosba belecsúszó autó esete.
+					\end{enumerate}
+					
+					A megállási távolság és a kritikus pont egymáshoz való helyzetének megértéséhez szükséges a szimulációs platform, a SUMO (bővebben lásd \aref{sec:sumo}.~fejezetet) felépítésének ismerete. Tömören fogalmazva itt az autók egy gráf élein (ezek nagyjából a sávok) mozognak. A gráf pontjai pedig a sávok kapcsolódási pontjai, viszont a SUMO-ban ezek fizikai kiterjedéssel nem rendelkeznek. Tehát egy kereszteződés képe a SUMO-ban egy grafikai trükk, a csomópont pontos határainak ismerete így nehézkes volna. Ezért nem esik egybe a megállási távolság és a kritikus pont, ugyanis nem volna egyszerű rájuk egy konkrét értéket meghatározni. Ez a mi szempontunkból jelenleg nem is érdekes kérdés.\footnote{A kritikus pont, a megállási és bejelentési távolságok egy-egy koncentrikus kör mentén helyezkednek el, melyek középpontja a SUMO csomópontjának pozíciója.}
+					
+			\subsection{Okosautók és képességeik}
+				\begin{itemize}
+					\item fél és egy oldal közötti terjedelemben
+				\end{itemize}
+			\subsection{Csoportosítások definíciói}
+				\subsubsection{Csoportok}
+					\begin{itemize}
+						\item kb. fél oldalban
+					\end{itemize}
+				\subsubsection{Konfliktusosztályok}
+					\begin{itemize}
+						\item ez is kb. fél oldalban
+					\end{itemize}
+			\subsection{Bírók}
+				\begin{itemize}
+					\item kb. fél oldalban
+					\item a statikus elemekkel vett kapcsolatok leírása
+				\end{itemize}
+		\section{Csoportosítás}
+			\subsection{Csoportformálás}
+				\begin{itemize}
+					\item 4-5 bekezdés
+					\item protokoll elvi leírása (pontos leírást inkább függelékként írnám)
+				\end{itemize}
+			\subsection{Csoport képességei és előnyei}
+				\begin{itemize}
+					\item nagyjából féloldalas leírás
+					\item főleg a csoportosítás által adott előnyökről szeretnék írni:
+						\subitem kevesebb kommunikáció csomópontoknál
+						\subitem együtt haladás
+						\subitem sávváltások megkönnyítése
+				\end{itemize}
+			\subsection{Csoportok felbontása}
+				\begin{itemize}
+					\item a csoportformálásho hasonlóan 4-5 bekezdés, absztrakt protokolleírással
+				\end{itemize}
+		\section{Sávváltások}
+			\subsection{A SUMO sávváltásának ismertetése}
+				\begin{itemize}
+					\item Van egy publikációja Krajzewicz-nek arról a sávváltási modellről, amit átírtam ``intelligensre'', itt erről szeretnék írni kb. egy oldalnyi összefoglalást
+					\item Ebbe egy kisebb (már meglévő) protokoll ismertetését is szeretném beleszőni
+				\end{itemize}
+			\subsection{A módosítások ismertetése}
+				\begin{itemize}
+					\item Egy újabb egy-másfél oldalnyi terjedelemben
+					\item írnék arról, hogy a már meglévő algoritmust, protokoll hogyan és miért módosítottam
+				\end{itemize}
+	\section{Bírók}
+		\subsection{Csomóponti áthaladás protokollja}
+			\begin{itemize}
+					\item Kb. egyoldalas leírás a következőkről:
+			\end{itemize}
+			\subsubsection{Csatlakozás konfliktusosztályhoz}
+			\subsubsection{Áthaladás a csomópontokon}
+		\subsection{Forgalomirányítási algoritmus}
+			\subsubsection{Döntés áthaladásról}
+				\begin{itemize}
+					\item kb. fél oldal
+					\item aktív konfliktusosztály
+					\item sárga (biztonsági) fázis szükségessége
+				\end{itemize}
+			\subsubsection{Konfliktusosztály váltása}
+				\begin{itemize}
+					\item kb fél oldal terjedelemben
+					\item mikor kell konfliktusosztályt váltani
+				\end{itemize}
+		\subsection{Konfliktusosztály-váltási algoritmusok}
+			\subsubsection{Rokonság operációs rendszerek ütemezéjővel}
+				Nagyjából 2-3 bekezdés
+			\subsubsection{Preemptív Round Robin ütemező}
+				Néhány bekezdésnyi terjedelemben írnám le itt. A pontos algoritmust függelékként közölném.
+			\subsubsection{MDDF ütemező}
+				Nagyjából egy-másfél oldalnyi terjedelemben ismertetném az MDDF algoritmust Fahwadék publikációja alapján. Pár bekezdésben pedig kitérnék egy-két kisebb módosításáról, amit csináltam rajta.
+				
+	\chapter{Szimulációs platform}
+		\label{sec:sumo}
+		\section{A SUMO rövid bemutatása}
+			\begin{itemize}
+				\item kb. egy-két oldalas összefoglaló
+				\item mi ez, hogyan épül fel
+			\end{itemize}
+		\section{A SUMO-n végzett bővítések}
+			\begin{itemize}
+				\item ide a nyári irományból szeretném kiragadni a lényeget
+				\item kb. 3-4 oldalban
+				\item kiegészítve azokkal a ``tervezői döntésekkel'', amik a SUMO működéséből adódnak: mágikus konstansokkal, furcsaságok leírásával
+			\end{itemize}
+	
+	\chapter{Mérések}
+		\section{Mérési elrendezések}
+			\subsection{Mérések pályái}
+				\begin{itemize}
+					\item leírom a tesztpályát
+					\item a BAH-csomópontot
+					\item kb. féloldalas szöveges leírás + ábrák
+				\end{itemize}
+			\subsection{Lámpaprogramok}
+				\begin{itemize}
+					\item egy-két bekezdésben leírni a Bp. Közúttól kapott programokat
+					\item valószínűleg ezek másodpercre optimalizáltak
+				\end{itemize}
+			\subsection{Normális és rendhagyó forgalom}
+				\begin{itemize}
+					\item Mit értek ezek alatt
+					\item A BAH-ban mit nevezhetnénk rendhagyónak
+					\item Itt jó kérdés, hogy mi alapján jelentjük ki, hogy mi a normális és mi a rendhagyó. Mert eddig empirikus alapokon, becsült forgalomértékekkel dolgoztam\dots
+				\end{itemize}
+			\subsection{(Intelligens) lámpavezérlés}
+				\begin{itemize}
+					\item unalmas leírás a konkrét BAH-csomópontbeli beállításokról
+					\item MDDF, RR, hagyományos, szabályozatlan esetek leírása
+					\item Ez is nagyjából egy oldalnyi lesz
+				\end{itemize}
+		\section{Mérendő mennyiségek}
+			\begin{itemize}
+				\item nagyjából féloldalas leírás
+				\item megtett utak (megérkezett autók)
+				\item átlagsebességek
+				\item balesetek
+				\item fogyasztások vagy károsanyagkibocsátások
+				\item és ezek értelmezése
+			\end{itemize}
+		\section{Mérési eredmények}
+			2-3 oldalnyi táblázatok, grafikonok
+		\section{Mérési eredmények értékelése}
+			\begin{itemize}
+				\item Nagyjából másfél-két oldalon át elemzem az adatokat
+				\item várt és kapott értékek közötti eltérések, hasonlóságok elemzése
+			\end{itemize}
+	\chapter{Összefoglalás, konklúzió}
+		\begin{itemize}
+			\item kb. 1 oldalon
+		\end{itemize}
+	\chapter{Függelék}
+		\section{Pontos protokolleírások}
+			\begin{itemize}
+				\item Üzenetek, szekvenciadiagramok az egyes üzenetváltásokra
+				\item Esetleg rövid magyarázat nem triviális megoldásokra
+				\item protokollonként fél-egy oldal közötti terjedelem
+			\end{itemize}
+			\subsection{Csoportosítás}
+				\subsubsection{Csoportba belépés}
+				\subsubsection{Csoportból kilépés}
+				\subsubsection{Csoportvezető váltása}
+			\subsection{Sávváltás}
+			\subsection{Bíróval kapcsolatos üzenetváltás}
+				\subsubsection{Konfliktusosztályba belépés}
+				\subsubsection{Bíró pollingozása}
+		\section{Algoritmusleírások}
+			\subsection{P-szabályozók}
+				\begin{itemize}
+					\item Van két P-szabályozón alapuló megoldásom a programban
+					\item ezekről a SUMO-s fejezetben szeretnék bővebben írni
+					\item itt részletezném, hogy mi a konkrét szabályozó algoritmus, mi a munkapontjuk stb.
+				\end{itemize}
+				\subsubsection{Adaptív tempomat csoporttagok között}
+				\subsubsection{Megállás bírónál}
+			\subsection{Preemptív RR ütemező}
+				\begin{itemize}
+					\item A konrkét konfliktusosztály-választó algoritmus pszeudokódbeli leírása
+				\end{itemize}
+			\subsection{MDDF ütemező}
+				\begin{itemize}
+					\item Az MDDF és az eredeti, és az én megvalósításom közötti eltérések leírása
+					\item pszeudo-kód
+				\end{itemize}
+\end{document}
