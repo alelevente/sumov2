@@ -29,6 +29,7 @@
 class SUMOVehicle;
 class MSLCM_SmartSL2015;
 class LCManager;
+class Messenger;
 class AbstractJudge;
 
 
@@ -162,6 +163,8 @@ private:
     LCManager* myLCm = nullptr;
     AbstractJudge* myJudge = nullptr;
     std::vector<MSLCM_SmartSL2015*> followerFIFO;
+    Group* myGroup = nullptr;
+    Messenger* myLeaderMessenger = nullptr;
 
 private:
     /** @brief Constructor

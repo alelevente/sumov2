@@ -10,7 +10,7 @@
 #include <string>
 #include <utils/vehicle/SUMOVehicle.h>
 #include "microsim/devices/MarkerSystem/EntryMarker.h"
-#include "microsim/devices/MSDevice_SAL.h"
+
 #include "microsim/lcmodels/MSLCM_SmartSL2015.h"
 #include "microsim/devices/MarkerSystem/ExitMarker.h"
 
