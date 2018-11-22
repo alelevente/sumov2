@@ -11,7 +11,8 @@
 
 
 #define MAX_CC_MEMBERS 10
-#define IN_DANGER 35
+//#define IN_DANGER 35
+#define IN_DANGER inDanger-5
 
 class MSDevice_SAL;
 class Group;
@@ -19,10 +20,12 @@ class Group;
 class ConflictClass {
     friend class RRJudge;
     libsumo::TraCIColor myColor;
+    int inDanger = 35;
 protected:
     std::vector<MSDevice_SAL*> myCars;
 
 public:
+    ConflictClass(int dangerRadius);
     ConflictClass();
     virtual double calculatePrice();
     const libsumo::TraCIColor& getMyColor();

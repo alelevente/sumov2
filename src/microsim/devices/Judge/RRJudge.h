@@ -25,6 +25,8 @@ class RRJudge: public AbstractJudge {
     int actualElement = 0, startTime = 0;
     int nDirs = 0, nPrograms = 0;
 
+    bool changeNeeded();
+
     virtual void changeCC();
 
 protected:

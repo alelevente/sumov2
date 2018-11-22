@@ -22,7 +22,7 @@ MDDFJudge::MDDFJudge(const std::string &path) {
     int inNum;
     for (int i=0; i<nPrograms; ++i) {
         ProgramElement* pe = new ProgramElement();
-        ConflictClass* cc = new MDDFConflictClass();
+        ConflictClass* cc = new MDDFConflictClass(stopRadius);
         conflictClasses.insert(conflictClasses.end(), cc);
         for (int j=0; j<nDirs; ++j) {
             input >> inNum;
@@ -58,9 +58,11 @@ void MDDFJudge::changeCC() {
         if (currentTime-startTime > programElements[activeCC]->duration
             || conflictClasses[activeCC]->isEmpty() || currentTime - lastCameIn > 3) {
             if (currentTime - lastCameIn > 3) ((MDDFConflictClass*)conflictClasses[activeCC])->setBadGuy();
-            do {
-                nextActiveCC = selectNextCC();
-            } while (conflictClasses[activeCC]->isEmpty() && activeCC != kor);
+            if ((changeNeeded() || conflictClasses[activeCC]->isEmpty()) && nextActiveCC==activeCC) {
+               // do {
+                    nextActiveCC = selectNextCC();
+               // } while (conflictClasses[activeCC]->isEmpty() && activeCC != kor);
+            }
             if (conflictClasses[activeCC]->isThereCarInDanger(posX, posY)) {
                 yellow = true;
                 lastCameIn = currentTime;
@@ -130,4 +132,13 @@ int MDDFJudge::selectNextCC() {
     }
     std::cout << ") " << minCC << std::endl;
     return minCC;
+}
+
+bool MDDFJudge::changeNeeded() {
+    int count = 0;
+    for (auto i= conflictClasses.begin(); i != conflictClasses.end(); ++i){
+        if (!(*i)->isEmpty()) ++count;
+        if (count == 2) return true;
+    }
+    return false;
 }

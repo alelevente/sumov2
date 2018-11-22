@@ -7,8 +7,17 @@
 #include "microsim/devices/MessagingSystem/Messenger.h"
 #include <libsumo/Vehicle.h>
 
+ConflictClass::ConflictClass(int dangerRadius) {
+    myColor.a = 255;
+    myColor.r = rand() % 256;
+    myColor.g = rand() % 256;
+    myColor.b = rand() % 256;
+    inDanger = dangerRadius;
+}
+
 ConflictClass::ConflictClass() {
     myColor.a = 255;
+    inDanger = 35;
     myColor.r = rand() % 256;
     myColor.g = rand() % 256;
     myColor.b = rand() % 256;

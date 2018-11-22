@@ -23,7 +23,7 @@ RRJudge::RRJudge(const std::string &path) {
     int inNum;
     for (int i=0; i<nPrograms; ++i) {
         ProgramElement* pe = new ProgramElement();
-        ConflictClass* cc = new ConflictClass();
+        ConflictClass* cc = new ConflictClass(stopRadius);
         conflictClasses.insert(conflictClasses.end(), cc);
         for (int j=0; j<nDirs; ++j) {
             input >> inNum;
@@ -46,8 +46,9 @@ void RRJudge::changeCC() {
     //std::cout << *directions[0] << " came in: " << cameIn << "\twent out: "<< wentOut << " " << conflictClasses[activeCC] -> isEmpty() <<std::endl;
 
     if (cameIn == wentOut) {
+        bool carInDanger = conflictClasses[activeCC]->isThereCarInDanger(posX, posY);
         int currentTime = (int) libsumo::Simulation::getCurrentTime()/1000;
-        if (yellow && flaggedAt+3<=currentTime && !conflictClasses[activeCC]->isThereCarInDanger(posX, posY)) {
+        if (yellow && flaggedAt+3<=currentTime && !carInDanger) {
             startTime = currentTime;
             activeCC = nextActiveCC;
             yellow = false;
@@ -58,11 +59,12 @@ void RRJudge::changeCC() {
         if (currentTime-startTime > programElements[activeCC]->duration
                 || conflictClasses[activeCC]->isEmpty() || currentTime - lastCameIn > 3) {
             nextActiveCC = activeCC;
+            if (changeNeeded() || conflictClasses[activeCC]->isEmpty())
             do {
                 nextActiveCC = (nextActiveCC == nPrograms - 1) ? 0 : nextActiveCC + 1;
             } while (conflictClasses[nextActiveCC]->isEmpty() && nextActiveCC != kor
                      && !conflictClasses[nextActiveCC]->isFirst());
-            if (conflictClasses[activeCC]->isThereCarInDanger(posX, posY)) {
+            if (carInDanger) {
                 yellow = true;
                 lastCameIn = currentTime;
                 flaggedAt = currentTime;
@@ -98,4 +100,13 @@ bool RRJudge::canPass(MSDevice_SAL *who) {
     if (now - startTime > programElements[activeCC]->duration
             || now-lastCameIn > 3) changeCC();
     return !yellow && (now - startTime <= programElements[activeCC]->duration) && conflictClasses[activeCC]->hasVehicle(who);
+}
+
+bool RRJudge::changeNeeded() {
+    int count = 0;
+    for (auto i= conflictClasses.begin(); i != conflictClasses.end(); ++i){
+        if (!(*i)->isEmpty()) ++count;
+        if (count == 2) return true;
+    }
+    return false;
 }

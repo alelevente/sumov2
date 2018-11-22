@@ -23,6 +23,9 @@ class MDDFJudge: public AbstractJudge {
     int nextActiveCC = 0, flaggedAt = 0;
     int lastRR=0;
 
+    //calculation of change is not necesarry, if there are smart cars only in one CC or there are no cars present
+    bool changeNeeded();
+
 public:
     MDDFJudge(const std::string& path);
     ~MDDFJudge();

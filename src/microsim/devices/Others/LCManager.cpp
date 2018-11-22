@@ -118,7 +118,7 @@ void LCManager::groupChanged() {
         carIDs.erase(carIDs.begin());
     }*/
 
-    std::cout << MSNet::getInstance()->getVehicleControl().getRunningVehicleNo();
+   // std::cout << MSNet::getInstance()->getVehicleControl().getRunningVehicleNo();
 
     if (myLC->myFollower != nullptr) {
         std::string ID = myLC->myFollower->getID();
