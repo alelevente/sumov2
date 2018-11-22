@@ -15,6 +15,7 @@
 #include <libsumo/TraCIDefs.h>
 #include <microsim/devices/Others/LCManager.h>
 #include <microsim/devices/Judge/AbstractJudge.h>
+#include <microsim/lcmodels/MSLCM_SmartSL2015.h>
 #include "GroupingSystem/Group.h"
 
 
@@ -165,6 +166,7 @@ private:
     std::vector<MSLCM_SmartSL2015*> followerFIFO;
     Group* myGroup = nullptr;
     Messenger* myLeaderMessenger = nullptr;
+    MSLCM_SmartSL2015 *myLaneChangeModel = nullptr;
 
 private:
     /** @brief Constructor

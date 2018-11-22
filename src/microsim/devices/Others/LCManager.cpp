@@ -118,6 +118,8 @@ void LCManager::groupChanged() {
         carIDs.erase(carIDs.begin());
     }*/
 
+    std::cout << MSNet::getInstance()->getVehicleControl().getRunningVehicleNo();
+
     if (myLC->myFollower != nullptr) {
         std::string ID = myLC->myFollower->getID();
         libsumo::Vehicle::setLaneChangeMode(ID, 1621);

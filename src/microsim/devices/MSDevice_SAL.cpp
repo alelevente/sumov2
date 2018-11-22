@@ -89,6 +89,7 @@ MSDevice_SAL::MSDevice_SAL(SUMOVehicle& holder, const std::string& id,
         myCustomValue3(customValue3) {
     //std::cout << "initialized device '" << id << "' with myCustomValue1=" << myCustomValue1 << ", myCustomValue2=" << myCustomValue2 << ", myCustomValue3=" << myCustomValue3 << "\n";
     MessengerSystem::getInstance().addNewMessengerAgent(holder.getID(), &myHolder, this);
+    //myLaneChangeModel = (MSLCM_SmartSL2015*) &((MSVehicle *) (&myHolder))->getLaneChangeModel();
 }
 
 
@@ -104,8 +105,8 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
     if (myLCm == nullptr) {
         myLCm = new LCManager((MSLCM_SmartSL2015*) &((MSVehicle *) (&myHolder))->getLaneChangeModel());
     }
-    //myLCm->synch();
-    const static MSLCM_SmartSL2015 &lcm = (MSLCM_SmartSL2015 &) ((MSVehicle *) (&myHolder))->getLaneChangeModel();
+    if (myLaneChangeModel == nullptr) myLaneChangeModel = (MSLCM_SmartSL2015*) &((MSVehicle *) (&myHolder))->getLaneChangeModel();
+    MSLCM_SmartSL2015 &lcm = *myLaneChangeModel;//(MSLCM_SmartSL2015 &) ((MSVehicle *) (&myHolder))->getLaneChangeModel();
     //lcm.lineUpForCenterOfLane();
     //std::cout << "device '" << getID() << "' notifyMove: newSpeed=" << newSpeed << "\n";
     // check whether another device is present on the vehicle:

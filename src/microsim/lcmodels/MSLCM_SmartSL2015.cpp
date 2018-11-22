@@ -152,6 +152,7 @@ MSLCM_SmartSL2015::MSLCM_SmartSL2015(MSVehicle& v) :
 }
 
 MSLCM_SmartSL2015::~MSLCM_SmartSL2015() {
+    dtorRun = true;
     changed();
 }
 
@@ -995,7 +996,7 @@ MSLCM_SmartSL2015::computeSublaneShift(const MSEdge* prevEdge, const MSEdge* cur
 
 void
 MSLCM_SmartSL2015::changed() {
-    if (mySAL != nullptr) {
+    if (mySAL != nullptr && !dtorRun) {
         mySAL->laneChanged(nullptr, myOffset);
         //lineUpForCenterOfLane();
 

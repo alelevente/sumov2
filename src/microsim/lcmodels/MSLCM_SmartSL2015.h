@@ -47,7 +47,7 @@ private:
     MSDevice_SAL* mySAL = nullptr;
     GroupState myGroupState;
     int myOffset;
-
+    bool dtorRun = false;
 
     int blockerFlag = 0;
 
