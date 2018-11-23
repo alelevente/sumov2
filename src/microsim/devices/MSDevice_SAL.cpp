@@ -137,8 +137,10 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
             if (myLeaderMessenger == nullptr) myLeaderMessenger = myGroup->getLeaderOf(MessagingProxy::getInstance().getMessenger(myHolder.getID()));
             //else return true;
             SUMOVehicle* myLeader = &myLeaderMessenger->mySAL->myHolder;
+
             Position position = myLeader->getPosition(0);
-            double deltaS = libsumo::Vehicle::getDrivingDistance2D(myHolder.getID(), position.x(), position.y());
+            //double deltaS = libsumo::Vehicle::getDrivingDistance2D(myHolder.getID(), position.x(), position.y());
+            double deltaS = sqrt(pow(position.x()-posi.x(), 2) + pow(position.y()-posi.y(),2));
             if (deltaS < -10) deltaS = 100;
             //double desiredSpeed = deltaS < 50? myLeader->getSpeed()/(GROUP_GAP_DESIRED-GROUP_GAP_LIMIT)*(deltaS-GROUP_GAP_LIMIT): 20;
             double desiredSpeed = deltaS > GROUP_GAP_DESIRED + GROUP_GAP_THRESHOLD? 25 :

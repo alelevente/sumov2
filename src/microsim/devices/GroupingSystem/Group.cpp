@@ -93,8 +93,13 @@ Messenger* Group::getLeaderOf(Messenger *who) {
 double Group::getGroupLength() {
     if (nMembers == 1) return 0;//libsumo::Vehicle::getLength(members[0]->mySAL->getHolder().getID());
 
-    libsumo::TraCIPosition pos = libsumo::Vehicle::getPosition(members[0]->mySAL->getHolder().getID());
-    return libsumo::Vehicle::getDrivingDistance2D(members[nMembers-1]->mySAL->getHolder().getID(), pos.x, pos.y);
+    //libsumo::TraCIPosition pos = libsumo::Vehicle::getPosition(members[0]->mySAL->getHolder().getID());
+    //return libsumo::Vehicle::getDrivingDistance2D(members[nMembers-1]->mySAL->getHolder().getID(), pos.x, pos.y);
+
+    Position pos1 = members[0]->mySAL->getHolder().getPosition(0),
+         pos2 = members[nMembers-1]->mySAL->getHolder().getPosition(0);
+    return sqrt(pow(pos1.x()-pos2.x(),2) + pow(pos1.y()-pos2.y(),2));
+
 }
 
 int Group::getNMembers() const {

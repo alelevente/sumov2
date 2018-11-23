@@ -48,7 +48,7 @@ void AbstractJudge::carLeftJunction(MSDevice_SAL *who, bool byForce) {
     //if (!byForce) carsIn.erase(car);
 
     int i=0;
-    while (!conflictClasses[i]->hasVehicle(who) && i<conflictClasses.size()) ++i;
+    while (i<conflictClasses.size() && !conflictClasses[i]->hasVehicle(who)) ++i;
     if (i<conflictClasses.size()) {
         conflictClasses[i]->removeVehicle(who);
         ++wentOut;

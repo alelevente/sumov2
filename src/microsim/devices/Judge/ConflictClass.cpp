@@ -82,8 +82,10 @@ bool ConflictClass::isFirst() {
 }
 
 bool ConflictClass::isThereCarInDanger(double x, double y) {
+    Position pos;
     for (auto i: myCars) {
-        if (libsumo::Vehicle::getDrivingDistance2D((*i).getHolder().getID(), x, y) < IN_DANGER &&
+        pos = (*i).getHolder().getPosition(0);
+        if (sqrt(pow(pos.x()-x, 2)+pow(pos.y()-y,2)) < IN_DANGER &&
                 i->getHolder().getSpeed()>5) return true;
     }
     return false;
