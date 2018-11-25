@@ -249,6 +249,7 @@ MSNet::closeBuilding(const OptionsCont& oc, MSEdgeControl* edges, MSJunctionCont
 
 
 MSNet::~MSNet() {
+    closed = true;
     // delete controls
     delete myJunctions;
     delete myDetectorControl;

@@ -80,8 +80,11 @@ void MDDFJudge::changeCC() {
 }
 
 int MDDFJudge::decideCC(Group *group, const std::string &direction) {
+    std::cout << direction << std::endl;
     int dir = 0;
     for (dir = 0; *directions[dir]!=direction && dir<nDirs; ++dir);
+    //SUMO's bugfix:
+    if (dir>=nDirs) return 0;
     int acc;
     for (acc=0; !programElements[acc]->passeable[dir] && acc<nPrograms; ++acc);
     conflictClasses[acc]->joinGroup(group);

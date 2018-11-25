@@ -83,6 +83,10 @@ class PedestrianRouter;
  */
 class MSNet {
 public:
+
+    /// @brief Workaround for crashes at exiting the program:
+    bool closed = false;
+
     /** @enum SimulationState
      * @brief Possible states of a simulation - running or stopped with different reasons
      */

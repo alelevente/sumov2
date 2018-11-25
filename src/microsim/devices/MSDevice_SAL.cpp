@@ -94,7 +94,8 @@ MSDevice_SAL::MSDevice_SAL(SUMOVehicle& holder, const std::string& id,
 
 
 MSDevice_SAL::~MSDevice_SAL() {
-    MessengerSystem::getInstance().removeMessengerAgent(myHolder.getID());
+    if (!MSNet::getInstance()->closed)
+            MessengerSystem::getInstance().removeMessengerAgent(myHolder.getID());
     delete myLCm;
 }
 
