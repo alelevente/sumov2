@@ -7,7 +7,7 @@
 #include "MDDFJudge.h"
 #include <fstream>
 
-//#define TESTMAP
+#define TESTMAP
 
 JudgeSystem::JudgeSystem() {
 #ifdef TESTMAP

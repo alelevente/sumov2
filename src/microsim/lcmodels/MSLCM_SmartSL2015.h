@@ -33,33 +33,74 @@
 // class definitions
 // ===========================================================================
 /**
- * @class MSLCM_SL2015
- * @brief A lane change model developed by J. Erdmann
+ * @class MSLCM_SmartSL2015
+ * @brief A lane change model developed by L. Alekszejenkó based on MSLCM_SL2015
  */
 
 class MSDevice_SAL;
+
+/**
+ * @brief Definition of states, in which smartcars can be.
+ */
 typedef enum {OUT, MEMBER, LEADER} GroupState;
 
 class MSLCM_SmartSL2015 : public MSAbstractLaneChangeModel {
 private:
+
+    /** @brief this function changes followerDistanceInfos to match the length of the smart groups.
+     *
+     * @param followerDistanceInfo the original followerDistanceInfo description
+     * @return updated followerDistanceInfo info in accordance with the follower groups' length
+     */
     MSLeaderDistanceInfo * smartFollowerDistance(const MSLeaderDistanceInfo &followerDistanceInfo);
+
+    /** @brief this function changes leaderDistanceInfos to match the length of the smart groups.
+     *
+     * @param leaderDistanceInfo the original leaderDistanceInfo description
+     * @return updated leaderDistanceInfo info in accordance with the leader groups' length
+     */
     MSLeaderDistanceInfo * smartLeaderDistance(const MSLeaderDistanceInfo &leaderDistanceInfo);
+
+    /// @brief pointer to myVehicle's Simulation Abstraction Device
     MSDevice_SAL* mySAL = nullptr;
+
+    /// @brief actual state of
     GroupState myGroupState;
+
+    /// @brief direction to send to the next car of the group
     int myOffset;
+
+    /// @brief needed to avoid a program crash at exiting
     bool dtorRun = false;
 
+    //actions are only needed if the change is stable
     int blockerFlag = 0;
 
 public:
+    /**
+     * @brief Inform the LC-model about the smartcar's state
+     * @param myGroupState actual state of the smartcar.
+     */
     void setMyGroupState(GroupState myGroupState);
+
+    /**
+     *
+     * @return Pointer to myVehicle
+     */
     SUMOVehicle* getMyVehicle();
+
+    /**
+     * @brief Inform LC-model about received lane change offset
+     * @param offset the received offset
+     */
     void setOffset(int offset);
+
+
     MSVehicle* myFollower = nullptr;
 
 public:
     MSLCM_SmartSL2015(MSVehicle& v);
-    void lineUpForCenterOfLane();
+
 
     virtual ~MSLCM_SmartSL2015();
 

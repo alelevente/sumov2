@@ -59,7 +59,7 @@ void LCManager::groupChanging(MSLCM_SmartSL2015 *follower) {
 
 void LCManager::hasToChange(int direction) {
     //std::cout << myLC->getMyVehicle()->getID() << " has to change: " << direction << std::endl;
-    libsumo::Vehicle::changeLaneRelative(myLC->getMyVehicle()->getID(), direction, 2800);
+    libsumo::Vehicle::changeLaneRelative(myLC->getMyVehicle()->getID(), direction, 1000);
     //libsumo::Vehicle::changeSublane(myLC->getMyVehicle()->getID(), direction*2.75);
     myLC->setOffset(direction);
     lastDir = direction;

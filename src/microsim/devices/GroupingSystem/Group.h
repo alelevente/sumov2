@@ -15,6 +15,11 @@
 class Messenger;
 class MSLCM_SmartSL2015;
 
+
+/**
+ * @class Group
+ * @brief This class realizes the intelligent group (platoon).
+ */
 class Group {
     int nMembers, totalMembers = 0;
     Messenger* members[15];
