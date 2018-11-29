@@ -45,7 +45,6 @@ void AbstractJudge::carLeftJunction(MSDevice_SAL *who, bool byForce) {
 
     car = carsIn.begin();
     if (!byForce) for (auto ii: where) carsIn.erase(car+ii);
-    //if (!byForce) carsIn.erase(car);
 
     int i=0;
     while (i<conflictClasses.size() && !conflictClasses[i]->hasVehicle(who)) ++i;
@@ -73,20 +72,20 @@ void AbstractJudge::makeKill() {
     //search for stucked cars in junction:
     for (auto x: carsIn) {
         if (x->locked) return;
+        //if a car is slower than 0.0001 m/s, then it is stucked:
         if ((*x).getVehicle()->getSpeed() <= 0.0001) {
             std::string carID = (*x).getVehicle()->getID();
             std::cout << (*x).getID() << std::endl;
+            //necessary steps to leave the group:
             MessagingProxy::getInstance().informEnterExitMarker((*x).getVehicle()->getID(),
                                                                 (ExitMarker*)(MarkerSystem::getInstance().findMarkerByID((*x).getVehicle()->getEdge()->getID())));
             std::cerr << (*x).getVehicle()->getID() << " has been killed" << std::endl;
-            if (x->getVehicle()->getID()=="carflow14.11") {
-                std::cout << "na, most";
-            }
             carLeftJunction(x, true);
-            //MSVehicleControl::deleteVehicle(x->getVehicle(), true);
             std::vector<int> where;
             int idx=0;
             auto car = carsIn.begin();
+            //due to SUMO's functionality, sometimes a smart car can report multiple times that it is inside the junction
+            //we want to delete all of these instances
             for (auto car = carsIn.begin(); car != carsIn.end(); ++car){
                 if ((*car) == x) {
                     where.insert(where.end(), idx);
@@ -97,7 +96,7 @@ void AbstractJudge::makeKill() {
             car = carsIn.begin();
             for (auto ii: where) carsIn.erase(car+ii);
 
-
+            //remove the vehicle from the simulation:
             libsumo::Vehicle::remove(carID, REMOVE_VAPORIZED);
             for (auto x: carsIn) std::cout << " " << x->getID();
             std::cout << std::endl;
