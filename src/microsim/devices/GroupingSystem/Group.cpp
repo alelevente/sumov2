@@ -44,15 +44,9 @@ void Group::addNewMember(Messenger *member) {
     member->mySAL->setVehicleColor(myColor);
     members[nMembers-1]->mySAL->informBecomeMember(this);
     if (myCC != nullptr) myCC->addVehicle(member->mySAL);
-    //if (followerLeader!= nullptr) members[nMembers-1]->mySAL->addFollower(followerLeader);
 }
 
 void Group::removeCar(Messenger *who) {
-    if (nMembers == 1) {
-       /* if (followerLeader != nullptr) {
-            members[0]->mySAL->informStoppedToContinue(followerLeader);
-        }*/
-    }
     int idx = 0;
     while (members[idx] != who && idx < nMembers) ++idx;
     Messenger* first = members[idx];
@@ -80,7 +74,6 @@ void Group::finishGroup() {
 Messenger* Group::getFollowerOf(Messenger *who) {
     int i=0;
     for (i=0; members[i]!=who && i<nMembers; ++i);
-    //if (members[i+1] == nullptr) std::cout << who->myVehicle->getID() << " is last." << std::endl;
     return members[i+1];
 }
 
@@ -91,10 +84,7 @@ Messenger* Group::getLeaderOf(Messenger *who) {
 }
 
 double Group::getGroupLength() {
-    if (nMembers == 1) return 0;//libsumo::Vehicle::getLength(members[0]->mySAL->getHolder().getID());
-
-    //libsumo::TraCIPosition pos = libsumo::Vehicle::getPosition(members[0]->mySAL->getHolder().getID());
-    //return libsumo::Vehicle::getDrivingDistance2D(members[nMembers-1]->mySAL->getHolder().getID(), pos.x, pos.y);
+    if (nMembers == 1) return 0;
 
     Position pos1 = members[0]->mySAL->getHolder().getPosition(0),
          pos2 = members[nMembers-1]->mySAL->getHolder().getPosition(0);
@@ -106,27 +96,15 @@ int Group::getNMembers() const {
     return nMembers;
 }
 
-/*void Group::laneChange(MSLCM_SmartSL2015 *followerLeader) {
-    laneChangeInAction = true;
-    //this->followerLeader = followerLeader;
-    for (int i=0; i<nMembers; ++i) {
-        members[i]->mySAL->addFollower(followerLeader);
-    }
-}*/
 
 void Group::endLaneChange() {
     laneChangeInAction = false;
-   // this->followerLeader = nullptr;
 }
 
 bool Group::isChanging() {
     return laneChangeInAction;
 }
 
-/*MSLCM_SmartSL2015 *Group::getFollowerLeader() const {
-  //  return followerLeader;
-    return nullptr;
-}*/
 
 
 void Group::laneChange(MSLCM_SmartSL2015 *follower) {
