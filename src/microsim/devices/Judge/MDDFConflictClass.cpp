@@ -34,7 +34,6 @@ double MDDFConflictClass::calculatePrice() {
     }
 
     return min;
-    return badGuy? min*min: min;
 }
 
 bool MDDFConflictClass::canJoinGroup(int nMembers, const std::string &inDirection, const std::string &outDirection) {
