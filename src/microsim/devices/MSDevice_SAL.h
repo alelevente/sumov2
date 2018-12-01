@@ -132,42 +132,6 @@ public:
      */
     void generateOutput() const;
 
-/***********************************NON-SUMO originated functions********************************/
-public:
-    void setVehicleColor (const libsumo::TraCIColor& color);
-    void resetVehicleColor();
-    void setVehicleSpeed (double speed);
-    void informBecomeLeader();
-    void informBecomeMember(Group* group);
-    void informNoLongerLeader();
-    bool laneChanged(MSLCM_SmartSL2015 *follower, int offset);
-    void laneChangeNeeded(MSLCM_SmartSL2015 *follower, int offset);
-    void groupChanging(MSLCM_SmartSL2015 *follower);
-    void groupChangeFinished();
-    bool isGroupChanging();
-    MSLCM_SmartSL2015* getGroupFollowerLC();
-    SUMOVehicle* getMyGroupLeader();
-    SUMOVehicle* getVehicle();
-    double getGroupLength();
-    int getMemberCount();
-    void informStoppedToContinue(MSLCM_SmartSL2015* stopped);
-    void addFollower(MSLCM_SmartSL2015* follower);
-    void amBlocker(MSLCM_SmartSL2015* blocker, MSLCM_SmartSL2015* leader);
-    std::string myDirection;
-    bool isFirst();
-    bool locked = false;
-
-private:
-    bool isMember = false, passPermitted = false,
-         reported = false, inJunction = false,
-         speedSetInJunction = false;
-    LCManager* myLCm = nullptr;
-    AbstractJudge* myJudge = nullptr;
-    std::vector<MSLCM_SmartSL2015*> followerFIFO;
-    Group* myGroup = nullptr;
-    Messenger* myLeaderMessenger = nullptr;
-    MSLCM_SmartSL2015 *myLaneChangeModel = nullptr;
-
 private:
     /** @brief Constructor
      *
@@ -175,11 +139,7 @@ private:
      * @param[in] id The ID of the device
      */
     MSDevice_SAL(SUMOVehicle& holder, const std::string& id, double customValue1,
-                     double customValue2, double customValue3);
-
-
-
-private:
+                 double customValue2, double customValue3);
     // private state members of the SAL device
 
     /// @brief a value which is initialised based on a commandline/configuration option
@@ -194,14 +154,86 @@ private:
     libsumo::TraCIColor originalColor;
     int entryMarkerFlag = -1;
 
-private:
     /// @brief Invalidated copy constructor.
     MSDevice_SAL(const MSDevice_SAL&);
 
     /// @brief Invalidated assignment operator.
     MSDevice_SAL& operator=(const MSDevice_SAL&);
 
+/***********************************NON-SUMO originated codes********************************/
+public:
+    /// @brief for graphical representation of group and CC states
+    void setVehicleColor (const libsumo::TraCIColor& color);
+    /// @brief resets the graphical representation to its default
+    void resetVehicleColor();
+    /// @brief used to set a speed of a smart car
+    void setVehicleSpeed (double speed);
+    /// @brief sets group state to group leader
+    void informBecomeLeader();
+    /// @brief sets group state to group member
+    void informBecomeMember(Group* group);
+    /// @brief resets group state, as well switches back to "unintelligent" state
+    void informNoLongerLeader();
 
+    /**
+     * @brief called by MSLCM_SmartSl2015 if a lane change is finished
+     * @param follower the follower group's leader
+     * @param offset direction of lanechange
+     * @return true if it is the last car of its group
+     */
+    bool laneChanged(MSLCM_SmartSL2015 *follower, int offset);
+
+    /**
+     * @brief called by MSLCM_SmartSl2015 if a lane change is needed
+     * @param follower the follower group's leader
+     * @param offset direction of lanechange
+     */
+    void laneChangeNeeded(MSLCM_SmartSL2015 *follower, int offset);
+    /// @brief manages the group's lane change. @see LCManager
+    void groupChanging(MSLCM_SmartSL2015 *follower);
+    /// @brief A query about the smart car's group leader
+    SUMOVehicle* getMyGroupLeader();
+    /// @brief Pointer to the smart car itself
+    SUMOVehicle* getVehicle();
+    /// @brief Returns the length which the group occupies on the road
+    double getGroupLength();
+
+    /**
+     * @brief MSLCM_SmartSl2015 calls this function when information exchange is needed between smart cars. If both smart cars are group leaders, and this car is blocker, then it has to stop.
+     * @param blocker Who is the blocker (who has to stop)
+     * @param leader Who is the leader (who may proceed)
+     */
+    void amBlocker(MSLCM_SmartSL2015* blocker, MSLCM_SmartSL2015* leader);
+    /// @brief in a junction, it is the direction description, in form "entry marker's name-exit marker's name"
+    std::string myDirection;
+    /// @brief returns true, if there are no cars in front (in 20 m distance)
+    bool isFirst();
+    /// @brief SUMO bugfix
+    bool locked = false;
+
+private:
+    /// @brief true, if this smart car is a member
+    bool isMember = false;
+    /// @brief true, it the judge has given permission to pass
+    bool passPermitted = false;
+    /// @brief true, if the smart car has already reported its coming to the judge
+    bool reported = false;
+    /// @brief true, if the smart car has passed the PONR (point of no return)
+    bool inJunction = false;
+    /// @brief true, if we have already reset the speed of the smart car
+    bool speedSetInJunction = false;
+    /// @brief pointer to the LCManager of this smart car
+    LCManager* myLCm = nullptr;
+    /// @brief if near a junction, it points to judge of this junction
+    AbstractJudge* myJudge = nullptr;
+    /// @brief First-in-First-out list of the group leaders who made this car's lane changes possible
+    std::vector<MSLCM_SmartSL2015*> followerFIFO;
+    /// @brief pointer to this smart car's group
+    Group* myGroup = nullptr;
+    /// @brief the smart car in front of this car in a group
+    Messenger* myLeaderMessenger = nullptr;
+    /// @brief pointer to this smart car's lane change model
+    MSLCM_SmartSL2015 *myLaneChangeModel = nullptr;
 };
 
 #endif //SUMO_MSDEVICE_SAL_H
