@@ -42,8 +42,6 @@ MDDFJudge::~MDDFJudge() {
 }
 
 void MDDFJudge::changeCC() {
-    //std::cout << *directions[0] << " came in: " << cameIn << "\twent out: "<< wentOut << " " << conflictClasses[activeCC] -> isEmpty() <<std::endl;
-
     if (cameIn == wentOut) {
         int currentTime = (int) libsumo::Simulation::getCurrentTime()/1000;
         if (yellow && flaggedAt+3<=currentTime && !conflictClasses[activeCC]->isThereCarInDanger(posX, posY)) {
@@ -59,9 +57,7 @@ void MDDFJudge::changeCC() {
             || conflictClasses[activeCC]->isEmpty() || currentTime - lastCameIn > 3) {
             if (currentTime - lastCameIn > 3) ((MDDFConflictClass*)conflictClasses[activeCC])->setBadGuy();
             if ((changeNeeded() || conflictClasses[activeCC]->isEmpty()) && nextActiveCC==activeCC) {
-               // do {
-                    nextActiveCC = selectNextCC();
-               // } while (conflictClasses[activeCC]->isEmpty() && activeCC != kor);
+                nextActiveCC = selectNextCC();
             }
             if (conflictClasses[activeCC]->isThereCarInDanger(posX, posY)) {
                 yellow = true;
@@ -73,8 +69,6 @@ void MDDFJudge::changeCC() {
                 yellow = false;
                 lastCameIn = currentTime;
             }
-
-            //std::cout << *directions[0] << std::endl;
         }
     }
 }
