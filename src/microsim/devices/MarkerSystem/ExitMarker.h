@@ -7,12 +7,17 @@
 
 #include "BaseMarker.h"
 
+/// @brief This class implements exit markers.
 class ExitMarker: public BaseMarker{
 public:
+    /// @brief constructor
     ExitMarker(std::string markerID, MSEdge* position);
+    /// @brief destructor
     ~ExitMarker();
 
+    /// @brief called if a smart car arrives at this exit marker. Always return null
     void* onEnter(SUMOVehicle* who);
+    /// @brief called if a smart car left this exit marker. Returns this
     void* onExit(SUMOVehicle* who);
 };
 

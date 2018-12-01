@@ -15,12 +15,7 @@ bool MarkerSystem::isMarkerID(const std::string& ID){
     return ID.compare(0,6,"marker") == 0;
 }
 
-bool MarkerSystem::isEntryMarker(const std::string& ID) {
-    return ID.compare(6,5,"Entry") == 0;
-}
-
 MarkerSystem::MarkerSystem(){
-    //std::vector<std::string> edgeNames = MSNet::getInstance()->getEdgeControl().getEdgeNames();
     std::vector<MSEdge*> edges = MSNet::getInstance()->getEdgeControl().getEdges();
     std::string str;
     MSEdge* edge;
@@ -61,9 +56,6 @@ BaseMarker* MarkerSystem::findMarkerByID(const std::string &ID) {
 }
 
 MarkerSystem& MarkerSystem::getInstance() {
-    /*if (singleton==NULL) singleton = new MarkerSystem();
-    return *singleton;*/
-
     static MarkerSystem ms;
     return ms;
 }
@@ -91,8 +83,4 @@ std::vector<ExitMarker*> MarkerSystem::findExitMarkerstoEntry(const std::string&
         }
     }
     return answer;
-}
-
-const std::map<std::string, BaseMarker*>& MarkerSystem::getMarkerMap() {
-    return markerMap;
 }
