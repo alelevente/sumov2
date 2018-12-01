@@ -43,7 +43,6 @@ RRJudge::~RRJudge() {
 }
 
 void RRJudge::changeCC() {
-    //std::cout << *directions[0] << " came in: " << cameIn << "\twent out: "<< wentOut << " " << conflictClasses[activeCC] -> isEmpty() <<std::endl;
 
     if (cameIn == wentOut) {
         bool carInDanger = conflictClasses[activeCC]->isThereCarInDanger(posX, posY);
@@ -74,11 +73,9 @@ void RRJudge::changeCC() {
                 yellow = false;
                 lastCameIn = currentTime;
             }
-
-            //std::cout << *directions[0] << " " << nextActiveCC << std::endl;
         }
     } else {
-        //std::cerr << *directions[0] << " " << cameIn-wentOut << std::endl;
+        ;
     }
 }
 
