@@ -28,12 +28,7 @@ void Messenger::joinAGroup(EntryMarker &entryMarker) {
             myVehicle))->exitMarkers);
     ExitMarker *exitMarker = NULL;
     myExitMarker = nullptr;
-    //actualJudge = ((EntryMarkerAnswer*)result)->judge;
-    /*for (auto i = exitMarkers->begin(); i != exitMarkers->end(); ++i) {
-        if (myVehicle->getRoute().contains((*i)->getPosition())) {
-            myExitMarker = *i;
-        }
-    }*/
+
     for (auto e: myVech->getRoute().getEdges()){
         for (auto m: *exitMarkers) {
             if (e->getID() == m->getMarkerID()) {
@@ -50,7 +45,6 @@ void Messenger::joinAGroup(EntryMarker &entryMarker) {
         }
     }
     mySAL->myDirection = entryMarker.getMarkerID()+ "-"+myExitMarker->getMarkerID();
-    //std::cout << mySAL->myDirection << std::endl;
 
     //we can join:
     if (other != nullptr) {
@@ -78,9 +72,9 @@ void Messenger::leaveGroup() {
 Group* Messenger::getGroup() { return myGroup; }
 
 void Messenger::needToChangeLane(MSLCM_SmartSL2015 *follower, int offset) {
-    if (mySAL == nullptr /*|| follower == nullptr*/) return;
+    if (mySAL == nullptr ) return;
     try {
-        //libsumo::Vehicle::getSpeed(follower->getMyVehicle()->getID());
+
         mySAL->laneChangeNeeded(follower, offset);
     } catch (...) {
 
