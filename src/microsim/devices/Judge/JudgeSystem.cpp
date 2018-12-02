@@ -7,14 +7,11 @@
 #include "MDDFJudge.h"
 #include <fstream>
 
-#define TESTMAP
+//#define TESTMAP
 
 JudgeSystem::JudgeSystem() {
-#ifdef TESTMAP
-    std::ifstream input("/home/levente/Egyetem/6_felev/EFOP/TestMap/judges", std::ifstream::in);
-#else
-    std::ifstream input("/home/levente/Egyetem/7_felev/szakdoga/judges", std::ifstream::in);
-#endif
+    std::ifstream input("../Configs/JudgeConfs/judges", std::ifstream::in);
+
     int nJudges;
     input >> nJudges;
 
