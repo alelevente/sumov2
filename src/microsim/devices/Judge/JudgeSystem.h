@@ -7,6 +7,7 @@
 
 #include <string>
 #include <map>
+#include <utils/common/SUMOTime.h>
 #include "microsim/devices/Judge/AbstractJudge.h"
 
 class AbstractJudge;
@@ -27,6 +28,8 @@ class JudgeSystem {
 public:
     /// @brief return this singleton instance
     static JudgeSystem& getInstance();
+
+    void doUpdate(const SUMOTime& now);
     /**
      * @brief kind of a getter of judges
      * @param name the name of the judge in question

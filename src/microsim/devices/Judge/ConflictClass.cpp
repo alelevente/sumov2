@@ -84,3 +84,9 @@ bool ConflictClass::isThereCarInDanger(double x, double y) {
     }
     return false;
 }
+
+void ConflictClass::informCars(JudgeCommand jc) {
+    for (auto& x: myCars){
+        x->informDecision(jc);
+    }
+}

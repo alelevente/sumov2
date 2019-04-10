@@ -76,6 +76,9 @@ private:
     //actions are only needed if the change is stable
     int blockerFlag = 0;
 
+    MSDevice_SAL* oldFrontSal = nullptr;
+    double groupLength;
+
 public:
     /**
      * @brief Inform the LC-model about the smartcar's state
@@ -97,6 +100,8 @@ public:
 
 
     MSVehicle* myFollower = nullptr;
+    MSVehicle* oldFollower = nullptr;
+    std::string myFollowerId = "";
 
 public:
     MSLCM_SmartSL2015(MSVehicle& v);

@@ -8,6 +8,7 @@
 
 #include <vector>
 #include <libsumo/TraCIDefs.h>
+#include "AbstractJudge.h"
 
 
 #define MAX_CC_MEMBERS 10
@@ -16,6 +17,7 @@
 
 class MSDevice_SAL;
 class Group;
+enum JudgeCommand;
 
 /**
  * @brief Base class for implementing further conflict classes
@@ -90,6 +92,9 @@ public:
 
     /// @brief Returns true if there are smart cars which can pass through the intersection in an actual green phase
     bool isFirst();
+
+    /// @brief Inform all cars in the Conflict Class about the judge's decision
+    void informCars(JudgeCommand jc);
 };
 
 

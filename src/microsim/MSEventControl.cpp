@@ -29,6 +29,7 @@
 #include "MSEventControl.h"
 #include <utils/common/MsgHandler.h>
 #include <utils/common/Command.h>
+#include <microsim/devices/Judge/JudgeSystem.h>
 #include "MSNet.h"
 
 
@@ -57,6 +58,7 @@ MSEventControl::addEvent(Command* operation, SUMOTime execTimeStep) {
 
 void
 MSEventControl::execute(SUMOTime execTime) {
+    JudgeSystem::getInstance().doUpdate(execTime);
     // Execute all events that are scheduled for execTime.
     while (!myEvents.empty()) {
         Event currEvent = myEvents.top();

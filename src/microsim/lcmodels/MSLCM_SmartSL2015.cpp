@@ -187,7 +187,13 @@ MSLCM_SmartSL2015::wantsChangeSublane(
         MSVehicle** firstBlocked,
         double& latDist, double& maneuverDist, int& blocked) {
 
-    if (laneOffset == 0) myFollower = const_cast<MSVehicle*>(followers[1].first);
+    if (laneOffset == 0) {
+        myFollower = const_cast<MSVehicle*>(followers[1].first);
+        if (oldFollower != myFollower) {
+            myFollowerId = myFollower != nullptr ? myFollower->getID() : "";
+            oldFollower = myFollower;
+        }
+    }
     if (myOwnState & LCA_BLOCKED) std::cerr << myVehicle.getID() << std::endl;
 
 
@@ -3439,17 +3445,23 @@ MSLeaderDistanceInfo * MSLCM_SmartSL2015::smartLeaderDistance(const MSLeaderDist
                 SUMOVehicle *inFront = (SUMOVehicle *) (const_cast<MSVehicle *>(leaderDistanceInfo[i].first));
 
                 MSDevice_SAL *inFrontSAL = static_cast<MSDevice_SAL *>(inFront->getDevice(typeid(MSDevice_SAL)));
+                if (inFrontSAL!=oldFrontSal) {
+                    oldFrontSal = inFrontSAL;
+                    groupLength =  inFrontSAL->getGroupLength();
+                }
                 if (inFrontSAL != 0) {
                     SUMOVehicle *groupLeader = inFrontSAL->getMyGroupLeader();
                     if (groupLeader == nullptr) copy->addLeader(leaderDistanceInfo[i].first, leaderDistanceInfo[i].second, 0, i);
                     else {
-                        libsumo::TraCIPosition inFrontPos = libsumo::Vehicle::getPosition(
-                                inFrontSAL->getMyGroupLeader()->getID());
+                        /*libsumo::TraCIPosition inFrontPos = libsumo::Vehicle::getPosition(
+                                inFrontSAL->getMyGroupLeader()->getID());*/
+                        Position myPos = myVehicle.getPosition(), frontPos = inFront->getPosition();
                         copy->addLeader((MSVehicle *) groupLeader,
-                                                     libsumo::Vehicle::getDrivingDistance2D(myVehicle.getID(),
+                                                     /*libsumo::Vehicle::getDrivingDistance2D(myVehicle.getID(),
                                                                                             inFrontPos.x,
-                                                                                            inFrontPos.y) -
-                                                     inFrontSAL->getGroupLength() - 6.65, 0, i);
+                                                                                            inFrontPos.y) -*/
+                                                     sqrt(pow(myPos.x()-frontPos.x(),2)+pow(myPos.y()-myPos.y(),2))-
+                                                     groupLength - 6.65, 0, i);
                     }
                 }
             } else copy->addLeader(leaderDistanceInfo[i].first, leaderDistanceInfo[i].second, 0, i);

@@ -7,6 +7,7 @@
 
 #include <string>
 #include <vector>
+#include <utils/common/SUMOTime.h>
 
 #define REPORT_DISTANCE 100
 #define STOP_DISTANCE 20
@@ -15,6 +16,11 @@
 class MSDevice_SAL;
 class Group;
 class ConflictClass;
+
+/**
+ * @brief Command states for communicating decisions to smart cars via interrupts
+ */
+enum JudgeCommand {JC_STOP, JC_GO};
 
 /**
  * @brief Abstract base class for implementing concrete judges
@@ -43,7 +49,7 @@ protected:
     /// @brief timestamp of the last smart car's entering the intersection
     long int lastCameIn = 0;
     /// @brief timestamp of the last check for stucked vehicles
-    int lastCheck = 0;
+    long long int lastCheck = 0, currentTime = 0;
     /// @brief list of cars that are currently inside of the intersection
     std::vector<MSDevice_SAL*> carsIn;
     /// @brief This function is called periodically to kill stucked smart vehicles
@@ -56,6 +62,9 @@ protected:
 
 
 public:
+    /// @brief to update in every time frame
+    virtual void step(const SUMOTime& st) = 0;
+
     /// @brief x coordinate of the center of the intersection
     double posX;
     /// @brief y coordinate of the center of the intersection

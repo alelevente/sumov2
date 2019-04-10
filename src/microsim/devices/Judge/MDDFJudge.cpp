@@ -41,6 +41,8 @@ MDDFJudge::~MDDFJudge() {
         delete programElements[i];
 }
 
+void MDDFJudge::step(const SUMOTime &now) {}
+
 void MDDFJudge::changeCC() {
     if (cameIn == wentOut) {
         int currentTime = (int) libsumo::Simulation::getCurrentTime()/1000;

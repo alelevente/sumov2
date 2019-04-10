@@ -211,7 +211,11 @@ public:
     /// @brief SUMO bugfix
     bool locked = false;
 
+    void informDecision(JudgeCommand jc);
+
 private:
+    double lastSetSpeed = 0;
+
     /// @brief true, if this smart car is a member
     bool isMember = false;
     /// @brief true, it the judge has given permission to pass
@@ -232,6 +236,10 @@ private:
     Group* myGroup = nullptr;
     /// @brief the smart car in front of this car in a group
     Messenger* myLeaderMessenger = nullptr;
+public:
+    void setMyLeaderMessenger(Messenger *myLeaderMessenger);
+
+private:
     /// @brief pointer to this smart car's lane change model
     MSLCM_SmartSL2015 *myLaneChangeModel = nullptr;
 };

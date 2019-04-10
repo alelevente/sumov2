@@ -60,3 +60,9 @@ JudgeSystem::~JudgeSystem() {
         delete (*i).second;
     }
 }
+
+void JudgeSystem::doUpdate(const SUMOTime& now) {
+    for (auto& j: judgeMap){
+        j.second->step(now);
+    }
+}

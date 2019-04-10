@@ -55,6 +55,8 @@ public:
     ~MDDFJudge();
     /// @brief override of canPass @see AbstractJudge
     bool canPass(MSDevice_SAL *who, const std::string &direction);
+
+    virtual void step(const SUMOTime& now);
 };
 
 
