@@ -64,6 +64,7 @@
 #include <microsim/MSGlobals.h>
 #include <microsim/traffic_lights/MSTLLogicControl.h>
 #include <libsumo/Simulation.h>
+#include <utils/traci/TraCIAPI.h>
 #include "TraCIConstants.h"
 #include "TraCIServer.h"
 #include "TraCIServerAPI_InductionLoop.h"
@@ -722,6 +723,18 @@ TraCIServer::dispatchCommand() {
             case CMD_GETVERSION:
                 success = commandGetVersion();
                 break;
+            /*case CMD_SET_GUI_VARIABLE: {
+                /*int variable = myInputStorage.readInt();
+                if (variable == VAR_VIEW_ZOOM) {
+
+                    std::string viewID = myInputStorage.readString();
+                    double zoom = myInputStorage.readDouble();
+                    TraCIServerAPI_GUI()
+                }
+                TraCIServerAPI_GUI traCIServerAPIGui;
+
+                break;
+            }*/
             case CMD_LOAD: {
                 std::vector<std::string> args;
                 if (!readTypeCheckingStringList(myInputStorage, args)) {
@@ -745,7 +758,7 @@ TraCIServer::dispatchCommand() {
                 break;
             }
             case CMD_SIMSTEP: {
-                SUMOTime nextT = myInputStorage.readInt();
+                SUMOTime nextT = myInputStorage.readDouble();
                 if (myAmEmbedded) {
                     if (nextT == 0) {
                         myTargetTime += DELTA_T;

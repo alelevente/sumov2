@@ -76,7 +76,7 @@ public:
      * @param who the car who is curious if it can currently pass through the intersection
      * @return true if the car is allowed to go through the intersection
      */
-    virtual bool canPass(MSDevice_SAL* who)=0;
+    virtual bool canPass(MSDevice_SAL *who, const std::string &direction)=0;
 
     /**
      * @brief Smart cars inform AbstractJudge about entering the intersection

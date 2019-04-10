@@ -8,9 +8,14 @@
 #include <fstream>
 
 //#define TESTMAP
+#define DEVELOPING
 
 JudgeSystem::JudgeSystem() {
+#ifdef DEVELOPING
+    std::ifstream input("/home/levente/Egyetem/7_felev/szakdoga/beadas/Configs/JudgeConfs/judges", std::ifstream::in);
+#else
     std::ifstream input("../Configs/JudgeConfs/judges", std::ifstream::in);
+#endif
 
     int nJudges;
     input >> nJudges;

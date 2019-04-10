@@ -2,7 +2,7 @@
 // Created by levente on 2018.08.01..
 //
 
-#include "libsumo/Simulation.h"
+
 #include <fstream>
 #include <iostream>
 #include "RRJudge.h"
@@ -88,7 +88,7 @@ int RRJudge::decideCC(Group *group, const std::string &direction) {
     return acc;
 }
 
-bool RRJudge::canPass(MSDevice_SAL *who) {
+bool RRJudge::canPass(MSDevice_SAL *who, const std::string &direction) {
     int now = (int) libsumo::Simulation::getCurrentTime() / 1000;
     if (now - lastCheck > 1) {
         this->makeKill();
@@ -96,7 +96,7 @@ bool RRJudge::canPass(MSDevice_SAL *who) {
     }
     if (now - startTime > programElements[activeCC]->duration
             || now-lastCameIn > 3) changeCC();
-    return !yellow && (now - startTime <= programElements[activeCC]->duration) && conflictClasses[activeCC]->hasVehicle(who);
+    return !yellow && (now - startTime <= programElements[activeCC]->duration) && allowedToMove(who, &who->myDirection);
 }
 
 bool RRJudge::changeNeeded() {
@@ -106,4 +106,11 @@ bool RRJudge::changeNeeded() {
         if (count == 2) return true;
     }
     return false;
+}
+
+bool RRJudge::allowedToMove(MSDevice_SAL *who, std::string *direction) {
+    if (conflictClasses[activeCC]->hasVehicle(who) || direction == nullptr) return true;
+    int dir = 0;
+    for (dir = 0; dir<nDirs && *directions[dir]!=*direction; ++dir);
+    return programElements[activeCC]->passeable[dir]? true: false;
 }

@@ -9,6 +9,8 @@
 #include "ConflictClass.h"
 #include <vector>
 #include <string>
+#include <microsim/devices/MSDevice_SAL.h>
+#include "libsumo/Simulation.h"
 
 class Group;
 class MSDevice_SAL;
@@ -47,6 +49,9 @@ class RRJudge: public AbstractJudge {
     /// @brief This override function is responsible for selecting the new CC in case of need
     virtual void changeCC();
 
+
+    bool allowedToMove(MSDevice_SAL *who, std::string *direction);
+
 protected:
     /// @brief yellow is the transition state of changing CCs
     bool yellow = false;
@@ -61,7 +66,7 @@ public:
     /// @brief destructor
     ~RRJudge();
     /// @brief override of canPass @see AbstractJudge
-    bool canPass(MSDevice_SAL* who);
+    bool canPass(MSDevice_SAL *who, const std::string &direction);
 };
 
 

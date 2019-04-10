@@ -85,7 +85,7 @@ int MDDFJudge::decideCC(Group *group, const std::string &direction) {
     return acc;
 }
 
-bool MDDFJudge::canPass(MSDevice_SAL *who) {
+bool MDDFJudge::canPass(MSDevice_SAL *who, const std::string &direction) {
     int now = (int) libsumo::Simulation::getCurrentTime() / 1000;
     if (now - lastCheck > 1) {
         this->makeKill();
