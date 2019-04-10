@@ -149,7 +149,7 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
         } else {
             myLeaderMessenger = nullptr;
             locked = true;
-            if (reported && !inJunction) passPermitted = myJudge->canPass(this);
+            if (reported && !inJunction) passPermitted = myJudge->canPass(this, myDirection);
             locked = false;
             if (!passPermitted && !inJunction) {
                 double desiredSpeed = speedLimit * ((deltaX - myJudge->stopRadius) / REPORT_DISTANCE);
