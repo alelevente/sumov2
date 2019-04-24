@@ -69,7 +69,7 @@ void LCManager::changed() {
 
 void LCManager::groupChanged() {
     if (myLC->myFollower != nullptr) {
-        std::string ID = myLC->myFollower->getID();
+        std::string ID = myLC->myFollowerId;
         libsumo::Vehicle::setLaneChangeMode(ID, 1621);
         libsumo::Vehicle::setSpeed(ID, 15);
     }

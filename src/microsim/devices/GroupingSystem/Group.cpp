@@ -64,6 +64,10 @@ void Group::removeCar(Messenger *who) {
     else if (idx == 0){
         members[0]->mySAL->informBecomeLeader();
         groupLeader = members[0];
+    } else {
+        for (int j = idx; j < nMembers; ++j) {
+            members[j]->mySAL->setMyLeaderMessenger(members[j - 1]);
+        }
     }
 }
 

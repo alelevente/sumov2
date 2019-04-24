@@ -210,8 +210,11 @@ public:
     bool isFirst();
     /// @brief SUMO bugfix
     bool locked = false;
+public:
+    void setMyLeaderMessenger(Messenger *myLeaderrMessenger);
 
 private:
+    double lastSetSpeed = 0;
     /// @brief true, if this smart car is a member
     bool isMember = false;
     /// @brief true, it the judge has given permission to pass

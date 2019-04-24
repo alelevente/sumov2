@@ -109,11 +109,12 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
     MSLCM_SmartSL2015 &lcm = *myLaneChangeModel;
 
     if (entryMarkerFlag == 0 && veh.getEdge()->getID().length()>11 && (veh.getEdge()->getID()).compare(6,5,"Entry")==0) {
+        myJudge = ((EntryMarker*)(MarkerSystem::getInstance().findMarkerByID(veh.getEdge()->getID())))->getJudge();
         MessagingProxy::getInstance().informEnterEntryMarker(veh.getID(),
                                                              (EntryMarker*)(MarkerSystem::getInstance().findMarkerByID(veh.getEdge()->getID())));
-        myJudge = ((EntryMarker*)(MarkerSystem::getInstance().findMarkerByID(veh.getEdge()->getID())))->getJudge();
         if (!reported) myJudge->reportComing(MessagingProxy::getInstance().getGroupOf(myHolder.getID()), myDirection);
         reported = true;
+        myGroup = MessagingProxy::getInstance().getGroupOf(myHolder.getID());
 
     }
     if (entryMarkerFlag>=0) --entryMarkerFlag;
@@ -200,6 +201,7 @@ MSDevice_SAL::notifyEnter(SUMOVehicle& veh, MSMoveReminder::Notification reason,
             inJunction=false;
             reported = false;
             speedSetInJunction = false;
+            myGroup = nullptr;
         }
     }
     return true; // keep the device
@@ -312,7 +314,10 @@ double MSDevice_SAL::getGroupLength() {
 }
 
 void MSDevice_SAL::setVehicleSpeed(double speed) {
-    libsumo::Vehicle::setSpeed(myHolder.getID(), speed);
+    if (lastSetSpeed != speed) {
+        libsumo::Vehicle::setSpeed(myHolder.getID(), speed);
+        lastSetSpeed = speed;
+    }
 }
 
 void MSDevice_SAL::groupChanging(MSLCM_SmartSL2015 *follower) {
@@ -336,4 +341,8 @@ SUMOVehicle* MSDevice_SAL::getVehicle() {
 
 bool MSDevice_SAL::isFirst() {
     return (libsumo::Vehicle::getLeader(myHolder.getID(), STOP_DISTANCE)).second < 0;
+}
+
+void MSDevice_SAL::setMyLeaderMessenger(Messenger *myLeaderMessenger) {
+    MSDevice_SAL::myLeaderMessenger = myLeaderMessenger;
 }
