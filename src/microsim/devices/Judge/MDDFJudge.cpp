@@ -41,37 +41,55 @@ MDDFJudge::~MDDFJudge() {
         delete programElements[i];
 }
 
-void MDDFJudge::step(const SUMOTime &now) {}
+void MDDFJudge::step(const SUMOTime &now) {
+    currentTime = now / 1000;
+    if (now - lastCheck > 1) {
+        this->makeKill();
+        lastCheck = now;
+    }
+    if (now - startTime > programElements[activeCC]->duration
+        || now-lastCameIn > 3) changeCC();
+}
 
 void MDDFJudge::changeCC() {
     if (cameIn == wentOut) {
-        int currentTime = (int) libsumo::Simulation::getCurrentTime()/1000;
-        if (yellow && flaggedAt+3<=currentTime && !conflictClasses[activeCC]->isThereCarInDanger(posX, posY)) {
+        bool carInDanger = conflictClasses[activeCC]->isThereCarInDanger(posX, posY);
+        //int currentTime = (int) libsumo::Simulation::getCurrentTime()/1000;
+        if (yellow && flaggedAt+3<=currentTime && !carInDanger) {
             startTime = currentTime;
             ((MDDFConflictClass*)conflictClasses[activeCC])->setLastTime(currentTime);
+
+            conflictClasses[activeCC]->informCars(JC_STOP);
             activeCC = nextActiveCC;
+            conflictClasses[activeCC]->informCars(JC_GO);
+
             ((MDDFConflictClass*)conflictClasses[activeCC])->resetBadGuy();
             yellow = false;
             lastCameIn = currentTime;
         }
         int kor = activeCC;
-        if (currentTime-startTime > programElements[activeCC]->duration
+        if (!yellow && currentTime-startTime > programElements[activeCC]->duration
             || conflictClasses[activeCC]->isEmpty() || currentTime - lastCameIn > 3) {
             if (currentTime - lastCameIn > 3) ((MDDFConflictClass*)conflictClasses[activeCC])->setBadGuy();
             if ((changeNeeded() || conflictClasses[activeCC]->isEmpty()) && nextActiveCC==activeCC) {
                 nextActiveCC = selectNextCC();
             }
-            if (conflictClasses[activeCC]->isThereCarInDanger(posX, posY)) {
+            if (carInDanger) {
+                conflictClasses[activeCC]->informCars(JC_STOP);
                 yellow = true;
                 lastCameIn = currentTime;
                 flaggedAt = currentTime;
             } else {
                 startTime = currentTime;
+                conflictClasses[activeCC]->informCars(JC_STOP);
                 activeCC = nextActiveCC;
+                conflictClasses[activeCC]->informCars(JC_GO);
                 yellow = false;
                 lastCameIn = currentTime;
             }
         }
+    } else {
+        conflictClasses[activeCC]->informCars(JC_STOP);
     }
 }
 
@@ -84,17 +102,16 @@ int MDDFJudge::decideCC(Group *group, const std::string &direction) {
     int acc;
     for (acc=0; !programElements[acc]->passeable[dir] && acc<nPrograms; ++acc);
     conflictClasses[acc]->joinGroup(group);
+    if (acc==activeCC) {
+        JudgeCommand canGo = yellow ? JC_STOP : JC_GO;
+        conflictClasses[acc]->informCars(canGo);
+    } else conflictClasses[acc]->informCars(JC_STOP);
     return acc;
 }
 
 bool MDDFJudge::canPass(MSDevice_SAL *who, const std::string &direction) {
-    int now = (int) libsumo::Simulation::getCurrentTime() / 1000;
-    if (now - lastCheck > 1) {
-        this->makeKill();
-        lastCheck = now;
-    }
-    if (now - startTime > programElements[activeCC]->duration
-        || now-lastCameIn > 3) changeCC();
+    long long int now = currentTime;
+
     return !yellow && (now - startTime <= programElements[activeCC]->duration) && conflictClasses[activeCC]->hasVehicle(who);
 }
 
