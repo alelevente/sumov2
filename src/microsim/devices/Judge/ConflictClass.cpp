@@ -86,7 +86,10 @@ bool ConflictClass::isThereCarInDanger(double x, double y) {
 }
 
 void ConflictClass::informCars(JudgeCommand jc) {
+    //std::cout << jc << "  Changed state ";
     for (auto& x: myCars){
+       // std::cout << x->getID() << ", ";
         x->informDecision(jc);
     }
+    //std::cout << std::endl;
 }

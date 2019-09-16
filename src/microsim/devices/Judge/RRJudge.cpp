@@ -33,6 +33,8 @@ RRJudge::RRJudge(const std::string &path) {
         programElements.insert(programElements.end(), pe);
     }
     input.close();
+    this->initialized = true;
+    std::cout << programElements[0]->duration << std::endl;
 }
 
 RRJudge::~RRJudge() {
@@ -44,8 +46,8 @@ RRJudge::~RRJudge() {
 
 void RRJudge::changeCC() {
 
-    if (cameIn == wentOut) {
-        bool carInDanger = conflictClasses[activeCC]->isThereCarInDanger(posX, posY);
+    if (true /*cameIn == wentOut*/) {
+        bool carInDanger = false; //conflictClasses[activeCC]->isThereCarInDanger(posX, posY);
         //int currentTime = (int) libsumo::Simulation::getCurrentTime()/1000;
         if (yellow && flaggedAt+3<=currentTime && !carInDanger) {
             startTime = currentTime;
@@ -61,6 +63,7 @@ void RRJudge::changeCC() {
                 || conflictClasses[activeCC]->isEmpty() || currentTime - lastCameIn > 3) {
             conflictClasses[activeCC]->informCars(JC_STOP);
             activeCC = nextActiveCC;
+            lastCameIn = currentTime;
             conflictClasses[activeCC]->informCars(JC_GO);
             if (changeNeeded() || conflictClasses[activeCC]->isEmpty())
             do {
@@ -83,6 +86,7 @@ void RRJudge::changeCC() {
         }
     } else {
         conflictClasses[activeCC]->informCars(JC_STOP);
+        //std::cout << "other" << std::endl;
     }
 }
 
@@ -107,12 +111,12 @@ void RRJudge::step(const SUMOTime& now) {
         lastCheck = now;
     }
     if ((currentTime - startTime) > (programElements[activeCC]->duration)
-        || currentTime-lastCameIn > 3) changeCC();
+        || currentTime-lastCameIn > 5) changeCC();
 }
 
 bool RRJudge::canPass(MSDevice_SAL *who, const std::string &direction) {
     long long int now = currentTime;
-
+    std::cout << who->getID() << " can pass: " << (!yellow && (now - startTime <= programElements[activeCC]->duration) && allowedToMove(who, &who->myDirection)) << std::endl;
     return !yellow && (now - startTime <= programElements[activeCC]->duration) && allowedToMove(who, &who->myDirection);
 }
 

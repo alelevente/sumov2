@@ -58,9 +58,10 @@ void Group::removeCar(Messenger *who) {
 
     first->mySAL->informNoLongerLeader();
     first->mySAL->resetVehicleColor();
+    this->myCC->removeVehicle(first->mySAL);
     first->myGroup = nullptr;
 
-    if (nMembers == 0) finishGroup();
+    if (nMembers == 0) finishGroup(who);
     else if (idx == 0){
         members[0]->mySAL->informBecomeLeader();
         groupLeader = members[0];
@@ -71,7 +72,8 @@ void Group::removeCar(Messenger *who) {
     }
 }
 
-void Group::finishGroup() {
+void Group::finishGroup(Messenger *who) {
+    who->mySAL->myLCm->groupChanged();
     delete this;
 }
 

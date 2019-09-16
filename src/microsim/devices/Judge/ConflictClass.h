@@ -12,8 +12,8 @@
 
 
 #define MAX_CC_MEMBERS 10
-//#define IN_DANGER 35
-#define IN_DANGER inDanger-5
+#define IN_DANGER 10
+//#define IN_DANGER inDanger-5
 
 class MSDevice_SAL;
 class Group;

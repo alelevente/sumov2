@@ -54,6 +54,7 @@ protected:
     std::vector<MSDevice_SAL*> carsIn;
     /// @brief This function is called periodically to kill stucked smart vehicles
     void makeKill();
+    long int killed = 0;
 
 #ifdef KILLCARS
     std::vector <std::string*> carsIn;
@@ -73,6 +74,8 @@ public:
     double stopRadius = 15;
     /// @brief the radius of Point of No Return around the intersection
     double ponrRadius = 5;
+
+    bool initialized = false;
 
     /**
      * @brief May be called if the last smart car of a conflict class has left the junction

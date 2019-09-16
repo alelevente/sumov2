@@ -32,6 +32,7 @@ MDDFJudge::MDDFJudge(const std::string &path) {
         programElements.insert(programElements.end(), pe);
     }
     input.close();
+    this->initialized = true;
 }
 
 MDDFJudge::~MDDFJudge() {

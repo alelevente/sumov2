@@ -63,6 +63,6 @@ JudgeSystem::~JudgeSystem() {
 
 void JudgeSystem::doUpdate(const SUMOTime& now) {
     for (auto& j: judgeMap){
-        j.second->step(now);
+        if (j.second->initialized) j.second->step(now);
     }
 }

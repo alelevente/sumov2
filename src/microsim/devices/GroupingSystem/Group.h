@@ -33,7 +33,7 @@ class Group {
     libsumo::TraCIColor myColor;
 
     /// @brief called when the last member of the group has left the junction
-    void finishGroup();
+    void finishGroup(Messenger *who);
 
     /// @brief true if a lane change is in progress
     bool laneChangeInAction = false;
@@ -41,6 +41,7 @@ class Group {
     /// @brief In a junction it is the pointer of the conflict class which the group is assigned for. Otherwise its nullptr.
     ConflictClass* myCC = nullptr;
 public:
+    static const int MAX_INGROUP_DISTANCE = 40;
     /// @brief First-in-First-out list of the group leaders who made possible our group's lanechange
     std::vector<MSLCM_SmartSL2015*> LCFifo;
     /// @brief list of the actual members of the group

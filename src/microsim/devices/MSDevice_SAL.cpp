@@ -19,6 +19,7 @@
 #include <microsim/devices/MessagingSystem/MessagingProxy.h>
 #include <libsumo/VehicleType.h>
 #include <libsumo/Vehicle.h>
+#include <libsumo/Helper.h>
 #include "MSDevice_Tripinfo.h"
 #include "MSDevice_SAL.h"
 
@@ -93,17 +94,29 @@ MSDevice_SAL::MSDevice_SAL(SUMOVehicle& holder, const std::string& id,
 
 
 MSDevice_SAL::~MSDevice_SAL() {
+    if (inJunction) myJudge->carLeftJunction(this);
     if (!MSNet::getInstance()->closed)
             MessengerSystem::getInstance().removeMessengerAgent(myHolder.getID());
     delete myLCm;
 }
 
+/*Helper function:*/
+bool isSTOPmarker(const std::string& edgeID){
+    return edgeID.substr(0, edgeID.find("_")) == "STOP";
+}
 
 bool
 MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
-                             double /* newPos */, double newSpeed) {
+                             double  newPos, double newSpeed) {
+    if (myHolder.isSelected()) std::cout << myHolder.getID() <<" is able to pass: " << passPermitted << std::endl;
+
     if (myLCm == nullptr) {
         myLCm = new LCManager((MSLCM_SmartSL2015*) &((MSVehicle *) (&myHolder))->getLaneChangeModel());
+    } else {
+        if (myLCm->lastChange != 0 && MSNet::getInstance()->getCurrentTimeStep()-myLCm->lastChange > 15000) {
+            myLCm->lastChange = 0;
+            setVehicleSpeed(15);
+        }
     }
     if (myLaneChangeModel == nullptr) myLaneChangeModel = (MSLCM_SmartSL2015*) &((MSVehicle *) (&myHolder))->getLaneChangeModel();
     MSLCM_SmartSL2015 &lcm = *myLaneChangeModel;
@@ -118,6 +131,8 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
     }
     if (entryMarkerFlag>=0) --entryMarkerFlag;
 
+    std::string edgeID = veh.getEdge()->getID();
+    bool onStopMarker = isSTOPmarker(edgeID);
 
     if (myGroup != nullptr) {
         bool debug = myHolder.isSelected();
@@ -152,13 +167,19 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
             //if (reported && !inJunction) passPermitted = myJudge->canPass(this, myDirection);
             //locked = false;
             if (!passPermitted && !inJunction) {
-                double desiredSpeed = speedLimit * ((deltaX - myJudge->stopRadius) / REPORT_DISTANCE);
+                //double desiredSpeed = speedLimit * ((deltaX - myJudge->stopRadius) / REPORT_DISTANCE);
+
+                double desiredSpeed = speedLimit;
+                if (onStopMarker) desiredSpeed *= (veh.getEdge()->getLength()-2.0f-veh.getPositionOnLane())/(veh.getLane()->getLength());
+                if (onStopMarker && veh.getEdge()->getLength()-2.0f-veh.getPositionOnLane() < 1.0f) desiredSpeed = 0;
+                //std::cout << myHolder.getID() << " " << veh.getPositionOnLane() << std::endl;
+                if (veh.isSelected()) std::cout << veh.getID() << " " << desiredSpeed << std::endl;
                 if (desiredSpeed < speedLimit) setVehicleSpeed(desiredSpeed);
                 if (desiredSpeed <= 0) setVehicleSpeed(0);
                 if (passPermitted) {
                     std::cout << myHolder.getID() << " is permitted to pass" << std::endl;
                 } else if (debug)
-                    std::cout << myHolder.getID() << ": "<<deltaX << "m, "<< desiredSpeed << std::endl;
+                    std::cout << myHolder.getID() << ": "<<desiredSpeed << "deltaM, "<< veh.getLane()->getLength()-veh.getPositionOnLane() << std::endl;
             } else {
                     if (!(lcm.getOwnState() & LCA_STAY)) setVehicleSpeed(20); else {
                         if (debug) std::cout << "OKÉ" << std::endl;
@@ -172,7 +193,7 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
                                                          lcm.getCommittedSpeed() << std::endl;
             }
         }
-        if (!inJunction && deltaX < myJudge->ponrRadius) {
+        if (!inJunction && hasReachedPONR(onStopMarker)) {
             if (debug) std::cout << myHolder.getID() << "has passed PONR." << std::endl;
             myJudge->carPassedPONR(this);
             inJunction = true;
@@ -180,9 +201,15 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
         }
     } else myLeaderMessenger = nullptr;
 
+    lastEdgeWasStop = onStopMarker;
+
     return true; // keep the device
 }
 
+bool MSDevice_SAL::hasReachedPONR(bool onStop)
+{
+    return (!onStop && lastEdgeWasStop);
+}
 
 bool
 MSDevice_SAL::notifyEnter(SUMOVehicle& veh, MSMoveReminder::Notification reason, const MSLane* enteredLane) {
@@ -261,7 +288,11 @@ void MSDevice_SAL::setVehicleColor(const libsumo::TraCIColor &color) {
 }
 
 void MSDevice_SAL::resetVehicleColor() {
-    libsumo::Vehicle::setColor(myHolder.getID(), originalColor);
+    try {
+        libsumo::Vehicle::setColor(myHolder.getID(), originalColor);
+    } catch (libsumo::TraCIException e) {
+
+    }
 }
 
 void MSDevice_SAL::informBecomeLeader() {
@@ -332,6 +363,8 @@ void MSDevice_SAL::amBlocker(MSLCM_SmartSL2015 *blocker, MSLCM_SmartSL2015 *lead
         otherDevice->myLCm->groupChanging(blocker);
     }
     myLCm->blocker(blocker);
+    myLCm->lastChange = MSNet::getInstance()->getCurrentTimeStep();
+    stopStartedLC = passChanged;
 }
 
 SUMOVehicle* MSDevice_SAL::getVehicle() {
@@ -343,7 +376,18 @@ bool MSDevice_SAL::isFirst() {
 }
 
 void MSDevice_SAL::informDecision(JudgeCommand jc) {
+    passChanged += passPermitted != (jc == JC_GO)? 1: 0;
     passPermitted = jc==JC_GO;
+    //resetting change:
+    if (myHolder.isSelected()) {
+        std::cout << myHolder.getID() << "passChanged: " << passChanged << std::endl;
+    }
+    if (passChanged - stopStartedLC > 3) {
+        libsumo::Vehicle::setLaneChangeMode(myHolder.getID(), 1621);
+        libsumo::Vehicle::setSpeed(myHolder.getID(), 15);
+        passChanged = 0;
+        stopStartedLC = UINT64_MAX;
+    }
 }
 
 void MSDevice_SAL::setMyLeaderMessenger(Messenger *myLeaderMessenger) {

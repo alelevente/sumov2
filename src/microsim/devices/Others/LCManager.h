@@ -27,12 +27,13 @@ class LCManager {
     int requestedChanges = 0;
     /// @brief direction of last requested lane change
     int lastDir = 0;
-    /// @brief timestamp of last requested lane change
-    SUMOTime lastChange = 0;
+    std::string vehID;
 
 public:
+    SUMOTime lastChange = 0;
     /// @brief constructor
     LCManager(MSLCM_SmartSL2015* myLC);
+    ~LCManager();
     /// @brief inform LCManager about the changes in group membership
     void setIsMember(Group* group);
     /// @brief inform LCManager if the smart car left the group

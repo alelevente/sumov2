@@ -69,6 +69,7 @@ void AbstractJudge::reportComing(Group *group, const std::string &direction) {
 }
 
 void AbstractJudge::makeKill() {
+
     //search for stucked cars in junction:
     for (auto x: carsIn) {
         if (x->locked) return;
@@ -76,10 +77,11 @@ void AbstractJudge::makeKill() {
         if ((*x).getVehicle()->getSpeed() <= 0.0001) {
             std::string carID = (*x).getVehicle()->getID();
             std::cout << (*x).getID() << std::endl;
+            if ((*x).getVehicle()->getWaitingTime() < 300) return;
             //necessary steps to leave the group:
             MessagingProxy::getInstance().informEnterExitMarker((*x).getVehicle()->getID(),
                                                                 (ExitMarker*)(MarkerSystem::getInstance().findMarkerByID((*x).getVehicle()->getEdge()->getID())));
-            std::cerr << (*x).getVehicle()->getID() << " has been killed" << std::endl;
+            std::cout << (*x).getVehicle()->getID() << " has been killed, total: " << killed+1 << std::endl;
             carLeftJunction(x, true);
             std::vector<int> where;
             int idx=0;
@@ -98,8 +100,9 @@ void AbstractJudge::makeKill() {
 
             //remove the vehicle from the simulation:
             libsumo::Vehicle::remove(carID, REMOVE_VAPORIZED);
-            for (auto x: carsIn) std::cout << " " << x->getID();
-            std::cout << std::endl;
+            ++killed;
+            //for (auto x: carsIn) std::cout << " " << x->getID();
+            //std::cout << std::endl;
             return;
         }
     }

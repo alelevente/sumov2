@@ -19,9 +19,9 @@
 #include "GroupingSystem/Group.h"
 
 
-#define GROUP_GAP_DESIRED 12
+#define GROUP_GAP_DESIRED 5
 #define GROUP_GAP_THRESHOLD 3
-#define GROUP_GAP_LIMIT 7
+#define GROUP_GAP_LIMIT 2
 
 
 // ===========================================================================
@@ -160,6 +160,8 @@ private:
     /// @brief Invalidated assignment operator.
     MSDevice_SAL& operator=(const MSDevice_SAL&);
 
+    bool hasReachedPONR(bool onStop);
+
 /***********************************NON-SUMO originated codes********************************/
 public:
     /// @brief for graphical representation of group and CC states
@@ -213,8 +215,12 @@ public:
 
     void informDecision(JudgeCommand jc);
 
+    /// @brief pointer to the LCManager of this smart car
+    LCManager* myLCm = nullptr;
+
 private:
     double lastSetSpeed = 0;
+    bool lastEdgeWasStop = false;
 
     /// @brief true, if this smart car is a member
     bool isMember = false;
@@ -226,8 +232,6 @@ private:
     bool inJunction = false;
     /// @brief true, if we have already reset the speed of the smart car
     bool speedSetInJunction = false;
-    /// @brief pointer to the LCManager of this smart car
-    LCManager* myLCm = nullptr;
     /// @brief if near a junction, it points to judge of this junction
     AbstractJudge* myJudge = nullptr;
     /// @brief First-in-First-out list of the group leaders who made this car's lane changes possible
@@ -242,6 +246,7 @@ public:
 private:
     /// @brief pointer to this smart car's lane change model
     MSLCM_SmartSL2015 *myLaneChangeModel = nullptr;
+    int stopStartedLC = 0, passChanged = 0;
 };
 
 #endif //SUMO_MSDEVICE_SAL_H

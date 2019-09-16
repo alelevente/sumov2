@@ -33,6 +33,8 @@ class Messenger {
     /// @brief pointer to the upcoming exit marker
     ExitMarker* myExitMarker;
 
+    double _get_distance(const Messenger& otherAgent);
+
 public:
     /// @brief pointer to the simulation abstraction device
     MSDevice_SAL *mySAL;

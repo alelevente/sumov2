@@ -16,6 +16,11 @@ Messenger::Messenger(SUMOVehicle *myVech, MSDevice_SAL *mySAL) :
 
 Messenger::~Messenger() {}
 
+double Messenger::_get_distance(const Messenger& otherAgent){
+    Position pos = otherAgent.mySAL->getVehicle()->getPosition(0);
+    return pos.distanceTo(mySAL->getVehicle()->getPosition(0));
+}
+
 void Messenger::joinAGroup(EntryMarker &entryMarker) {
     if (myGroup != nullptr)
         return;
@@ -50,7 +55,9 @@ void Messenger::joinAGroup(EntryMarker &entryMarker) {
     if (other != nullptr) {
         Messenger *otherAgent = MessengerSystem::getInstance().messengerMap[other->getID()];
         if (otherAgent != nullptr && otherAgent->myGroup != nullptr) {
-            if (otherAgent->myGroup->canJoin && otherAgent->myExitMarker == myExitMarker) {
+            if (otherAgent->myGroup->canJoin && otherAgent->myExitMarker == myExitMarker
+                && _get_distance(*otherAgent) < Group::MAX_INGROUP_DISTANCE) {
+                std::cout << otherAgent->mySAL->getID() << " " << _get_distance(*otherAgent) << std::endl;
                 otherAgent->myGroup->addNewMember(this);
                 myGroup = otherAgent->myGroup;
                 return;

@@ -11,7 +11,13 @@
 
 
 LCManager::LCManager(MSLCM_SmartSL2015 *myLC):
-    myLC(myLC) {}
+    myLC(myLC) {
+    vehID = myLC -> getMyVehicle() -> getID();
+}
+
+LCManager::~LCManager() {
+    groupChanged();
+}
 
 void LCManager::setIsMember(Group* group) {
     myLC->setMyGroupState(MEMBER);
@@ -36,14 +42,19 @@ void LCManager::setIsLeader() {
 
 void LCManager::leaveGroup() {
     myLC->setMyGroupState(OUT);
-    groupChanged();
-    std::string ID = myLC->getMyVehicle()->getID();
-    libsumo::Vehicle::setLaneChangeMode(ID, 1621);
 
-    //needed to forget previous changerequs:
-    libsumo::Vehicle::setSpeed(ID, -1);
-    requestedChanges = 0;
-    hasChanged = 0;
+    try {
+        libsumo::Vehicle::setLaneChangeMode(vehID, 1621);
+
+        //needed to forget previous changerequs:
+        libsumo::Vehicle::setSpeed(vehID, -1);
+        requestedChanges = 0;
+        hasChanged = 0;
+
+        groupChanged();
+    } catch (libsumo::TraCIException e) {
+
+    }
 }
 
 void LCManager::groupChanging(MSLCM_SmartSL2015 *follower) {
@@ -77,11 +88,16 @@ void LCManager::groupChanged() {
         libsumo::Vehicle::setLaneChangeMode(ID, 1621);
         libsumo::Vehicle::setSpeed(ID, 15);
 
+    } else {
+        //std::cout << myLC->getMyVehicle()->getID() << " changed, has no follower" << std::endl;
     }
 }
 
 void LCManager::blocker(MSLCM_SmartSL2015 *who) {
     std::string ID = who->getMyVehicle()->getID();
+    if (who->getMyVehicle()->isSelected()) {
+        std::cout << who->getMyVehicle()->getID() << " is stopped because of lc" << std::endl;
+    }
     libsumo::Vehicle::setSpeed(ID, 0);
     libsumo::Vehicle::setLaneChangeMode(ID, 512);
 }
