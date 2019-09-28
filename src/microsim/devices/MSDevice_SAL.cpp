@@ -211,6 +211,10 @@ bool MSDevice_SAL::hasReachedPONR(bool onStop)
     return (!onStop && lastEdgeWasStop);
 }
 
+Group* MSDevice_SAL::getGroup() {
+    return myGroup;
+}
+
 bool
 MSDevice_SAL::notifyEnter(SUMOVehicle& veh, MSMoveReminder::Notification reason, const MSLane* enteredLane) {
 

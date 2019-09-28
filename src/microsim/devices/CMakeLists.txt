@@ -1,3 +1,5 @@
+add_subdirectory(Judge/LPSolver)
+
 set(microsim_devices_STAT_SRCS
    MSDevice.cpp
    MSDevice.h
@@ -58,7 +60,8 @@ set(microsim_devices_STAT_SRCS
         Judge/JudgeSystem.cpp
         Judge/JudgeSystem.h
 
-        Judge/MDDFJudge.cpp Judge/MDDFJudge.h Judge/MDDFConflictClass.cpp Judge/MDDFConflictClass.h)
+        Judge/MDDFJudge.cpp Judge/MDDFJudge.h Judge/MDDFConflictClass.cpp Judge/MDDFConflictClass.h Judge/ECNJudge.cpp Judge/ECNJudge.h Judge/ECNConflictClass.cpp Judge/ECNConflictClass.h
+        )
 
 add_library(microsim_devices STATIC ${microsim_devices_STAT_SRCS} MSDevice_SAL.h MSDevice_SAL.cpp MarkerSystem/MarkerSystem.cpp MarkerSystem/MarkerSystem.h MarkerSystem/BaseMarker.cpp MarkerSystem/BaseMarker.h MarkerSystem/EntryMarker.cpp MarkerSystem/EntryMarker.h MessagingSystem/MessagingProxy.cpp MessagingSystem/MessagingProxy.h)
 set_property(TARGET microsim_devices PROPERTY PROJECT_LABEL "z_microsim_devices")

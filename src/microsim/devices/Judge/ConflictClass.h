@@ -94,7 +94,7 @@ public:
     bool isFirst();
 
     /// @brief Inform all cars in the Conflict Class about the judge's decision
-    void informCars(JudgeCommand jc);
+    virtual void informCars(JudgeCommand jc);
 };
 
 

@@ -5,6 +5,7 @@
 #include "JudgeSystem.h"
 #include "RRJudge.h"
 #include "MDDFJudge.h"
+#include "ECNJudge.h"
 #include <fstream>
 
 //#define TESTMAP
@@ -37,6 +38,12 @@ JudgeSystem::JudgeSystem() {
             abstractJudge->ponrRadius = ponrRadius;
         } else if (type == "MDDF") {
             abstractJudge = new MDDFJudge(path);
+            abstractJudge->posX = posX;
+            abstractJudge->posY = posY;
+            abstractJudge->stopRadius = radius;
+            abstractJudge->ponrRadius = ponrRadius;
+        } else if (type == "ECN") {
+            abstractJudge = new ECNJudge(path);
             abstractJudge->posX = posX;
             abstractJudge->posY = posY;
             abstractJudge->stopRadius = radius;

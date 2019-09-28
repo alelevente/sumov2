@@ -215,6 +215,8 @@ public:
 
     void informDecision(JudgeCommand jc);
 
+    Group* getGroup();
+
     /// @brief pointer to the LCManager of this smart car
     LCManager* myLCm = nullptr;
 
