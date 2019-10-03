@@ -11,28 +11,39 @@
 
 
 ECNJudge::ECNJudge(const std::string &path) {
+    auto* active = new ECNConflictClass();
+    auto* waiting = new ECNConflictClass();
+    conflictClasses.insert(conflictClasses.end(), active);
+    conflictClasses.insert(conflictClasses.end(), waiting);
+    active->setColor(false);
+    waiting->setColor(true);
+    activeCC = 0;
+    lastChanged = 0;
+
     std::ifstream input(path, std::ifstream::in);
     int n, r;
     input >> n;
     nDirections = n;
-    std::vector<std::string> readDirections;
+    //std::vector<std::string> readDirections;
     std::string rDirection;
     for (int i=0; i<n; ++i){
         input >> rDirection;
-        readDirections.insert(readDirections.end(), rDirection);
+        directionTimes.insert(std::make_pair(rDirection, -i));
+        directions.insert(std::make_pair(rDirection, i));
+        std::cout << directionTimes[rDirection] << std::endl;
     }
     //Make a Descartes product of the directions:
-    std::string currentDirection = "";
+    /*std::string currentDirection = "";
     for (int i=0; i<n; ++i){
         for (int j=0; j<n; ++j) {
             currentDirection = readDirections[i]+"-"+readDirections[j];
             directionTimes.insert(std::make_pair(currentDirection, 0));
             directions.insert(std::make_pair(currentDirection, i*n+j));
         }
-    }
+    }*/
     candidatesForNextActivePhase = new bool[n*n];
     for (int i=0; i<n; ++i) candidatesForNextActivePhase[i] = false;
-    int** conflictMtx=new int*[n];
+    conflictMtx=new int*[n];
     for (int i=0; i<n; ++i){
         int* b = new int[n];
         for (int j=0; j<n; ++j){
@@ -42,11 +53,7 @@ ECNJudge::ECNJudge(const std::string &path) {
         conflictMtx[i] = b;
     }
     conflictMtx[0][0] = n;
-
-    auto* active = new ECNConflictClass();
-    auto* waiting = new ECNConflictClass();
-    conflictClasses.insert(conflictClasses.end(), active);
-    conflictClasses.insert(conflictClasses.end(), waiting);
+    this->initialized = true;
 }
 
 ECNJudge::~ECNJudge() {
@@ -56,9 +63,11 @@ ECNJudge::~ECNJudge() {
 
 void ECNJudge::step(const SUMOTime &st) {
     now = st;
-    if (!candidatesCalculated && lastChanged>20) {
+    if (now-lastChanged>100000/conflictMtx[0][0] && !yellow) {
         calculateCandidates();
         changeCC();
+    } else if (yellow && carsIn.empty()) {
+        makeGreen();
     }
 }
 
@@ -95,29 +104,12 @@ void ECNJudge::changeCC() {
     }
     ECNConflictClass* activeCC = ((ECNConflictClass*)conflictClasses[0]);
     ECNConflictClass* inactiveCC = ((ECNConflictClass*)conflictClasses[1]);
+    //std::cout << this->directions.at(0)+" flagged yellow" << std::endl;
     activeCC->setNextList(notChanging);
     activeCC->informCars(JC_STOP);
-    activeCC->clearDirections();
-    inactiveCC->clearDirections();
-    activeCC->removeAllVehicles();
-    inactiveCC->removeAllVehicles();
-    for (auto& item: directions){
-        if (candidatesForNextActivePhase[item.second]) {
-            activeCC->addDirection(item.first);
-            directionTimes[item.first] = now;
-        }
-    }
-    for (auto& item: directionByCars) {
-        if (activeCC->containsDirection(item.second)){
-            activeCC->addVehicle(item.first);
-            item.first->getGroup()->setMyCC(activeCC);
-        } else {
-            inactiveCC->addVehicle(item.first);
-            item.first->getGroup()->setMyCC(inactiveCC);
-        }
-    }
+    activeCC->resetNextCars();
+    yellow = true;
     candidatesCalculated = false;
-    lastChanged = now;
 }
 
 void ECNJudge::calculateCandidates() {
@@ -125,18 +117,60 @@ void ECNJudge::calculateCandidates() {
     SUMOTime longest = 0;
     for (auto& e: directionTimes) {
         if (now-e.second > longest) {
-            longest = e.second;
+            longest = now-e.second;
             longestIdx = e.first;
         }
     }
 
+    std::cout << longestIdx <<": " << longest << std::endl;
+
     int* addConstraints = new int[conflictMtx[0][0]];
+    for (int i=0; i<conflictMtx[0][0]; ++i) addConstraints[i] = -1;
     addConstraints[directions[longestIdx]] = 1;
     LPSolver* lpSolver = new LPSolver();
     auto solution = lpSolver->getLPSolution(conflictMtx, addConstraints);
     for (int i=0; i<conflictMtx[0][0]; ++i){
-        candidatesForNextActivePhase[i] = solution[i];
+        candidatesForNextActivePhase[i] = solution[i] != 0;
     }
     delete lpSolver;
     candidatesCalculated = true;
+}
+
+void ECNJudge::makeGreen() {
+    //std::cout << this->directions[0] << " makes green" << std::endl;
+    ECNConflictClass* activeCC = ((ECNConflictClass*)conflictClasses[0]);
+    ECNConflictClass* inactiveCC = ((ECNConflictClass*)conflictClasses[1]);
+    activeCC->clearDirections();
+    inactiveCC->clearDirections();
+    activeCC->removeAllVehicles();
+    inactiveCC->removeAllVehicles();
+    for (auto& item: directions){
+        if (candidatesForNextActivePhase[item.second]) {
+            activeCC->addDirection(item.first);
+            std::cout << item.first << std::endl;
+            directionTimes[item.first] = now;
+        } else {
+            inactiveCC->addDirection(item.first);
+        }
+    }
+    for (auto& item: directionByCars) {
+        if (activeCC->containsDirection(item.second)){
+            activeCC->addVehicle(item.first);
+            Group* group= item.first->getGroup();
+            if (group != nullptr) item.first->getGroup()->setMyCC(activeCC);
+        } else {
+            inactiveCC->addVehicle(item.first);
+            Group* group= item.first->getGroup();
+            if (group!= nullptr) group->setMyCC(inactiveCC);
+        }
+    }
+    activeCC->informCars(JC_GO);
+    lastChanged = now;
+    yellow = false;
+}
+
+void ECNJudge::carLeftJunction(MSDevice_SAL *who, bool byForce) {
+    AbstractJudge::carLeftJunction(who, byForce);
+    //auto record_sal = directionByCars.find(who);
+    directionByCars.erase(who);
 }

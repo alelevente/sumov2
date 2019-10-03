@@ -16,7 +16,8 @@ public:
 
     bool canPass(MSDevice_SAL *who, const std::string &direction) override;
 
-    ~ECNJudge();
+    ~ECNJudge() override;
+    void carLeftJunction(MSDevice_SAL* who, bool byForce = false) override;
 
 protected:
     int decideCC(Group *group, const std::string &direction) override;
@@ -32,7 +33,9 @@ private:
     int nDirections = 0;
     bool candidatesCalculated = false;
     void calculateCandidates();
-    SUMOTime now, lastChanged = 0;
+    SUMOTime now, lastChanged = -25000;
+    bool yellow = false;
+    void makeGreen();
 };
 
 

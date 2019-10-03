@@ -28,6 +28,10 @@ Group::~Group() {
 
 void Group::setMyCC(ConflictClass *cc) {
     myCC = cc;
+    for (auto m: members){
+        if (m == nullptr) continue;
+        m->mySAL->setVehicleColor(cc->getMyColor());
+    }
 }
 
 void Group::addNewMember(Messenger *member) {

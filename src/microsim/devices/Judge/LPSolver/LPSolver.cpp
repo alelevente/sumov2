@@ -19,7 +19,7 @@ operations_research::MPVariable** initializeVariables(int n, operations_research
 void setConflictMatrix(std::vector<operations_research::MPVariable*>& mpVars, int** conflictMtx, int* addConstraints, operations_research::MPSolver& solver) {
     for (int i=0; i<conflictMtx[0][0]; ++i) {
         for (int j=i; j<conflictMtx[0][0]; ++j){
-            if (conflictMtx[i][j] == 0) {
+            if (conflictMtx[i][j] == 1) {
                 operations_research::MPConstraint* c = solver.MakeRowConstraint(0, 1.0);
                 c->SetCoefficient(mpVars[i], 1.0);
                 c->SetCoefficient(mpVars[j], 1.0);
@@ -62,8 +62,8 @@ std::vector<int> LPSolver::getLPSolution(int **conflictMtx, int *addConstraints)
     for (int i=0; i<conflictMtx[0][0]; ++i){
         if (vars[i]->solution_value() != 0){
             std::cout << vars[i]->name() << std::endl;
-            answer.insert(answer.end(), i);
-        }
+            answer.insert(answer.end(), 1);
+        } else answer.insert(answer.end(), 0);
     }
 
     solver.Clear();

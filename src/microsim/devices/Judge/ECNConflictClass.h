@@ -18,6 +18,8 @@ public:
     void setNextList(const std::vector<MSDevice_SAL*>& nextList);
     virtual void informCars(JudgeCommand jc);
     void removeAllVehicles();
+    void setColor(bool toRed);
+    void resetNextCars();
 };
 
 

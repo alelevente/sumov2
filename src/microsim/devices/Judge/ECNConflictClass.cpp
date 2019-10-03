@@ -6,12 +6,18 @@
 #include "microsim/devices/MSDevice_SAL.h"
 #include <algorithm>
 
+void ECNConflictClass::setColor(bool toRed) {
+    myColor.r = toRed? 200: 0;
+    myColor.g = toRed? 0: 200;
+    myColor.b = 0;
+}
+
 void ECNConflictClass::addDirection(const std::string &dirName) {
     directionList.insert(directionList.end(), dirName);
 }
 
 bool ECNConflictClass::containsDirection(const std::string &dirName) {
-    return std::find(directionList.begin(), directionList.end(), dirName) == directionList.end();
+    return std::find(directionList.begin(), directionList.end(), dirName) != directionList.end();
 }
 
 void ECNConflictClass::setNextList(const std::vector<MSDevice_SAL *> &nextList) {
@@ -21,7 +27,7 @@ void ECNConflictClass::setNextList(const std::vector<MSDevice_SAL *> &nextList) 
 
 void ECNConflictClass::informCars(JudgeCommand jc) {
     for (auto& x: myCars){
-        if (std::find(nextList->begin(), nextList->end(), x) == nextList->end())
+        if (nextList->empty() || std::find(nextList->begin(), nextList->end(), x) == nextList->end())
             x->informDecision(jc);
     }
 }
@@ -34,4 +40,8 @@ void ECNConflictClass::removeAllVehicles() {
     for (auto& car: myCars){
         this->removeVehicle(car);
     }
+}
+
+void ECNConflictClass::resetNextCars() {
+    nextList->clear();
 }

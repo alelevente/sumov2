@@ -25,14 +25,14 @@ enum JudgeCommand;
 class ConflictClass {
     //for better performance:
     friend class RRJudge;
-    /// @brief color for graphical representation
-    libsumo::TraCIColor myColor;
+
     /// @brief If a smart car is inside this perimeter it is in danger
     int inDanger = 35;
 protected:
     /// @brief list of smart cars which are in this conflict class
     std::vector<MSDevice_SAL*> myCars;
-
+    /// @brief color for graphical representation
+    libsumo::TraCIColor myColor;
 public:
     /**
      * @brief Constructor

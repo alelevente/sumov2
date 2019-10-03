@@ -50,8 +50,8 @@ void ConflictClass::removeVehicle(MSDevice_SAL *sal) {
 }
 
 bool ConflictClass::hasVehicle(MSDevice_SAL *vehicle) {
-    auto i = myCars.begin();
-    for (i=myCars.begin(); i != myCars.end() && *i != vehicle ; ++i);
+    if (myCars.empty()) return false;
+    auto i = std::find(myCars.begin(), myCars.end(), vehicle);
     return i != myCars.end();
 }
 
