@@ -94,7 +94,11 @@ MSDevice_SAL::MSDevice_SAL(SUMOVehicle& holder, const std::string& id,
 
 
 MSDevice_SAL::~MSDevice_SAL() {
-    if (inJunction) myJudge->carLeftJunction(this);
+    if (inJunction || myGroup != nullptr){
+        MessengerSystem::getInstance().removeMessengerAgent(myHolder.getID());
+        //myGroup->removeCar(messenger);
+        myJudge->carLeftJunction(this);
+    }
     if (!MSNet::getInstance()->closed)
             MessengerSystem::getInstance().removeMessengerAgent(myHolder.getID());
     delete myLCm;
@@ -115,7 +119,7 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
     } else {
         if (myLCm->lastChange != 0 && MSNet::getInstance()->getCurrentTimeStep()-myLCm->lastChange > 15000) {
             myLCm->lastChange = 0;
-            setVehicleSpeed(15);
+            setVehicleSpeed(-1);
         }
     }
     if (myLaneChangeModel == nullptr) myLaneChangeModel = (MSLCM_SmartSL2015*) &((MSVehicle *) (&myHolder))->getLaneChangeModel();
@@ -128,6 +132,7 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
         if (!reported) myJudge->reportComing(MessagingProxy::getInstance().getGroupOf(myHolder.getID()), myDirection);
         reported = true;
         myGroup = MessagingProxy::getInstance().getGroupOf(myHolder.getID());
+        std::cout << myHolder.getID() << " joining to group: " << myGroup->getMyGroupID() << std::endl;
     }
     if (entryMarkerFlag>=0) --entryMarkerFlag;
 
@@ -163,6 +168,10 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
             if (desiredSpeed < speedLimit && (desiredSpeed < lcm.getCommittedSpeed() || lcm.getCommittedSpeed()<0.0001)) setVehicleSpeed(desiredSpeed);
         } else {
             myLeaderMessenger = nullptr;
+            if (!myGroup->groupsForWaitFor.empty()){
+                setVehicleSpeed(0);
+                return true;
+            }
             //locked = true;
             //if (reported && !inJunction) passPermitted = myJudge->canPass(this, myDirection);
             //locked = false;
@@ -181,11 +190,11 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
                 } else if (debug)
                     std::cout << myHolder.getID() << ": "<<desiredSpeed << "deltaM, "<< veh.getLane()->getLength()-veh.getPositionOnLane() << std::endl;
             } else {
-                    if (!(lcm.getOwnState() & LCA_STAY)) setVehicleSpeed(20); else {
+                    if (!(lcm.getOwnState() & LCA_STAY)) setVehicleSpeed(-1); else {
                         if (debug) std::cout << "OKÉ" << std::endl;
                         if (!speedSetInJunction) {
                             speedSetInJunction = true;
-                            setVehicleSpeed(25);
+                            setVehicleSpeed(-1);
                         }
                     }
 
@@ -194,7 +203,7 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
             }
         }
         if (!inJunction && hasReachedPONR(onStopMarker)) {
-            if (debug) std::cout << myHolder.getID() << "has passed PONR." << std::endl;
+            std::cout << myHolder.getID() << "has entered junction" << std::endl;
             myJudge->carPassedPONR(this);
             inJunction = true;
             speedSetInJunction = false;
@@ -307,12 +316,14 @@ void MSDevice_SAL::informBecomeLeader() {
 
 }
 
-void MSDevice_SAL::informNoLongerLeader() {
+AbstractJudge * MSDevice_SAL::informNoLongerLeader() {
     MSLCM_SmartSL2015 &lcm = (MSLCM_SmartSL2015&)((MSVehicle*)(&myHolder))->getLaneChangeModel();
     myLCm->leaveGroup();
     followerFIFO.clear();
     isMember = false;
     inJunction = false;
+    myGroup = nullptr;
+    return myJudge;
 }
 
 void MSDevice_SAL::informBecomeMember(Group* group) {
@@ -366,7 +377,7 @@ void MSDevice_SAL::amBlocker(MSLCM_SmartSL2015 *blocker, MSLCM_SmartSL2015 *lead
         MSDevice_SAL* otherDevice = static_cast<MSDevice_SAL*>(leader->getMyVehicle()->getDevice(typeid(MSDevice_SAL)));
         otherDevice->myLCm->groupChanging(blocker);
     }
-    myLCm->blocker(blocker);
+    myLCm->blocker(blocker, group->getMyGroupID());
     myLCm->lastChange = MSNet::getInstance()->getCurrentTimeStep();
     stopStartedLC = passChanged;
 }
@@ -388,7 +399,7 @@ void MSDevice_SAL::informDecision(JudgeCommand jc) {
     }
     if (passChanged - stopStartedLC > 3) {
         libsumo::Vehicle::setLaneChangeMode(myHolder.getID(), 1621);
-        libsumo::Vehicle::setSpeed(myHolder.getID(), 15);
+        libsumo::Vehicle::setSpeed(myHolder.getID(), -1);
         passChanged = 0;
         stopStartedLC = UINT64_MAX;
     }
@@ -397,3 +408,9 @@ void MSDevice_SAL::informDecision(JudgeCommand jc) {
 void MSDevice_SAL::setMyLeaderMessenger(Messenger *myLeaderMessenger) {
     MSDevice_SAL::myLeaderMessenger = myLeaderMessenger;
 }
+
+AbstractJudge *MSDevice_SAL::getMyJudge() const {
+    return myJudge;
+}
+
+

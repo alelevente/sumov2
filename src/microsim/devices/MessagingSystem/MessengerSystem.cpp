@@ -18,7 +18,7 @@ void MessengerSystem::addNewMessengerAgent(const std::string &id, SUMOVehicle *m
 
 void MessengerSystem::removeMessengerAgent(const std::string &id) {
     Messenger* mes = messengerMap[id];
-    if (mes->getGroup()!= nullptr) mes->leaveGroup();
+    if (mes!= nullptr && mes->getGroup()!= nullptr) mes->leaveGroup();
     messengerMap.erase(id);
     delete mes;
 }

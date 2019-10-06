@@ -41,12 +41,16 @@ void ConflictClass::addVehicle(MSDevice_SAL *sal) {
 }
 
 void ConflictClass::removeVehicle(MSDevice_SAL *sal) {
-    auto i = myCars.begin();
+    if (myCars.empty()) return;
+    /*auto i = myCars.begin();
+    if (*i == nullptr) return;
     while (*i != sal && i != myCars.end()) ++i;
-    if (*i == sal) {
-        *i = nullptr;
+    if ((*i) == sal) {
+        //(*i) = nullptr;
         myCars.erase(i);
-    }
+    }*/
+    auto i = std::find(myCars.begin(), myCars.end(), sal);
+    if (i != myCars.end()) myCars.erase(i);
 }
 
 bool ConflictClass::hasVehicle(MSDevice_SAL *vehicle) {

@@ -77,6 +77,8 @@ public:
 
     bool initialized = false;
 
+    void groupLeft(long groupID);
+
     /**
      * @brief May be called if the last smart car of a conflict class has left the junction
      * @param cc the Conflict Class of which the last car has left

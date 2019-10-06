@@ -25,6 +25,7 @@ enum JudgeCommand;
 class ConflictClass {
     //for better performance:
     friend class RRJudge;
+    friend class AbstractJudge;
 
     /// @brief If a smart car is inside this perimeter it is in danger
     int inDanger = 35;

@@ -61,8 +61,7 @@ private:
      */
     MSLeaderDistanceInfo * smartLeaderDistance(const MSLeaderDistanceInfo &leaderDistanceInfo);
 
-    /// @brief pointer to myVehicle's Simulation Abstraction Device
-    MSDevice_SAL* mySAL = nullptr;
+
 
     /// @brief actual state of
     GroupState myGroupState;
@@ -80,6 +79,8 @@ private:
     double groupLength;
 
 public:
+    /// @brief pointer to myVehicle's Simulation Abstraction Device
+    MSDevice_SAL* mySAL = nullptr;
     /**
      * @brief Inform the LC-model about the smartcar's state
      * @param myGroupState actual state of the smartcar.

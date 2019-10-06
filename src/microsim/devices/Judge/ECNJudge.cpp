@@ -66,7 +66,7 @@ void ECNJudge::step(const SUMOTime &st) {
     if (now-lastChanged>100000/conflictMtx[0][0] && !yellow) {
         calculateCandidates();
         changeCC();
-    } else if (yellow && carsIn.empty()) {
+    } else if (yellow && now-yellowStarted>3000) {
         makeGreen();
     }
 }
@@ -109,6 +109,7 @@ void ECNJudge::changeCC() {
     activeCC->informCars(JC_STOP);
     activeCC->resetNextCars();
     yellow = true;
+    yellowStarted = now;
     candidatesCalculated = false;
 }
 
@@ -171,6 +172,7 @@ void ECNJudge::makeGreen() {
 
 void ECNJudge::carLeftJunction(MSDevice_SAL *who, bool byForce) {
     AbstractJudge::carLeftJunction(who, byForce);
-    //auto record_sal = directionByCars.find(who);
     directionByCars.erase(who);
+    conflictClasses[0]->removeVehicle(who);
+    conflictClasses[1]->removeVehicle(who);
 }

@@ -110,3 +110,12 @@ void AbstractJudge::makeKill() {
 
 AbstractJudge::~AbstractJudge() {}
 void AbstractJudge::informCCEnded(ConflictClass *cc) {}
+
+void AbstractJudge::groupLeft(long groupID) {
+    for (auto cc: conflictClasses){
+        for (auto car: cc->myCars){
+            Group* g = car->getGroup();
+            if (g != nullptr) g->informGroupLeftJunction(groupID);
+        }
+    }
+}

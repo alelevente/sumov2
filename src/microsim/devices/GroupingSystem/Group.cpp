@@ -11,8 +11,11 @@
 Group::Group(Messenger *leader):
     groupLeader(leader)
 {
+    static long groupIDGenerator;
+    myGroupID = groupIDGenerator++;
     nMembers = 1;
     members[0] = leader;
+    myJudge = leader->mySAL->getMyJudge();
     canJoin = true;
     myColor.a = 255;
     myColor.r = rand() % 256;
@@ -24,6 +27,10 @@ Group::Group(Messenger *leader):
 }
 
 Group::~Group() {
+    for (auto& g: groupsWaitRequest) {
+        g->informGroupLeftJunction(myGroupID);
+    }
+    myJudge->groupLeft(myGroupID);
 }
 
 void Group::setMyCC(ConflictClass *cc) {
@@ -60,12 +67,12 @@ void Group::removeCar(Messenger *who) {
     members[nMembers-1] = nullptr;
     --nMembers;
 
-    first->mySAL->informNoLongerLeader();
+    AbstractJudge* judge = first->mySAL->informNoLongerLeader();
     first->mySAL->resetVehicleColor();
     this->myCC->removeVehicle(first->mySAL);
     first->myGroup = nullptr;
 
-    if (nMembers == 0) finishGroup(who);
+    if (nMembers == 0) finishGroup(who, judge);
     else if (idx == 0){
         members[0]->mySAL->informBecomeLeader();
         groupLeader = members[0];
@@ -76,8 +83,10 @@ void Group::removeCar(Messenger *who) {
     }
 }
 
-void Group::finishGroup(Messenger *who) {
+void Group::finishGroup(Messenger *who, AbstractJudge *judge) {
+    std::cout << "group left: " << this << std::endl;
     who->mySAL->myLCm->groupChanged();
+    judge->groupLeft(myGroupID);
     delete this;
 }
 
@@ -131,4 +140,56 @@ void Group::laneChange(MSLCM_SmartSL2015 *follower) {
 
 Messenger** Group::getMembers() {
     return members;
+}
+
+long Group::getMyGroupID() const {
+    return myGroupID;
+}
+
+void Group::informGroupLeftJunction(long groupID) {
+    if (groupsForWaitFor.empty()) return;
+    auto it = std::find(groupsForWaitFor.begin(), groupsForWaitFor.end(), groupID);
+    if (it != groupsForWaitFor.end()) groupsForWaitFor.erase(it);
+    auto it2 = groupsWaitRequest.begin();
+    while (it2 != groupsWaitRequest.end()){
+        if ((*it2)->getMyGroupID() == groupID) groupsWaitRequest.erase(it2);
+        if (it2==groupsWaitRequest.end()) break;
+        ++it2;
+    }
+    if (it2 != groupsWaitRequest.end()) groupsWaitRequest.erase(it2);
+    if (groupsForWaitFor.empty()) {
+        std::string ID = members[0]->mySAL->getVehicle()->getID();
+        libsumo::Vehicle::setLaneChangeMode(ID, 1621);
+    }
+}
+
+void Group::informGroupThatChanged(long groupID) {
+    informGroupLeftJunction(groupID);
+}
+
+void Group::informGroupHaveToWaitFor(long groupID) {
+    std::cout << myGroupID << "group have to wait for: " << groupID << std::endl;
+    groupsForWaitFor.insert(groupsForWaitFor.end(), groupID);
+}
+
+void Group::informGroupIsRequester(MSDevice_SAL *waitedGroupLeader) {
+    std::cout << waitedGroupLeader->getGroup() << " pushed back" << std::endl;
+    groupsWaitRequest.push_back(waitedGroupLeader->getGroup());
+    std::cout << waitedGroupLeader->getGroup()->getNMembers() << std::endl;
+}
+
+void Group::informGroupChanged() {
+    if (groupsWaitRequest.size() == 0) return;
+    std::cout << groupsWaitRequest.size() << std::endl;
+    for (auto& group: groupsWaitRequest) std::cout << group << ", ";
+    std::cout << std::endl;
+    Group* waiter = groupsWaitRequest[0];
+    waiter->informGroupThatChanged(myGroupID);
+    std::cout << waiter << " informed " << std::endl;
+    if (groupsWaitRequest.size() == 0) return;
+    if (groupsWaitRequest.size() != 1){
+        groupsWaitRequest.erase(groupsWaitRequest.begin());
+    } else {
+        groupsWaitRequest.clear();
+    }
 }

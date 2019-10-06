@@ -80,24 +80,27 @@ void LCManager::changed() {
 
 
 void LCManager::groupChanged() {
-    if (myLC->myFollower != nullptr) {
+    /*if (myLC->myFollower != nullptr) {
         std::string ID = myLC->myFollowerId;
         auto list = libsumo::Vehicle::getIDList();
         auto it = find (list.begin(), list.end(), ID);
         if (it == list.end()) return;
         libsumo::Vehicle::setLaneChangeMode(ID, 1621);
-        libsumo::Vehicle::setSpeed(ID, 15);
+        libsumo::Vehicle::setSpeed(ID, -1);
 
     } else {
         //std::cout << myLC->getMyVehicle()->getID() << " changed, has no follower" << std::endl;
-    }
+    }*/
+    Group* g = myLC->mySAL->getGroup();
+    if (g != nullptr) g->informGroupChanged();
 }
 
-void LCManager::blocker(MSLCM_SmartSL2015 *who) {
+void LCManager::blocker(MSLCM_SmartSL2015 *who, long groupID) {
     std::string ID = who->getMyVehicle()->getID();
+    who->mySAL->getGroup()->informGroupHaveToWaitFor(groupID);
     if (who->getMyVehicle()->isSelected()) {
         std::cout << who->getMyVehicle()->getID() << " is stopped because of lc" << std::endl;
     }
-    libsumo::Vehicle::setSpeed(ID, 0);
+    //libsumo::Vehicle::setSpeed(ID, 0);
     libsumo::Vehicle::setLaneChangeMode(ID, 512);
 }

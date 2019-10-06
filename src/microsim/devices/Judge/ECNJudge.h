@@ -33,7 +33,7 @@ private:
     int nDirections = 0;
     bool candidatesCalculated = false;
     void calculateCandidates();
-    SUMOTime now, lastChanged = -25000;
+    SUMOTime now, lastChanged, yellowStarted = -25000;
     bool yellow = false;
     void makeGreen();
 };

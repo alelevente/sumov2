@@ -534,6 +534,7 @@ MSLCM_SmartSL2015::inform(void* info, MSVehicle* sender) {
             ++blockerFlag;
             if (blockerFlag == 3) {
                 mySAL->amBlocker(this, (MSLCM_SmartSL2015 *) &(sender->getLaneChangeModel()));
+                ((MSLCM_SmartSL2015&)sender->getLaneChangeModel()).mySAL->getGroup()->informGroupIsRequester(mySAL);
             }
             return (void*) true;
         }

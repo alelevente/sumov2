@@ -12,6 +12,7 @@
 
 class MSLCM_SmartSL2015;
 class Group;
+class MSDevice_SAL;
 
 /// @brief This class is responsible for managing lane change manouvers in the simulation abstraction layer
 class LCManager {
@@ -47,7 +48,7 @@ public:
     /// @brief called when the last car of a group has finished its lane change
     void groupChanged();
     /// @brief used to inform a group leader that it is now a blocker, so it has to let in another group
-    static void blocker(MSLCM_SmartSL2015* who);
+    static void blocker(MSLCM_SmartSL2015 *who, long groupID);
     /// @brief called, when the controlled car changed its change of lane
     void changed();
 };

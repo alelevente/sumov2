@@ -175,7 +175,7 @@ public:
     /// @brief sets group state to group member
     void informBecomeMember(Group* group);
     /// @brief resets group state, as well switches back to "unintelligent" state
-    void informNoLongerLeader();
+    AbstractJudge * informNoLongerLeader();
 
     /**
      * @brief called by MSLCM_SmartSl2015 if a lane change is finished
@@ -220,6 +220,8 @@ public:
     /// @brief pointer to the LCManager of this smart car
     LCManager* myLCm = nullptr;
 
+
+
 private:
     double lastSetSpeed = 0;
     bool lastEdgeWasStop = false;
@@ -236,6 +238,10 @@ private:
     bool speedSetInJunction = false;
     /// @brief if near a junction, it points to judge of this junction
     AbstractJudge* myJudge = nullptr;
+public:
+    AbstractJudge *getMyJudge() const;
+
+private:
     /// @brief First-in-First-out list of the group leaders who made this car's lane changes possible
     std::vector<MSLCM_SmartSL2015*> followerFIFO;
     /// @brief pointer to this smart car's group
