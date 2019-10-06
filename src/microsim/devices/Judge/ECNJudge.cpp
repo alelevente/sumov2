@@ -113,13 +113,23 @@ void ECNJudge::changeCC() {
     candidatesCalculated = false;
 }
 
+bool mapContainsValue(const std::map<MSDevice_SAL*, std::string>& map, const std::string& str){
+    for (auto& s: map) {
+        if (s.second == str) return true;
+    }
+    return false;
+}
+
 void ECNJudge::calculateCandidates() {
     std::string longestIdx;
     SUMOTime longest = 0;
     for (auto& e: directionTimes) {
         if (now-e.second > longest) {
-            longest = now-e.second;
-            longestIdx = e.first;
+            //std::map<MSDevice_SAL*, std::string>::iterator hasCars = directionByCars.find(e.first);//std::find(directionByCars.begin(), directionByCars.end(), e.first);
+            if (mapContainsValue(directionByCars, e.first)) {
+                longest = now - e.second;
+                longestIdx = e.first;
+            }
         }
     }
 
