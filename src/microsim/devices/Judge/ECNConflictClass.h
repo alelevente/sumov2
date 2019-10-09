@@ -9,6 +9,7 @@
 #include "ConflictClass.h"
 
 class ECNConflictClass: public ConflictClass {
+    friend class ECNJudge;
     std::vector<std::string> directionList;
     std::vector<MSDevice_SAL*>* nextList = new std::vector<MSDevice_SAL*>();
 public:

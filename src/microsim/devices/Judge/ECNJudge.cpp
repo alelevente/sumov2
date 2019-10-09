@@ -3,11 +3,13 @@
 //
 
 #include <fstream>
+#include <libsumo/Edge.h>
 #include "ECNJudge.h"
 #include "LPSolver/LPSolver.h"
 #include "ECNConflictClass.h"
 #include "microsim/devices/GroupingSystem/Group.h"
 #include "microsim/devices/MessagingSystem/Messenger.h"
+#include "JudgeSystem.h"
 
 
 ECNJudge::ECNJudge(const std::string &path) {
@@ -19,6 +21,7 @@ ECNJudge::ECNJudge(const std::string &path) {
     waiting->setColor(true);
     activeCC = 0;
     lastChanged = 0;
+    now = -1; lastChanged = -1; yellowStarted = -1; lastECN = -1; lastStepLengthCalc = -1;
 
     std::ifstream input(path, std::ifstream::in);
     int n, r;
@@ -53,6 +56,23 @@ ECNJudge::ECNJudge(const std::string &path) {
         conflictMtx[i] = b;
     }
     conflictMtx[0][0] = n;
+
+    double rDouble;
+    input >> r;
+    std::string rDirection2;
+    for (int i=0; i<r; ++i){
+        input >> rDirection;
+        input >> rDouble;
+        myPortLimitMap.insert(std::make_pair(rDirection, rDouble));
+        portDirections.insert(portDirections.end(), rDirection);
+    }
+    input >> r;
+    for (int i=0; i<r; ++i){
+        input >> rDirection;
+        input >> rDirection2;
+        directionToPortMap.insert(std::make_pair(rDirection, rDirection2));
+    }
+
     this->initialized = true;
 }
 
@@ -63,7 +83,9 @@ ECNJudge::~ECNJudge() {
 
 void ECNJudge::step(const SUMOTime &st) {
     now = st;
-    if (now-lastChanged>100000/conflictMtx[0][0] && !yellow) {
+    calculateStepLength();
+    informOthers();
+    if (now-lastChanged>stepLength && !yellow) {
         calculateCandidates();
         changeCC();
     } else if (yellow && now-yellowStarted>3000) {
@@ -118,6 +140,18 @@ bool mapContainsValue(const std::map<MSDevice_SAL*, std::string>& map, const std
         if (s.second == str) return true;
     }
     return false;
+}
+
+bool mapContainsValue(const std::map<std::string, std::string>& map, const std::string& str){
+    for (auto& s: map) {
+        if (s.second == str) return true;
+    }
+    return false;
+}
+
+bool listContainsValue(const std::vector<std::string> vector, const std::string& value){
+    auto it = std::find(vector.begin(), vector.end(), value);
+    return it != vector.end();
 }
 
 void ECNJudge::calculateCandidates() {
@@ -185,4 +219,73 @@ void ECNJudge::carLeftJunction(MSDevice_SAL *who, bool byForce) {
     directionByCars.erase(who);
     conflictClasses[0]->removeVehicle(who);
     conflictClasses[1]->removeVehicle(who);
+}
+
+
+
+void ECNJudge::informJudge(void *message) {
+    ECNNotification* notification = (ECNNotification*) message;
+    if (notification->congested) std::cout << "Notification arrived" << std::endl;
+    auto neighbor = portMap.find(notification->sender);
+    if (neighbor != portMap.end()){
+        if (notification->congested) std::cout << "neighbour found "<< notification->direction << neighbor->second << std::endl;
+        if (notification->direction == neighbor->second) {
+            congestionMap.erase(notification->sender);
+            congestionMap.insert(std::make_pair(notification->sender, notification->congested));
+        }
+    }
+}
+
+void ECNJudge::addNeighbourPort(ECNJudge *neighbor, const std::string &port) {
+    portMap.insert(std::make_pair(neighbor, port));
+
+}
+
+void ECNJudge::informOthers() {
+    if (now-lastECN < 15000) return;
+    double occup;
+    bool cong = false;
+    for (auto& pl: myPortLimitMap) {
+        occup = libsumo::Edge::getLastStepOccupancy(pl.first);
+        std::cout << "Occupancy: " << occup << std::endl;
+        cong = (occup > 0.009*pl.second);
+        auto* notification = new ECNNotification();
+        notification->congested = cong;
+        notification->sender = this;
+        notification->direction = pl.first;
+        JudgeSystem::getInstance().informJudges(notification);
+    }
+    lastECN = now;
+}
+
+std::string getDirectionFromPort(const std::map<std::string, std::string>& dirToPortMap, const std::string& port){
+    for(auto it = dirToPortMap.begin(); it != dirToPortMap.end(); ++it){
+        if (it->second == port) return it->first;
+    }
+    return "";
+}
+
+void ECNJudge::calculateStepLength() {
+    if (now-lastStepLengthCalc < 2500 && stepLength!=0) return;
+    int vehs;
+    int max = 0;
+    for (auto& d: portDirections) {
+        vehs = libsumo::Edge::getLastStepVehicleNumber(d);
+        if (vehs > max) {
+            stepLength = 5000 + vehs * 1500 > 40000 ? 40000 : 5000 + vehs * 1500;
+            max = vehs;
+        }
+    }
+    auto* active = (ECNConflictClass*)conflictClasses[0];
+    for (auto& d: portMap) {
+        auto& neighbor = d.first;
+        if (congestionMap[neighbor]) std::cout << d.second << " congested" << std::endl; // else std::cout << "check was" << std::endl;
+        if (congestionMap[neighbor] && listContainsValue(active->directionList, getDirectionFromPort(directionToPortMap,d.second))) {
+            stepLength = 5000;
+            lastStepLengthCalc = now;
+            std::cout << "TIME REDUCED! :)" << std::endl;
+            return;
+        }
+    }
+    lastStepLengthCalc = now;
 }

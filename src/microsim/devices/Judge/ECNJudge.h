@@ -9,6 +9,14 @@
 #include <map>
 #include "AbstractJudge.h"
 
+class ECNJudge;
+
+struct ECNNotification{
+    ECNJudge* sender;
+    std::string direction;
+    bool congested;
+};
+
 class ECNJudge: public AbstractJudge {
 public:
     ECNJudge(const std::string &path);
@@ -18,6 +26,9 @@ public:
 
     ~ECNJudge() override;
     void carLeftJunction(MSDevice_SAL* who, bool byForce = false) override;
+
+    void informJudge(void* message);
+    void addNeighbourPort(ECNJudge *neighbor, const std::string &port);
 
 protected:
     int decideCC(Group *group, const std::string &direction) override;
@@ -29,13 +40,23 @@ private:
     std::map<MSDevice_SAL*, std::string> directionByCars;
     std::map<std::string, SUMOTime> directionTimes;
     std::map<std::string, int> directions;
+
+    std::map<ECNJudge*, std::string> portMap;
+    std::map<ECNJudge*, bool> congestionMap;
+    std::map<std::string, double> myPortLimitMap;
+    std::vector<std::string> portDirections;
+    std::map<std::string, std::string> directionToPortMap;
+
     bool* candidatesForNextActivePhase;
     int nDirections = 0;
     bool candidatesCalculated = false;
     void calculateCandidates();
-    SUMOTime now, lastChanged, yellowStarted = -25000;
+    SUMOTime now, lastChanged, yellowStarted, lastECN, lastStepLengthCalc = -25000;
     bool yellow = false;
     void makeGreen();
+    void informOthers();
+    long stepLength = 25000;
+    void calculateStepLength();
 };
 
 

@@ -119,3 +119,7 @@ void AbstractJudge::groupLeft(long groupID) {
         }
     }
 }
+
+void AbstractJudge::informJudge(void* message){
+    return;
+}

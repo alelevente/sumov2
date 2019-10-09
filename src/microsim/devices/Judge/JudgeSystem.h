@@ -36,6 +36,7 @@ public:
      * @return pointer the the judge instance
      */
     AbstractJudge* getJudgeByName(const std::string& name);
+    void informJudges(void* message);
 };
 
 

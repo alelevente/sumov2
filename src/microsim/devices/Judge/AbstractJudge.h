@@ -79,6 +79,8 @@ public:
 
     void groupLeft(long groupID);
 
+    virtual void informJudge(void* message);
+
     /**
      * @brief May be called if the last smart car of a conflict class has left the junction
      * @param cc the Conflict Class of which the last car has left
