@@ -87,18 +87,24 @@ MSDevice_SAL::MSDevice_SAL(SUMOVehicle& holder, const std::string& id,
         MSDevice(holder, id),
         myCustomValue1(customValue1),
         myCustomValue2(customValue2),
-        myCustomValue3(customValue3) {
+        myCustomValue3(customValue3),
+        myJudge(nullptr)
+{
     //std::cout << "initialized device '" << id << "' with myCustomValue1=" << myCustomValue1 << ", myCustomValue2=" << myCustomValue2 << ", myCustomValue3=" << myCustomValue3 << "\n";
     MessengerSystem::getInstance().addNewMessengerAgent(holder.getID(), &myHolder, this);
 }
 
 
 MSDevice_SAL::~MSDevice_SAL() {
-    if (inJunction || myGroup != nullptr){
+    if (inJunction || myGroup != nullptr || myJudge != nullptr){
         MessengerSystem::getInstance().removeMessengerAgent(myHolder.getID());
         //myGroup->removeCar(messenger);
-        myJudge->carLeftJunction(this);
+        if (myJudge != nullptr) {
+            myJudge->carLeftJunction(this);
+            myJudge = nullptr;
+        }
     }
+
     if (!MSNet::getInstance()->closed)
             MessengerSystem::getInstance().removeMessengerAgent(myHolder.getID());
     delete myLCm;
@@ -126,20 +132,35 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
     MSLCM_SmartSL2015 &lcm = *myLaneChangeModel;
 
     if (entryMarkerFlag == 0 && veh.getEdge()->getID().length()>11 && (veh.getEdge()->getID()).compare(6,5,"Entry")==0) {
+        if (junctionCounter && myJudge != nullptr && veh.getEdge()->getID()!=lastEntry) {
+            myJudge->carLeftJunction(this, false);
+            myJudge = nullptr;
+            reported = false;
+            inJunction = false;
+            if (myGroup!= nullptr) {
+
+                //myGroup->removeCar( MessengerSystem::getInstance().getMessengerMap().at(veh.getID()));
+                myGroup = nullptr;
+                resetVehicleColor();
+            }
+            std::cout << myHolder.getID() << " left junction after teleport" << std::endl;
+        }
+        junctionCounter = 1;
+        lastEntry = veh.getEdge()->getID();
         myJudge = ((EntryMarker*)(MarkerSystem::getInstance().findMarkerByID(veh.getEdge()->getID())))->getJudge();
         MessagingProxy::getInstance().informEnterEntryMarker(veh.getID(),
                                                              (EntryMarker*)(MarkerSystem::getInstance().findMarkerByID(veh.getEdge()->getID())));
         if (!reported) myJudge->reportComing(MessagingProxy::getInstance().getGroupOf(myHolder.getID()), myDirection);
         reported = true;
         myGroup = MessagingProxy::getInstance().getGroupOf(myHolder.getID());
-        std::cout << myHolder.getID() << " joining to group: " << myGroup->getMyGroupID() << std::endl;
+        std::cout << myHolder.getID() << " joining to group: " << myGroup->getMyGroupID() << "direction: "<<myDirection<< std::endl;
     }
     if (entryMarkerFlag>=0) --entryMarkerFlag;
 
     std::string edgeID = veh.getEdge()->getID();
     bool onStopMarker = isSTOPmarker(edgeID);
 
-    if (myGroup != nullptr) {
+    if (myJudge != nullptr && myGroup != nullptr) {
         bool debug = myHolder.isSelected();
         Position posi = myHolder.getPosition(0);
         double x = posi.x(),
@@ -169,6 +190,9 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
         } else {
             myLeaderMessenger = nullptr;
             if (!myGroup->groupsForWaitFor.empty()){
+                if (!Group::isLiving(myGroup->groupsForWaitFor[0])){
+                    myGroup->groupsForWaitFor.erase(myGroup->groupsForWaitFor.begin());
+                }
                 setVehicleSpeed(0);
                 return true;
             }
@@ -190,13 +214,14 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
                 } else if (debug)
                     std::cout << myHolder.getID() << ": "<<desiredSpeed << "deltaM, "<< veh.getLane()->getLength()-veh.getPositionOnLane() << std::endl;
             } else {
-                    if (!(lcm.getOwnState() & LCA_STAY)) setVehicleSpeed(-1); else {
+                    /*if (!(lcm.getOwnState() & LCA_STAY)) setVehicleSpeed(-1); else {
                         if (debug) std::cout << "OKÉ" << std::endl;
                         if (!speedSetInJunction) {
                             speedSetInJunction = true;
                             setVehicleSpeed(-1);
                         }
-                    }
+                    }*/
+                    setVehicleSpeed(speedLimit);
 
                     if (debug) std::cout << myHolder.getID() << "make full speed "<<
                                                          lcm.getCommittedSpeed() << std::endl;
@@ -230,6 +255,7 @@ MSDevice_SAL::notifyEnter(SUMOVehicle& veh, MSMoveReminder::Notification reason,
     //is it a marker?
     if(MarkerSystem::getInstance().isMarkerID(veh.getEdge()->getID())) {
         if ((veh.getEdge()->getID()).compare(6,5,"Entry")==0) {
+
             entryMarkerFlag = 2;
         }
         else if (inJunction){
@@ -241,6 +267,8 @@ MSDevice_SAL::notifyEnter(SUMOVehicle& veh, MSMoveReminder::Notification reason,
             reported = false;
             speedSetInJunction = false;
             myGroup = nullptr;
+            myJudge = nullptr;
+            junctionCounter = 0;
         }
     }
     return true; // keep the device

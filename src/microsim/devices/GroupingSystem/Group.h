@@ -21,6 +21,7 @@ class MSLCM_SmartSL2015;
  * @brief This class realizes the intelligent group (platoon).
  */
 class Group {
+
     /// @brief actual number of smart cars in the group
     int nMembers = 0;
     /// @brief number of vehicles which have ever participated in the group
@@ -45,6 +46,8 @@ class Group {
     AbstractJudge* myJudge;
 public:
     long getMyGroupID() const;
+
+    static bool isLiving(long groupID);
     //static long groupIDGenerator;
     void informGroupLeftJunction(long groupID);
     void informGroupThatChanged(long groupID);
@@ -53,6 +56,7 @@ public:
     void informGroupChanged();
     std::vector<long> groupsForWaitFor;
     std::vector<Group*> groupsWaitRequest;
+    std::vector<long> groupsWaitId;
 
 public:
     static const int MAX_INGROUP_DISTANCE = 40;

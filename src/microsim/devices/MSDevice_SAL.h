@@ -238,6 +238,8 @@ private:
     bool speedSetInJunction = false;
     /// @brief if near a junction, it points to judge of this junction
     AbstractJudge* myJudge = nullptr;
+    std::string lastEntry= "";
+    int junctionCounter = 0;
 public:
     AbstractJudge *getMyJudge() const;
 

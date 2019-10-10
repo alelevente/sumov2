@@ -113,9 +113,8 @@ void AbstractJudge::informCCEnded(ConflictClass *cc) {}
 
 void AbstractJudge::groupLeft(long groupID) {
     for (auto cc: conflictClasses){
-        for (auto car: cc->myCars){
-            Group* g = car->getGroup();
-            if (g != nullptr) g->informGroupLeftJunction(groupID);
+        for (auto g: cc->groupIDs){
+            if (Group::isLiving(g.second)) g.first->informGroupLeftJunction(groupID);
         }
     }
 }

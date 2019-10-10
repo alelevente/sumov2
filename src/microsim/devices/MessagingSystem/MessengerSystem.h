@@ -22,6 +22,8 @@ class MessengerSystem {
 
     /// @brief list of messenger entites
     std::map<std::string, Messenger*> messengerMap;
+public:
+    const std::map<std::string, Messenger *> &getMessengerMap() const;
 
 public:
     /// @brief for accessing this singleton class

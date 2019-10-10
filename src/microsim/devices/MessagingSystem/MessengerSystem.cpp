@@ -31,3 +31,7 @@ MessengerSystem::~MessengerSystem() {
         delete mes;
     }
 }
+
+const std::map<std::string, Messenger *> &MessengerSystem::getMessengerMap() const {
+    return messengerMap;
+}

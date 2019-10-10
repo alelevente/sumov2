@@ -34,6 +34,8 @@ protected:
     std::vector<MSDevice_SAL*> myCars;
     /// @brief color for graphical representation
     libsumo::TraCIColor myColor;
+
+    std::map<Group*, long> groupIDs;
 public:
     /**
      * @brief Constructor

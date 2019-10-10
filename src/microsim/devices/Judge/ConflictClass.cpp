@@ -36,6 +36,11 @@ void ConflictClass::joinGroup(Group *group) {
 void ConflictClass::addVehicle(MSDevice_SAL *sal) {
     if (!hasVehicle(sal)) {
         myCars.insert(myCars.end(), sal);
+        Group* g = sal->getGroup();
+        if (g!= nullptr) {
+            auto it = groupIDs.find(g);
+            if (it == groupIDs.end()) groupIDs.insert(std::make_pair(g, g->getMyGroupID()));
+        }
         sal->setVehicleColor(myColor);
     }
 }

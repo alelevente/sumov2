@@ -7,6 +7,7 @@
 #include <libsumo/Vehicle.h>
 #include "Group.h"
 
+static std::vector<long> livingGroupIDs;
 
 Group::Group(Messenger *leader):
     groupLeader(leader)
@@ -24,13 +25,18 @@ Group::Group(Messenger *leader):
     members[0]->mySAL->setVehicleColor(myColor);
     members[0]->mySAL->informBecomeLeader();
     for (int i=1; i<15; ++i) members[i] = nullptr;
+    livingGroupIDs.push_back(myGroupID);
 }
 
 Group::~Group() {
+    int i=0;
     for (auto& g: groupsWaitRequest) {
+        if (!isLiving(groupsWaitId[i++])) continue;
         g->informGroupLeftJunction(myGroupID);
     }
     myJudge->groupLeft(myGroupID);
+    auto it = std::find(livingGroupIDs.begin(), livingGroupIDs.end(), myGroupID);
+    if (it != livingGroupIDs.end()) livingGroupIDs.erase(it);
 }
 
 void Group::setMyCC(ConflictClass *cc) {
@@ -157,7 +163,7 @@ void Group::informGroupLeftJunction(long groupID) {
         ++it2;
     }
     if (it2 != groupsWaitRequest.end()) groupsWaitRequest.erase(it2);
-    if (groupsForWaitFor.empty()) {
+    if (groupsForWaitFor.empty() && nMembers != 0) {
         std::string ID = members[0]->mySAL->getVehicle()->getID();
         libsumo::Vehicle::setLaneChangeMode(ID, 1621);
     }
@@ -175,6 +181,7 @@ void Group::informGroupHaveToWaitFor(long groupID) {
 void Group::informGroupIsRequester(MSDevice_SAL *waitedGroupLeader) {
     std::cout << waitedGroupLeader->getGroup() << " pushed back" << std::endl;
     groupsWaitRequest.push_back(waitedGroupLeader->getGroup());
+    groupsWaitId.push_back(waitedGroupLeader->getGroup()->myGroupID);
     std::cout << waitedGroupLeader->getGroup()->getNMembers() << std::endl;
 }
 
@@ -184,12 +191,24 @@ void Group::informGroupChanged() {
     for (auto& group: groupsWaitRequest) std::cout << group << ", ";
     std::cout << std::endl;
     Group* waiter = groupsWaitRequest[0];
-    waiter->informGroupThatChanged(myGroupID);
+    if (isLiving(groupsWaitId[0])) waiter->informGroupThatChanged(myGroupID);
+    else {
+        groupsWaitRequest.erase(groupsWaitRequest.begin());
+        groupsWaitId.erase(groupsWaitId.begin());
+        return;
+    }
     std::cout << waiter << " informed " << std::endl;
     if (groupsWaitRequest.size() == 0) return;
     if (groupsWaitRequest.size() != 1){
         groupsWaitRequest.erase(groupsWaitRequest.begin());
+        groupsWaitId.erase(groupsWaitId.begin());
     } else {
         groupsWaitRequest.clear();
+        groupsWaitId.clear();
     }
+}
+
+bool Group::isLiving(long groupID) {
+    auto it = std::find(livingGroupIDs.begin(), livingGroupIDs.end(), groupID);
+    return it != livingGroupIDs.end();
 }
