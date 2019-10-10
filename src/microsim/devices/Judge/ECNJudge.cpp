@@ -11,6 +11,8 @@
 #include "microsim/devices/MessagingSystem/Messenger.h"
 #include "JudgeSystem.h"
 
+#define MAGIC_CONST 0.018
+
 
 ECNJudge::ECNJudge(const std::string &path) {
     auto* active = new ECNConflictClass();
@@ -161,8 +163,13 @@ void ECNJudge::calculateCandidates() {
         if (now-e.second > longest) {
             //std::map<MSDevice_SAL*, std::string>::iterator hasCars = directionByCars.find(e.first);//std::find(directionByCars.begin(), directionByCars.end(), e.first);
             if (mapContainsValue(directionByCars, e.first)) {
-                longest = now - e.second;
-                longestIdx = e.first;
+                std::string port = directionToPortMap[e.first];
+                ECNJudge* neigh = nullptr;
+                for (auto p: portMap) if (p.second == port) neigh = p.first;
+                if (!congestionMap[neigh]) {
+                    longest = now - e.second;
+                    longestIdx = e.first;
+                }
             }
         }
     }
@@ -170,7 +177,16 @@ void ECNJudge::calculateCandidates() {
     std::cout << longestIdx <<": " << longest << std::endl;
 
     int* addConstraints = new int[conflictMtx[0][0]];
-    for (int i=0; i<conflictMtx[0][0]; ++i) addConstraints[i] = -1;
+    for (int i=0; i<conflictMtx[0][0]; ++i){
+        std::string dir = "";
+        for (auto d: directions) if (d.second==i) dir = d.first;
+        std::string port = directionToPortMap[dir];
+        ECNJudge* neigh = nullptr;
+        for (auto p: portMap) if (p.second == port) neigh = p.first;
+        if (!congestionMap[neigh]) {
+            addConstraints[i] = -1;
+        } else addConstraints[i] = 0;
+    }
     addConstraints[directions[longestIdx]] = 1;
     LPSolver* lpSolver = new LPSolver();
     auto solution = lpSolver->getLPSolution(conflictMtx, addConstraints);
@@ -248,7 +264,7 @@ void ECNJudge::informOthers() {
     for (auto& pl: myPortLimitMap) {
         occup = libsumo::Edge::getLastStepOccupancy(pl.first);
         std::cout << "Occupancy: " << occup << std::endl;
-        cong = (occup > 0.009*pl.second);
+        cong = (occup > MAGIC_CONST*pl.second);
         auto* notification = new ECNNotification();
         notification->congested = cong;
         notification->sender = this;
