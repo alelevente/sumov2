@@ -90,7 +90,7 @@ void Group::removeCar(Messenger *who) {
 }
 
 void Group::finishGroup(Messenger *who, AbstractJudge *judge) {
-    std::cout << "group left: " << this << std::endl;
+    //std::cout << "group left: " << this << std::endl;
     who->mySAL->myLCm->groupChanged();
     judge->groupLeft(myGroupID);
     delete this;
@@ -174,22 +174,22 @@ void Group::informGroupThatChanged(long groupID) {
 }
 
 void Group::informGroupHaveToWaitFor(long groupID) {
-    std::cout << myGroupID << "group have to wait for: " << groupID << std::endl;
+    //std::cout << myGroupID << "group have to wait for: " << groupID << std::endl;
     groupsForWaitFor.insert(groupsForWaitFor.end(), groupID);
 }
 
 void Group::informGroupIsRequester(MSDevice_SAL *waitedGroupLeader) {
-    std::cout << waitedGroupLeader->getGroup() << " pushed back" << std::endl;
+    //std::cout << waitedGroupLeader->getGroup() << " pushed back" << std::endl;
     groupsWaitRequest.push_back(waitedGroupLeader->getGroup());
     groupsWaitId.push_back(waitedGroupLeader->getGroup()->myGroupID);
-    std::cout << waitedGroupLeader->getGroup()->getNMembers() << std::endl;
+    //std::cout << waitedGroupLeader->getGroup()->getNMembers() << std::endl;
 }
 
 void Group::informGroupChanged() {
     if (groupsWaitRequest.size() == 0) return;
-    std::cout << groupsWaitRequest.size() << std::endl;
-    for (auto& group: groupsWaitRequest) std::cout << group << ", ";
-    std::cout << std::endl;
+    //std::cout << groupsWaitRequest.size() << std::endl;
+    //for (auto& group: groupsWaitRequest) std::cout << group << ", ";
+    //std::cout << std::endl;
     Group* waiter = groupsWaitRequest[0];
     if (isLiving(groupsWaitId[0])) waiter->informGroupThatChanged(myGroupID);
     else {
@@ -197,7 +197,7 @@ void Group::informGroupChanged() {
         groupsWaitId.erase(groupsWaitId.begin());
         return;
     }
-    std::cout << waiter << " informed " << std::endl;
+    //std::cout << waiter << " informed " << std::endl;
     if (groupsWaitRequest.size() == 0) return;
     if (groupsWaitRequest.size() != 1){
         groupsWaitRequest.erase(groupsWaitRequest.begin());

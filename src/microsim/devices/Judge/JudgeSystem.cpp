@@ -82,7 +82,7 @@ AbstractJudge* JudgeSystem::getJudgeByName(const std::string &name) {
 
 JudgeSystem::~JudgeSystem() {
     for (auto i=judgeMap.begin(); i!=judgeMap.end(); ++i){
-        delete (*i).second;
+        delete ((*i).second);
     }
 }
 

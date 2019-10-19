@@ -35,7 +35,7 @@ ECNJudge::ECNJudge(const std::string &path) {
         input >> rDirection;
         directionTimes.insert(std::make_pair(rDirection, -i));
         directions.insert(std::make_pair(rDirection, i));
-        std::cout << directionTimes[rDirection] << std::endl;
+        //std::cout << directionTimes[rDirection] << std::endl;
     }
     //Make a Descartes product of the directions:
     /*std::string currentDirection = "";
@@ -174,7 +174,7 @@ void ECNJudge::calculateCandidates() {
         }
     }
 
-    std::cout << longestIdx <<": " << longest << std::endl;
+    //std::cout << longestIdx <<": " << longest << std::endl;
 
     int* addConstraints = new int[conflictMtx[0][0]];
     for (int i=0; i<conflictMtx[0][0]; ++i){
@@ -208,7 +208,7 @@ void ECNJudge::makeGreen() {
     for (auto& item: directions){
         if (candidatesForNextActivePhase[item.second]) {
             activeCC->addDirection(item.first);
-            std::cout << item.first << std::endl;
+            //std::cout << item.first << std::endl;
             directionTimes[item.first] = now;
         } else {
             inactiveCC->addDirection(item.first);
@@ -241,10 +241,10 @@ void ECNJudge::carLeftJunction(MSDevice_SAL *who, bool byForce) {
 
 void ECNJudge::informJudge(void *message) {
     ECNNotification* notification = (ECNNotification*) message;
-    if (notification->congested) std::cout << "Notification arrived" << std::endl;
+    //if (notification->congested) std::cout << "Notification arrived" << std::endl;
     auto neighbor = portMap.find(notification->sender);
     if (neighbor != portMap.end()){
-        if (notification->congested) std::cout << "neighbour found "<< notification->direction << neighbor->second << std::endl;
+        //if (notification->congested) std::cout << "neighbour found "<< notification->direction << neighbor->second << std::endl;
         if (notification->direction == neighbor->second) {
             congestionMap.erase(notification->sender);
             congestionMap.insert(std::make_pair(notification->sender, notification->congested));
@@ -263,7 +263,7 @@ void ECNJudge::informOthers() {
     bool cong = false;
     for (auto& pl: myPortLimitMap) {
         occup = libsumo::Edge::getLastStepOccupancy(pl.first);
-        std::cout << "Occupancy: " << occup << std::endl;
+        //std::cout << "Occupancy: " << occup << std::endl;
         cong = (occup > MAGIC_CONST*pl.second);
         auto* notification = new ECNNotification();
         notification->congested = cong;
@@ -295,11 +295,11 @@ void ECNJudge::calculateStepLength() {
     auto* active = (ECNConflictClass*)conflictClasses[0];
     for (auto& d: portMap) {
         auto& neighbor = d.first;
-        if (congestionMap[neighbor]) std::cout << d.second << " congested" << std::endl; // else std::cout << "check was" << std::endl;
+        //if (congestionMap[neighbor]) std::cout << d.second << " congested" << std::endl; // else std::cout << "check was" << std::endl;
         if (congestionMap[neighbor] && listContainsValue(active->directionList, getDirectionFromPort(directionToPortMap,d.second))) {
             stepLength = 5000;
             lastStepLengthCalc = now;
-            std::cout << "TIME REDUCED! :)" << std::endl;
+            //std::cout << "TIME REDUCED! :)" << std::endl;
             return;
         }
     }

@@ -57,11 +57,11 @@ std::vector<int> LPSolver::getLPSolution(int **conflictMtx, int *addConstraints)
 
     std::vector<int> answer;
 
-    std::cout << "Solution:" << std::endl;
-    std::cout << "Optimal objective value = " << objective->Value() << std::endl;
+    //std::cout << "Solution:" << std::endl;
+    //std::cout << "Optimal objective value = " << objective->Value() << std::endl;
     for (int i=0; i<conflictMtx[0][0]; ++i){
         if (vars[i]->solution_value() != 0){
-            std::cout << vars[i]->name() << std::endl;
+            //std::cout << vars[i]->name() << std::endl;
             answer.insert(answer.end(), 1);
         } else answer.insert(answer.end(), 0);
     }

@@ -143,7 +143,7 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
                 myGroup = nullptr;
                 resetVehicleColor();
             }
-            std::cout << myHolder.getID() << " left junction after teleport" << std::endl;
+          //  std::cout << myHolder.getID() << " left junction after teleport" << std::endl;
         }
         junctionCounter = 1;
         lastEntry = veh.getEdge()->getID();
@@ -153,7 +153,7 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
         if (!reported) myJudge->reportComing(MessagingProxy::getInstance().getGroupOf(myHolder.getID()), myDirection);
         reported = true;
         myGroup = MessagingProxy::getInstance().getGroupOf(myHolder.getID());
-        std::cout << myHolder.getID() << " joining to group: " << myGroup->getMyGroupID() << "direction: "<<myDirection<< std::endl;
+        //std::cout << myHolder.getID() << " joining to group: " << myGroup->getMyGroupID() << "direction: "<<myDirection<< std::endl;
     }
     if (entryMarkerFlag>=0) --entryMarkerFlag;
 
@@ -209,10 +209,10 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
                 if (veh.isSelected()) std::cout << veh.getID() << " " << desiredSpeed << std::endl;
                 if (desiredSpeed < speedLimit) setVehicleSpeed(desiredSpeed);
                 if (desiredSpeed <= 0) setVehicleSpeed(0);
-                if (passPermitted) {
+               /* if (passPermitted) {
                     std::cout << myHolder.getID() << " is permitted to pass" << std::endl;
                 } else if (debug)
-                    std::cout << myHolder.getID() << ": "<<desiredSpeed << "deltaM, "<< veh.getLane()->getLength()-veh.getPositionOnLane() << std::endl;
+                    std::cout << myHolder.getID() << ": "<<desiredSpeed << "deltaM, "<< veh.getLane()->getLength()-veh.getPositionOnLane() << std::endl;*/
             } else {
                     /*if (!(lcm.getOwnState() & LCA_STAY)) setVehicleSpeed(-1); else {
                         if (debug) std::cout << "OKÉ" << std::endl;
@@ -228,7 +228,7 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
             }
         }
         if (!inJunction && hasReachedPONR(onStopMarker)) {
-            std::cout << myHolder.getID() << "has entered junction" << std::endl;
+            //std::cout << myHolder.getID() << "has entered junction" << std::endl;
             myJudge->carPassedPONR(this);
             inJunction = true;
             speedSetInJunction = false;

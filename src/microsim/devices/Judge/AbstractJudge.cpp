@@ -54,9 +54,9 @@ void AbstractJudge::carLeftJunction(MSDevice_SAL *who, bool byForce) {
         if (conflictClasses[i]->isEmpty() && i == activeCC) changeCC();
     }
     who->resetVehicleColor();
-   std::cout << who->getID() << " has left junction ";
-    if (byForce) std::cout << "by force";
-    std::cout << std::endl;
+   //std::cout << who->getID() << " has left junction ";
+   // if (byForce) std::cout << "by force";
+   // std::cout << std::endl;
 
 }
 
@@ -76,12 +76,12 @@ void AbstractJudge::makeKill() {
         //if a car is slower than 0.0001 m/s, then it is stucked:
         if ((*x).getVehicle()->getSpeed() <= 0.0001) {
             std::string carID = (*x).getVehicle()->getID();
-            std::cout << (*x).getID() << std::endl;
+            //std::cout << (*x).getID() << std::endl;
             if ((*x).getVehicle()->getWaitingTime() < 300) return;
             //necessary steps to leave the group:
             MessagingProxy::getInstance().informEnterExitMarker((*x).getVehicle()->getID(),
                                                                 (ExitMarker*)(MarkerSystem::getInstance().findMarkerByID((*x).getVehicle()->getEdge()->getID())));
-            std::cout << (*x).getVehicle()->getID() << " has been killed, total: " << killed+1 << std::endl;
+            //std::cout << (*x).getVehicle()->getID() << " has been killed, total: " << killed+1 << std::endl;
             carLeftJunction(x, true);
             std::vector<int> where;
             int idx=0;

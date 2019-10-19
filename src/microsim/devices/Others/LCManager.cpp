@@ -91,8 +91,11 @@ void LCManager::groupChanged() {
     } else {
         //std::cout << myLC->getMyVehicle()->getID() << " changed, has no follower" << std::endl;
     }*/
-    Group* g = myLC->mySAL->getGroup();
-    if (g != nullptr) g->informGroupChanged();
+    MSDevice_SAL* mySAL = myLC->mySAL;
+    if (mySAL != nullptr) {
+        Group *g = mySAL->getGroup();
+        if (g != nullptr) g->informGroupChanged();
+    }
 }
 
 void LCManager::blocker(MSLCM_SmartSL2015 *who, long groupID) {
