@@ -92,6 +92,7 @@ void ECNJudge::step(const SUMOTime &st) {
         changeCC();
     } else if (yellow && now-yellowStarted>3000) {
         makeGreen();
+       // calculateStepLength();
     }
 }
 

@@ -10,7 +10,7 @@
 
 //#define TESTMAP
 #define DEVELOPING
-#define ECN
+//#define ECN
 
 JudgeSystem::JudgeSystem() {
 #ifdef DEVELOPING

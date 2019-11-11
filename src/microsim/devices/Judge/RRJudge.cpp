@@ -92,7 +92,9 @@ void RRJudge::changeCC() {
 
 int RRJudge::decideCC(Group *group, const std::string &direction) {
     int dir = 0;
-    for (dir = 0; *directions[dir]!=direction && dir<nDirs; ++dir);
+    for (dir = 0; dir<nDirs && *directions[dir]!=direction; ++dir);
+    //Shit happend:
+    if (dir == nDirs) dir = 0;
     int acc;
     for (acc=0; !programElements[acc]->passeable[dir] && acc<nPrograms; ++acc);
     conflictClasses[acc]->joinGroup(group);
