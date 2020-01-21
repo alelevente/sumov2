@@ -11,10 +11,15 @@
 //#define TESTMAP
 #define DEVELOPING
 //#define ECN
+#define PAPER
+//#define DIAGONAL
+
 
 JudgeSystem::JudgeSystem() {
 #ifdef DEVELOPING
-    std::ifstream input("/home/levente/Egyetem/7_felev/szakdoga/beadas/Configs/JudgeConfs/judges", std::ifstream::in);
+    //std::ifstream input("/home/levente/Egyetem/7_felev/szakdoga/beadas/Configs/JudgeConfs/judges", std::ifstream::in);
+    std::ifstream input("/home/levente/Egyetem/9_felev/cikkek/ifac/network/judges", std::ifstream::in);
+    //std::ifstream input("/home/levente/Egyetem/9_felev/cikkek/ifac/network/judges_diag", std::ifstream::in);
 #else
     std::ifstream input("../Configs/JudgeConfs/judges", std::ifstream::in);
 #endif
@@ -69,6 +74,77 @@ JudgeSystem::JudgeSystem() {
     villanyiBorsi->addNeighbourPort(bah, "STOP_BAHVill");
     jaghegy->addNeighbourPort(bah, "STOP_BAHh2");
 #endif
+#ifdef PAPER
+    ECNJudge* A1 = (ECNJudge*)judgeMap["A1"];
+    ECNJudge* A2 = (ECNJudge*)judgeMap["A2"];
+    ECNJudge* A3 = (ECNJudge*)judgeMap["A3"];
+    ECNJudge* A4 = (ECNJudge*)judgeMap["A4"];
+    ECNJudge* A6 = (ECNJudge*)judgeMap["A6"];
+    ECNJudge* A5 = (ECNJudge*)judgeMap["A5"];
+    ECNJudge* A8 = (ECNJudge*)judgeMap["A8"];
+    ECNJudge* A9 = (ECNJudge*)judgeMap["A9"];
+
+    A1->addNeighbourPort(A2, "STOP_A2_nyugat");
+    A1->addNeighbourPort(A3, "STOP_A3_eszaknyugat");
+    A1->addNeighbourPort(A8, "STOP_A8_eszak");
+
+    A2->addNeighbourPort(A9, "STOP_A2_eszak");
+    A2->addNeighbourPort(A4, "STOP_A4_eszakkelet");
+    A2->addNeighbourPort(A1, "STOP_A1_kelet");
+
+    A8->addNeighbourPort(A1, "STOP_A1_del");
+    A8->addNeighbourPort(A6, "STOP_A3_delnyugat");
+    A8->addNeighbourPort(A9, "STOP_A9_nyugat");
+
+    A9->addNeighbourPort(A8, "STOP_A8_kelet");
+    A9->addNeighbourPort(A5, "STOP_A5_del");
+    A9->addNeighbourPort(A2, "STOP_A2_del");
+
+    A3->addNeighbourPort(A1, "STOP_A1_del");
+    A3->addNeighbourPort(A6, "STOP_A6_nyugat");
+    A3->addNeighbourPort(A4, "STOP_A4_nyugat");
+
+    A4->addNeighbourPort(A2, "STOP_A2_delnyugat");
+    A4->addNeighbourPort(A3, "STOP_A3_kelet");
+    A4->addNeighbourPort(A5, "STOP_A5_kelet");
+
+    A5->addNeighbourPort(A9, "STOP_A9_eszaknyugat");
+    A5->addNeighbourPort(A6, "STOP_A6_kelet");
+    A5->addNeighbourPort(A4, "STOP_A4_kelet");
+
+    A6->addNeighbourPort(A8, "STOP_A8_eszakkelet");
+    A6->addNeighbourPort(A5, "STOP_A3_nyugat");
+    A6->addNeighbourPort(A2, "STOP_A5_nyugat");
+#endif
+#ifdef DIAGONAL
+    ECNJudge* A1 = (ECNJudge*)judgeMap["A1"];
+    ECNJudge* A2 = (ECNJudge*)judgeMap["A2"];
+    ECNJudge* A3 = (ECNJudge*)judgeMap["A3"];
+    ECNJudge* A5 = (ECNJudge*)judgeMap["A5"];
+    ECNJudge* A8 = (ECNJudge*)judgeMap["A8"];
+    ECNJudge* A9 = (ECNJudge*)judgeMap["A9"];
+
+    A1->addNeighbourPort(A2, "STOP_A2_nyugat");
+    A1->addNeighbourPort(A3, "STOP_A3_eszaknyugat");
+    A1->addNeighbourPort(A8, "STOP_A8_eszak");
+
+    A2->addNeighbourPort(A9, "STOP_A2_eszak");
+    A2->addNeighbourPort(A8, "STOP_A8_eszakkelet");
+    A2->addNeighbourPort(A1, "STOP_A1_kelet");
+
+    A8->addNeighbourPort(A1, "STOP_A1_del");
+    A8->addNeighbourPort(A2, "STOP_A2_delnyugat");
+    A8->addNeighbourPort(A9, "STOP_A9_nyugat");
+
+    A9->addNeighbourPort(A8, "STOP_A8_kelet");
+    A9->addNeighbourPort(A5, "STOP_A5_del");
+    A9->addNeighbourPort(A2, "STOP_A2_del");
+
+    A3->addNeighbourPort(A1, "STOP_A1_del");
+
+    A5->addNeighbourPort(A9, "STOP_A9_eszaknyugat");
+
+#endif
 }
 
 JudgeSystem& JudgeSystem::getInstance() {
@@ -88,7 +164,7 @@ JudgeSystem::~JudgeSystem() {
 
 void JudgeSystem::doUpdate(const SUMOTime& now) {
     for (auto& j: judgeMap){
-        if (j.second->initialized) j.second->step(now);
+        if (j.second!=nullptr && j.second->initialized) j.second->step(now);
     }
 }
 

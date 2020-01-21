@@ -44,10 +44,12 @@ private:
     std::map<ECNJudge*, std::string> portMap;
     std::map<ECNJudge*, bool> congestionMap;
     std::map<std::string, double> myPortLimitMap;
+    std::map<std::string, double*> myPortStateMap;
     std::vector<std::string> portDirections;
     std::map<std::string, std::string> directionToPortMap;
 
     bool* candidatesForNextActivePhase;
+    double* portStates;
     int nDirections = 0;
     bool candidatesCalculated = false;
     void calculateCandidates();

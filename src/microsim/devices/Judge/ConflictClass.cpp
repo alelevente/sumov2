@@ -40,8 +40,9 @@ void ConflictClass::addVehicle(MSDevice_SAL *sal) {
         if (g!= nullptr) {
             auto it = groupIDs.find(g);
             if (it == groupIDs.end()) groupIDs.insert(std::make_pair(g, g->getMyGroupID()));
+            sal->setVehicleColor(myColor);
         }
-        sal->setVehicleColor(myColor);
+
     }
 }
 
