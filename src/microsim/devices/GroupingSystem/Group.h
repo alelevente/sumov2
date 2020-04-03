@@ -104,7 +104,7 @@ public:
     double getGroupLength();
 
     /// @brief maximum size of a group
-    int maxMembers = 12;
+    int maxMembers = 5;
     /// @brief called if lane changing is finished
     void endLaneChange();
     /**

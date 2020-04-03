@@ -21,6 +21,7 @@ public:
     void removeAllVehicles();
     void setColor(bool toRed);
     void resetNextCars();
+    bool isCarFirst();
 };
 
 

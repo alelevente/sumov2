@@ -162,8 +162,12 @@ private:
 
     bool hasReachedPONR(bool onStop);
 
+
+
 /***********************************NON-SUMO originated codes********************************/
 public:
+    static std::map<MSDevice_SAL*, bool> exists;
+    static bool exists_yet(MSDevice_SAL*);
     /// @brief for graphical representation of group and CC states
     void setVehicleColor (const libsumo::TraCIColor& color);
     /// @brief resets the graphical representation to its default

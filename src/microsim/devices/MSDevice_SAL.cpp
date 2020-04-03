@@ -31,6 +31,10 @@
 // ---------------------------------------------------------------------------
 // static initialisation methods
 // ---------------------------------------------------------------------------
+
+std::map<MSDevice_SAL*, bool> MSDevice_SAL::exists;
+
+
 void
 MSDevice_SAL::insertOptions(OptionsCont& oc) {
     oc.addOptionSubTopic("SAL Device");
@@ -40,6 +44,7 @@ MSDevice_SAL::insertOptions(OptionsCont& oc) {
     oc.addDescription("device.SAL.parameter", "SAL Device", "An exemplary parameter which can be used by all instances of the SAL device");
 }
 
+bool MSDevice_SAL::exists_yet(MSDevice_SAL *who) { return exists[who];}
 
 void
 MSDevice_SAL::buildVehicleDevices(SUMOVehicle& v, std::vector<MSDevice*>& into) {
@@ -92,6 +97,8 @@ MSDevice_SAL::MSDevice_SAL(SUMOVehicle& holder, const std::string& id,
 {
     //std::cout << "initialized device '" << id << "' with myCustomValue1=" << myCustomValue1 << ", myCustomValue2=" << myCustomValue2 << ", myCustomValue3=" << myCustomValue3 << "\n";
     MessengerSystem::getInstance().addNewMessengerAgent(holder.getID(), &myHolder, this);
+    exists.insert(std::make_pair(this, true));
+    exists[this] = true;
 }
 
 
@@ -108,6 +115,13 @@ MSDevice_SAL::~MSDevice_SAL() {
     if (!MSNet::getInstance()->closed)
             MessengerSystem::getInstance().removeMessengerAgent(myHolder.getID());
     delete myLCm;
+    exists[this] = false;
+    /*std::cout << "dtor of" << this->getID() << std::endl;
+    for (auto& t: exists){
+        if (t.second)
+        {std::cout << t.first->getID() << "\t";}
+    }
+    std::cout << std::endl;*/
 }
 
 /*Helper function:*/
@@ -221,7 +235,13 @@ MSDevice_SAL::notifyMove(SUMOVehicle& veh, double /* oldPos */,
                             setVehicleSpeed(-1);
                         }
                     }*/
-                    setVehicleSpeed(speedLimit);
+                    //setVehicleSpeed(speedLimit);
+                    setVehicleSpeed(-1);
+                    if (veh.getLane()->getLength()-veh.getPositionOnLane()<0.01 && veh.getSpeed()<0.01) {
+                        std::cout << veh.getID() << "has to teleport" << std::endl;
+                        libsumo::Vehicle::moveTo(veh.getID(), veh.succEdge(1)->getLanes()[0]->getID(), 0);
+
+                    }
 
                     if (debug) std::cout << myHolder.getID() << "make full speed "<<
                                                          lcm.getCommittedSpeed() << std::endl;

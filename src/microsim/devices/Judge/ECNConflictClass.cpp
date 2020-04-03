@@ -45,3 +45,12 @@ void ECNConflictClass::removeAllVehicles() {
 void ECNConflictClass::resetNextCars() {
     nextList->clear();
 }
+
+bool ECNConflictClass::isCarFirst() {
+    bool front = false;
+    for (auto& c: myCars){
+        front = c->getVehicle()->isFrontOnLane(c->getVehicle()->getLane());
+        if (front) return front;
+    }
+    return front;
+}

@@ -10,15 +10,15 @@
 
 //#define TESTMAP
 #define DEVELOPING
-//#define ECN
-#define PAPER
+#define ECN
+//#define PAPER
 //#define DIAGONAL
 
 
 JudgeSystem::JudgeSystem() {
 #ifdef DEVELOPING
-    //std::ifstream input("/home/levente/Egyetem/7_felev/szakdoga/beadas/Configs/JudgeConfs/judges", std::ifstream::in);
-    std::ifstream input("/home/levente/Egyetem/9_felev/cikkek/ifac/network/judges", std::ifstream::in);
+    std::ifstream input("/home/levente/Egyetem/7_felev/szakdoga/beadas/Configs/JudgeConfs/judges", std::ifstream::in);
+    //std::ifstream input("/home/levente/Egyetem/9_felev/cikkek/ifac/network/judges", std::ifstream::in);
     //std::ifstream input("/home/levente/Egyetem/9_felev/cikkek/ifac/network/judges_diag", std::ifstream::in);
 #else
     std::ifstream input("../Configs/JudgeConfs/judges", std::ifstream::in);

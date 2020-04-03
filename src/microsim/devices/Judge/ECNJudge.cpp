@@ -96,7 +96,7 @@ void ECNJudge::step(const SUMOTime &st) {
     if (now-lastChanged>stepLength && !yellow) {
         calculateCandidates();
         changeCC();
-    } else if (yellow && now-yellowStarted>3000 && carsIn.empty()) {
+    } else if (yellow && (carsIn.empty() || (now-yellowStarted>10000))){// && now-yellowStarted>3000 ) {
         makeGreen();
        // calculateStepLength();
     }
@@ -110,7 +110,7 @@ void ECNJudge::step(const SUMOTime &st) {
 }
 
 bool ECNJudge::canPass(MSDevice_SAL *who, const std::string &direction) {
-    return ((ECNConflictClass*)conflictClasses[0])->containsDirection(direction);
+    return !yellow && ((ECNConflictClass*)conflictClasses[0])->containsDirection(direction);
 }
 
 int ECNJudge::decideCC(Group *group, const std::string &direction) {
@@ -118,7 +118,7 @@ int ECNJudge::decideCC(Group *group, const std::string &direction) {
     Messenger** messengers = group->getMembers();
     int nMessengers = group->getNMembers();
     for (int i=0; i<nMessengers; ++i) {
-        std::cout <<"inserted" << messengers[i]->mySAL->getID() << " with direction: "<< direction << std::endl;
+        //std::cout <<"inserted" << messengers[i]->mySAL->getID() << " with direction: "<< direction << std::endl;
         directionByCars.insert(std::make_pair(messengers[i]->mySAL, direction));
     }
     return ((ECNConflictClass*)conflictClasses[0])->containsDirection(direction)?0:1;
@@ -132,7 +132,7 @@ void ECNJudge::changeCC() {
     for (auto& item: directionByCars) {
         if (!(conflictClasses[0]->hasVehicle(item.first))){
             if (!(conflictClasses[1]->hasVehicle(item.first))) {
-                std::cout <<"deleted" << item.first->getID() << std::endl;
+                //std::cout <<"deleted" << item.first->getID() << std::endl;
                 directionByCars.erase(item.first);
             }
         } else {
@@ -178,7 +178,7 @@ void ECNJudge::calculateCandidates() {
     std::string longestIdx;
     SUMOTime longest = 0;
     for (auto& e: directionTimes) {
-        std::cout << e.first << ": " <<e.second << "contains cars: " << mapContainsValue(directionByCars, e.first) <<  std::endl;
+        //std::cout << e.first << ": " <<e.second << "contains cars: " << mapContainsValue(directionByCars, e.first) <<  std::endl;
         if (now-e.second > longest) {
             //std::map<MSDevice_SAL*, std::string>::iterator hasCars = directionByCars.find(e.first);//std::find(directionByCars.begin(), directionByCars.end(), e.first);
             if (mapContainsValue(directionByCars, e.first)) {
@@ -196,6 +196,7 @@ void ECNJudge::calculateCandidates() {
     //std::cout << longestIdx <<": " << longest << std::endl;
 
     int* addConstraints = new int[conflictMtx[0][0]];
+
     for (int i=0; i<conflictMtx[0][0]; ++i){
         std::string dir = "";
         for (auto d: directions) if (d.second==i) dir = d.first;
@@ -206,7 +207,10 @@ void ECNJudge::calculateCandidates() {
             addConstraints[i] = -1;
         } else addConstraints[i] = 0;
     }
-    addConstraints[directions[longestIdx]] = 1;
+    if (addConstraints[directions[longestIdx]] != 0){
+        std::cout << "will get green: " << longestIdx << std::endl;
+        addConstraints[directions[longestIdx]] = 1;
+    }
     LPSolver* lpSolver = new LPSolver();
     auto solution = lpSolver->getLPSolution(conflictMtx, addConstraints);
     for (int i=0; i<conflictMtx[0][0]; ++i){
@@ -234,6 +238,7 @@ void ECNJudge::makeGreen() {
         }
     }
     for (auto& item: directionByCars) {
+        if (!MSDevice_SAL::exists_yet(item.first)) continue;
         if (activeCC->containsDirection(item.second)){
             activeCC->addVehicle(item.first);
             Group* group= item.first->getGroup();
@@ -245,7 +250,7 @@ void ECNJudge::makeGreen() {
         }
     }
     activeCC->informCars(JC_GO);
-    lastChanged = now;
+    activeCC->isCarFirst()?lastChanged = now:lastChanged = now-15000;
     yellow = false;
 }
 
@@ -260,7 +265,7 @@ void ECNJudge::carLeftJunction(MSDevice_SAL *who, bool byForce) {
 
 void ECNJudge::informJudge(void *message) {
     ECNNotification* notification = (ECNNotification*) message;
-    if (notification->congested) std::cout << "Notification arrived" << std::endl;
+    if (notification->congested) std::cout << portDirections[0] << " Notification arrived" << std::endl;
     auto neighbor = portMap.find(notification->sender);
     if (neighbor != portMap.end()){
         if (notification->congested) std::cout << "neighbour found "<< notification->direction << " " << neighbor->second << std::endl;
